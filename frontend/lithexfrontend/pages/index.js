@@ -1,13 +1,18 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/modular/Home.module.css'
-import useRouter from "next/router"
-import { Fragment } from 'react';
+import Router from "next/router"
+import { Fragment, useEffect } from 'react';
+
 
 export default function Home() {
-  const router = useRouter();
+
+  useEffect(() => {
+    Router.push("/app/login")
+  },[])
+
   return <Fragment>
-    {router.push("/app/login")}
+    <div></div>
   </Fragment>
   
 }

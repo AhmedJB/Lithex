@@ -7,6 +7,7 @@ import IdentityVerification from '../../components/IdentityVerification';
 import ProfileNavigation from '../../components/ProfileNavigation';
 import CoinList from '../../components/CoinList';
 import Footer from '../../components/Footer';
+import Link from "next/link"
 
 
 export default function profile(){

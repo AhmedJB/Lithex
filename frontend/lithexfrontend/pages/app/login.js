@@ -1,11 +1,17 @@
 import Head from 'next/head'
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Script from "next/script"
+import Link from "next/link"
 
 
 
 
-export default function login(){
+export default function login(props){
+
+  useEffect( () => {
+      console.log(props);
+
+  },[])
 
 
     const html = <Fragment>
@@ -157,7 +163,7 @@ export default function login(){
           <div className="flex mt-xl"><button type="submit" className="Button large primary block">Login</button></div>
         </form>
         <div className="flex center fs-medium semi-bold links mt-l">
-          <span className="light">Don't have a LIQD Account?</span><i className="m-h-5">•</i><a href="register.html">New Account</a><i className="m-h-5">•</i><a href="/recover-password">Forgot Password</a>
+          <span className="light">Don't have a LIQD Account?</span><i className="m-h-5">•</i> <Link href="/app/register/"><a>New Account</a></Link><i className="m-h-5">•</i><a href="/recover-password">Forgot Password</a>
         </div>
         <div className="center mt-xl">
           <button type="button" className="Button link LanguagePickerButton" aria-expanded="false"><i className="far fa-language" /> Language</button>

@@ -1,10 +1,76 @@
 import Head from 'next/head'
-import { Fragment } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import Script from "next/script"
+import Link from 'next/link';
+
+import { postReq , isLogged, registerCall} from '../../Utils';
+import { UserContext } from '../../contexts/UserContext';
+import { Router } from 'next/router';
+
+export default function register(props){
+
+    const [User,setUser] = useContext(UserContext);
+
+
+    useEffect( () => {
+
+      if (User.logged){
+        Router.push("/app/profile");
+      }else{
+        async function checkUser(){
+          let  resp = await isLogged();
+          if (resp){
+            let obj = {...User}
+            obj.logged =  true;
+            obj.username = resp.username;
+            obj.joined = resp.joined;
+            obj.emal = resp.email;
+            setUser(obj)
+          }
+  
+  
+        }
+  
+  
+        checkUser().then( () => {
+          console.log("done check")
+        } )
+      }
+
+      
 
 
 
-export default function register(){
+
+    },[User])
+
+
+    const registerMethod = async () => {
+      let  username =  document.getElementById("username")
+      let email = document.getElementById("email")
+      let password = document.getElementById("password")
+
+      let body = {
+        username,
+        email,
+        password
+      }
+
+      let resp = await registerCall(body);
+      if (resp){
+        let obj = {...User}
+            obj.logged =  true;
+            obj.username = resp.username;
+            obj.joined = resp.joined;
+            obj.emal = resp.email;
+            setUser(obj)
+      }else{
+        console.log("failed  register");
+      }
+
+
+
+    }
 
     const html = <Fragment>
         <Head>
@@ -157,10 +223,12 @@ export default function register(){
               <span className="tc-mint-500 fw-n"> <i className="fas fa-lock">&nbsp;</i>https://</span><span className="fw-n tc-grey-900">platform.liquid.io</span>
             </div>
           </div>
+          <label className="mt-l">Username</label>
+          <div className="TextBox"><input type="text" id="username" /></div>
           <label className="mt-l">Email</label>
-          <div className="TextBox"><input type="email" defaultValue /></div>
+          <div className="TextBox"><input type="email" id="email" /></div>
           <label className="mt-xl">Password</label>
-          <div className="TextBox"><input type="password" defaultValue /></div>
+          <div className="TextBox"><input type="password" id="password" /></div>
           <div className="toc-container flex mt-xl">
             <div className="CheckBox">
               <span><input type="checkbox" /></span>
@@ -171,9 +239,9 @@ export default function register(){
               <a href="exchange-terms" target="_blank">Exchange Terms</a>, and <a href="privacy-policy" target="_blank">Privacy Policy</a> of Nexo
             </div>
           </div>
-          <div className="flex mt-xl"><button type="submit" disabled className="Button large primary block">Create Account</button></div>
+          <div className="flex mt-xl"><button onClick={registerMethod} type="submit"  className="Button large primary block">Create Account</button></div>
         </form>
-        <div className="flex center links mt-l"><span>Already have a Nexo Account?</span><i className="mh-xs">•</i><a href="login.html">Login</a></div>
+        <div className="flex center links mt-l"><span>Already have a Nexo Account?</span><i className="mh-xs">•</i> <Link href="/app/login"><a>Login</a></Link></div>
         <div className="center mt-xl">
           <button type="button" className="Button link LanguagePickerButton" aria-expanded="false"><i className="far fa-language" /> Language</button>
         </div>
@@ -185,6 +253,8 @@ export default function register(){
 <Script src="https://kit.fontawesome.com/d53d06f463.js" strategy='beforeInteractive' />
 
     </Fragment>
+
+    return html;
 
 
 
