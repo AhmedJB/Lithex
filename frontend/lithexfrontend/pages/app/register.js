@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { postReq , isLogged, registerCall} from '../../Utils';
 import { UserContext } from '../../contexts/UserContext';
-import { Router } from 'next/router';
+import  Router  from 'next/router';
 
 export default function register(props){
 
@@ -45,18 +45,20 @@ export default function register(props){
     },[User])
 
 
-    const registerMethod = async () => {
-      let  username =  document.getElementById("username")
-      let email = document.getElementById("email")
-      let password = document.getElementById("password")
+    const registerMethod = async (e) => {
+      e.preventDefault();
+      let  username =  document.getElementById("username").value
+      let email = document.getElementById("email").value
+      let password = document.getElementById("password").value
 
-      let body = {
+      let data = {
         username,
         email,
         password
       }
+      
 
-      let resp = await registerCall(body);
+      let resp = await registerCall(data);
       if (resp){
         let obj = {...User}
             obj.logged =  true;
@@ -117,14 +119,14 @@ export default function register(props){
             <h1>Flexible Instant Crypto Credit Lines</h1>
             <div>
               <div>
-                <img alt height={32} src="https://static.nexo.io/currencies/BTC.svg" /><img alt height={32} src="https://static.nexo.io/currencies/ETH.svg" />
-                <img alt height={32} src="https://static.nexo.io/currencies/NEXO.svg" /><img alt height={32} src="https://static.nexo.io/currencies/XRP.svg" style={{marginLeft: 4}} />
+                <img  height={32} src="https://static.nexo.io/currencies/BTC.svg" /><img  height={32} src="https://static.nexo.io/currencies/ETH.svg" />
+                <img  height={32} src="https://static.nexo.io/currencies/NEXO.svg" /><img  height={32} src="https://static.nexo.io/currencies/XRP.svg" style={{marginLeft: 4}} />
               </div>
               <h2>1. Deposit Crypto Assets to Your Insured &amp; Secured Nexo Account</h2>
               <h3>$375M insurance and maximum security with the audited custodian BitGo</h3>
             </div>
             <div>
-              <div><img alt height={32} src="https://static.nexo.io/currencies/USD.png" /><img alt height={32} src="https://static.nexo.io/currencies/EUR.png" /></div>
+              <div><img  height={32} src="https://static.nexo.io/currencies/USD.png" /><img  height={32} src="https://static.nexo.io/currencies/EUR.png" /></div>
               <h2>2. Credit Line is Now Available. Borrow with Automatic Approval, no Credit Checks</h2>
               <h3>Your Credit Line limit is based on the value of your deposited crypto assets</h3>
             </div>
@@ -142,12 +144,12 @@ export default function register(props){
           <div className="banners">
             <a href="/exchange/swap">
               <div className="Banner lowestCryptCreditLineRates" style={{backgroundImage: 'url("https://static.nexo.io/banners/platform/lower-interest-bg.png")'}}>
-                <img alt width="100%" src="https://static.nexo.io/banners/platform/lower-interest-text.png" />
+                <img  width="100%" src="https://static.nexo.io/banners/platform/lower-interest-text.png" />
               </div>
             </a>
             <a href="/exchange/buy">
               <div className="Banner earnUpTo10PercentsOnAssets" style={{backgroundImage: 'url("https://static.nexo.io/banners/platform/interest-bg.png")'}}>
-                <img alt width="100%" src="https://static.nexo.io/banners/platform/earn-on-crypto-content.png" />
+                <img  width="100%" src="https://static.nexo.io/banners/platform/earn-on-crypto-content.png" />
               </div>
             </a>
           </div>
@@ -180,8 +182,8 @@ export default function register(props){
           </div>
           <div className="card">
             <div className="actions">
-              <a className="ActionButton" href="/borrow"><img alt src="/assets/icons/borrow-dashboard.svg" /><strong>Borrow</strong><span>Cash or Stablecoins</span></a>
-              <a className="ActionButton" href="/repayment"><img alt src="/assets/icons/repay-dashboard.svg" /><strong>Repay</strong><span>with Crypto, Cash or Stablecoins</span></a>
+              <a className="ActionButton" href="/borrow"><img  src="/assets/icons/borrow-dashboard.svg" /><strong>Borrow</strong><span>Cash or Stablecoins</span></a>
+              <a className="ActionButton" href="/repayment"><img  src="/assets/icons/repay-dashboard.svg" /><strong>Repay</strong><span>with Crypto, Cash or Stablecoins</span></a>
               <a className="ActionButton" href="/exchange"><img alt="Nexo Wallet" src="/assets/icons/exchange-dashboard.svg" /><strong>Exchange</strong><span>Buy, Sell and Swap</span></a>
             </div>
             <table className="AssetList" id="AssetList" cellSpacing={0} cellPadding={0} border={0}>
@@ -216,7 +218,7 @@ export default function register(props){
     <div className="Modal FormRegister" style={{width: 500}}>
       <main>
         <h4>New Account</h4>
-        <form className="mt-l">
+        <form id="register-form" className="mt-l">
           <div className="center p-s bg-grey-50 radius-m">
             <span className="tc-grey-600 fw-n">Please make sure you are visiting </span>
             <div className="mt-xs2">

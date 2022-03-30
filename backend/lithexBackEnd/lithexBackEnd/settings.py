@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%3@4rf@-#1^+^)u%3vv4(uvjuohu4)6!1f^h8j97$u7fqy4dmg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["weak-cobra-55.loca.lt","127.0.0.1","localhost","be92-105-69-202-246.ngrok.io"]
 
 
 # Application definition
@@ -100,6 +100,16 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION" : False,
 }
 
+
+""" CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://strong-frog-84.loca.lt',
+    'https://hot-falcon-85.loca.lt'
+] """
+
+CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ALLOW_CREDENTIALS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

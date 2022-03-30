@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Fragment , useSTate } from "react";
+import { Fragment , useContext, useState, useEffect } from "react";
 import Script from "next/script"
 import Header from '../../components/header';
 import BalancesCards from '../../components/BalancesCards';
@@ -8,9 +8,26 @@ import ProfileNavigation from '../../components/ProfileNavigation';
 import CoinList from '../../components/CoinList';
 import Footer from '../../components/Footer';
 import Link from "next/link"
+import { UserContext } from '../../contexts/UserContext';
+import  Router  from 'next/router';
 
 
 export default function profile(){
+
+    const [User,setUser] = useContext(UserContext);
+    const [loading,setLoading] = useState(false);
+
+
+
+    useEffect(() => {
+      console.log("here again")
+      if (User.logged) {
+        console.log("logged in")
+      }else{
+        Router.push("/app/login")
+      }
+    
+    }, [User]);
     
 
 
@@ -76,17 +93,17 @@ export default function profile(){
           </h6>
           <div className="grid-buttons">
             <div className="col">
-              <a className="sharing-button-facebook" target="_blank" rel="noopener noreferrer" href><img alt width={20} src="assets/icons/facebook.svg" /><span className="sharing-button-text">Share</span></a>
+              <a className="sharing-button-facebook" target="_blank" rel="noopener noreferrer" href><img alt width={20} src="/assets/icons/facebook.svg" /><span className="sharing-button-text">Share</span></a>
             </div>
             <div className="col">
-              <a className="sharing-button-twitter" target="_blank" rel="noopener noreferrer" href><img alt width={20} src="assets/icons/twitter.svg" /><span className="sharing-button-text">Tweet</span></a>
+              <a className="sharing-button-twitter" target="_blank" rel="noopener noreferrer" href><img alt width={20} src="/assets/icons/twitter.svg" /><span className="sharing-button-text">Tweet</span></a>
             </div>
             <div className="col">
-              <a className="sharing-button-linkedin" target="_blank" rel="noopener noreferrer" href><img alt width={20} src="assets/icons/linkedin.svg" /><span className="sharing-button-text">Post</span></a>
+              <a className="sharing-button-linkedin" target="_blank" rel="noopener noreferrer" href><img alt width={20} src="/assets/icons/linkedin.svg" /><span className="sharing-button-text">Post</span></a>
             </div>
             <div className="col">
               <div className="copy-btn">
-                <textarea readOnly style={{position: 'fixed', width: 0, height: 0, opacity: 0}} defaultValue={""} /><a className="sharing-button-link" target="_blank" rel="noopener noreferrer" href><img alt width={20} src="assets/icons/link.svg" /><span className="sharing-button-text">Copy URL</span></a><i className="fa fa-check" />
+                <textarea readOnly style={{position: 'fixed', width: 0, height: 0, opacity: 0}} defaultValue={""} /><a className="sharing-button-link" target="_blank" rel="noopener noreferrer" href><img alt width={20} src="/assets/icons/link.svg" /><span className="sharing-button-text">Copy URL</span></a><i className="fa fa-check" />
               </div>
             </div>
           </div>

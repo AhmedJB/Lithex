@@ -1,4 +1,5 @@
-const api = '/api/'
+const base_url = "https://be92-105-69-202-246.ngrok.io"  //"http://127.0.0.1:8000"
+const api = base_url + '/api/'
 
 function set_header(token = null){
     try {
@@ -36,8 +37,9 @@ export async function get_token(username = null , password = null){
     let options = {
         method : 'post',
         body : JSON.stringify(body),
-        headers : headers
-    }
+        headers : headers,
+        mode : 'cors'
+     }
 
     
 
@@ -59,16 +61,17 @@ export async function get_token(username = null , password = null){
 }
 
 
-export async function registerCall(body){
-
+export async function registerCall(data){
+    console.log(data);
     
 
     let headers = set_header();
 
     let options = {
         method : 'post',
-        body : JSON.stringify(body),
-        headers : headers
+        body : JSON.stringify(data),
+        headers : headers,
+        mode : 'cors'
     }
 
     
@@ -76,7 +79,7 @@ export async function registerCall(body){
     let preResp = await fetch(api + 'register', options);
     
     if (preResp.ok) {
-        let nextresp = await get_token(username,password);
+        let nextresp = await get_token(data.username,data.password);
         return nextresp;
 
     }else{
@@ -96,7 +99,8 @@ export async function refreshToken(){
         body : JSON.stringify({
             refresh
         }),
-        headers : headers
+        headers : headers,
+        mode : 'cors'
 
     }
 
@@ -130,7 +134,8 @@ export async function postReq(url,body){
     let options  = {
         method : 'post',
         body : JSON.stringify(body),
-        headers : headers
+        headers : headers,
+        mode : 'cors'
     }
 
     let preResp = await fetch(api + url,options);
@@ -163,7 +168,8 @@ export async function req(url){
 
     let options  = {
         method : 'get',
-        headers : headers
+        headers : headers,
+        mode : 'cors'
     }
 
     let preResp = await fetch(api + url,options);
@@ -194,7 +200,8 @@ export async function req_body(url,body){
     let options  = {
         method : 'get',
         headers : headers,
-        body
+        body,
+        mode : 'cors'
     }
 
     let preResp = await fetch(api + url,options);
@@ -225,11 +232,14 @@ export async function isLogged(){
 }
 
 
-export function logout(setUser,User) {
-    let obj = { ...User };
-    obj.logged = false;
-    obj.username = null;
-    obj.email = null;
+export function logout(setUser) {
+    console.log("logged out")
+    let obj = {
+        logged : false,
+        username : null,
+		joined : null,
+        email : null
+    }
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
     setUser(obj);

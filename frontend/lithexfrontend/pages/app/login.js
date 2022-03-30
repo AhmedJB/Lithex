@@ -1,17 +1,75 @@
 import Head from 'next/head'
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 import Script from "next/script"
 import Link from "next/link"
 
+import { UserContext } from '../../contexts/UserContext';
+import { get_token, isLogged } from '../../Utils';
+import Loader from '../../components/Loader';
+import Router from "next/router"
 
 
 
 export default function login(props){
 
-  useEffect( () => {
-      console.log(props);
+  
+  const [loading,setLoading] = useState(true);
+  const [User,setUser] = useContext(UserContext);
 
-  },[])
+
+    useEffect( () => {
+
+      if (User.logged){
+        Router.push("/app/profile");
+      }else{
+        async function checkUser(){
+          let  resp = await isLogged();
+          if (resp){
+            let obj = {...User}
+            obj.logged =  true;
+            obj.username = resp.username;
+            obj.joined = resp.joined;
+            obj.emal = resp.email;
+            setUser(obj)
+          }
+  
+  
+        }
+  
+  
+        checkUser().then( () => {
+          console.log("done check")
+          setLoading(false);
+        } )
+      }
+
+      
+
+
+
+
+    },[User])
+
+
+    const loginMethod = async (e) => {
+      e.preventDefault();
+      let username = document.getElementById("username").value;
+      let password = document.getElementById("password").value;
+      let resp = await get_token(username,password)
+      if (resp) {
+        let obj = {...User}
+        obj.username = resp.username;
+        obj.email = resp.email;
+        obj.joined = resp.joined;
+        obj.logged = true;
+        setUser(obj)
+      }else{
+        console.log("login failed")
+      }
+
+
+
+    }
 
 
     const html = <Fragment>
@@ -156,11 +214,11 @@ export default function login(props){
               <span className="tc-mint-500 fw-n"> <i className="fas fa-lock">&nbsp;</i>https://</span><span className="fw-n tc-grey-900">platform.liquid.io</span>
             </div>
           </div>
-          <label className="mt-l">Email</label>
-          <div className="TextBox"><input type="email" defaultValue /></div>
+          <label className="mt-l">Username</label>
+          <div className="TextBox"><input type="text" id="username" /></div>
           <label className="mt-xl">Password</label>
-          <div className="TextBox"><input type="password" defaultValue /></div>
-          <div className="flex mt-xl"><button type="submit" className="Button large primary block">Login</button></div>
+          <div className="TextBox"><input type="password" id="password" /></div>
+          <div className="flex mt-xl"><button type="submit" onClick={loginMethod} className="Button large primary block">Login</button></div>
         </form>
         <div className="flex center fs-medium semi-bold links mt-l">
           <span className="light">Don't have a LIQD Account?</span><i className="m-h-5">•</i> <Link href="/app/register/"><a>New Account</a></Link><i className="m-h-5">•</i><a href="/recover-password">Forgot Password</a>
@@ -180,6 +238,6 @@ export default function login(props){
     </Fragment>
 
 
-    return html;
+    return (loading ?  <Loader /> : html)
 
 }
