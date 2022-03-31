@@ -10,6 +10,7 @@ class CustomUser(AbstractUser):
     joined = models.DateTimeField(auto_now_add=True)
     is_validated = models.BooleanField(default=False)
     submited_docs = models.BooleanField(default=False)
+    has_personalInfo = models.BooleanField(default=False)
 
 
 

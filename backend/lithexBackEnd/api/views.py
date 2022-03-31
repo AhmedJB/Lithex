@@ -72,3 +72,15 @@ class Upload(APIView):
             print('error', Doc_serializer.errors)
             return Response(Doc_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class CheckVerifStatus(APIView):
+
+    permissions_classes = [permissions.IsAuthenticated]
+
+
+    def get(self,request,*args,**kwargs):
+        user = request.user
+        verified = False
+        pass
+
+

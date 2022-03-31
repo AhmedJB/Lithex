@@ -43,10 +43,6 @@ export default function login(props){
         } )
       }
 
-      
-
-
-
 
     },[User])
 

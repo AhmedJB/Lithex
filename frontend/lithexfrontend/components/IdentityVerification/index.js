@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import Link from "next/link";
 
 
 
@@ -31,11 +32,14 @@ export default function IdentityVerification(props){
               </span>
             </div>
           </div>
-          <a href="profile/verification.html">
+          <Link href="/app/user/verification">
+          <a>
             <button type="button" className="Button primary">
               Identity Verification <i className="fa fa-arrow-right m-l-5" />
             </button>
           </a>
+          </Link>
+          
         </div>
       </Fragment>
     );

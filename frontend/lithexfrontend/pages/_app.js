@@ -1,3 +1,4 @@
+import '../styles/global/fold-style.css'
 import '../styles/global/globals.css'
 
 import { UserProvider } from "../contexts/UserContext"

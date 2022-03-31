@@ -10,24 +10,17 @@ import Footer from '../../components/Footer';
 import Link from "next/link"
 import { UserContext } from '../../contexts/UserContext';
 import  Router  from 'next/router';
+import Loader from '../../components/Loader';
 
 
 export default function profile(){
 
     const [User,setUser] = useContext(UserContext);
-    const [loading,setLoading] = useState(false);
+    const [loading,setLoading] = useState(true);
 
 
 
-    useEffect(() => {
-      console.log("here again")
-      if (User.logged) {
-        console.log("logged in")
-      }else{
-        Router.push("/app/login")
-      }
     
-    }, [User]);
     
 
 
@@ -55,7 +48,7 @@ export default function profile(){
         <title>Profile</title>
         </Head>
        <div id="nexo-platform" className="application">
-       <Header />
+       <Header location="profile"  />
   <main>
     <section className="DashboardPage">
       <div>
@@ -110,8 +103,8 @@ export default function profile(){
         </div>
       </div>
     </section>
-    <footer>
-    </footer></main>
+    <Footer />
+   </main>
 </div>
 
 
@@ -119,7 +112,7 @@ export default function profile(){
     </Fragment>
 
 
-    return html;
+    return (loading ?  <Loader setLoading={setLoading} /> : html)
 
 
 
