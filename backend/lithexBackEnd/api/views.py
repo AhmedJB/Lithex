@@ -81,6 +81,27 @@ class CheckVerifStatus(APIView):
     def get(self,request,*args,**kwargs):
         user = request.user
         verified = False
-        pass
+        status = ""
+        if not user.has_personalInfo :
+            status = "personal"
+            path = "/app/user/personal"
+        elif not user.submited_docs:
+            status = "not submited"
+            path = '/app/user/upload'
+        elif not  user.is_validated:
+            status = "verification"
+            path  = ""
+        else:
+            verified = True
+            status = "verified"
+            path = ""
+
+        resp  = {
+            "status" :  status,
+            "path"  : path,
+            "verified" : verified
+        }
+
+        return Response(resp)
 
 

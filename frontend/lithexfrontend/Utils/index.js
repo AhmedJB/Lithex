@@ -1,4 +1,4 @@
-const base_url = "https://be92-105-69-202-246.ngrok.io"  //"http://127.0.0.1:8000"
+const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
 const api = base_url + '/api/'
 
 function set_header(token = null){

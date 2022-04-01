@@ -335,7 +335,7 @@
         
         .Button.special.active:not(:disabled),
         .Button.special:active:not(:disabled) {
-            color: !important;
+            color: white !important;
         }
         
         .Button.special .loader {
@@ -417,7 +417,7 @@
         
         .Button.success.active:not(:disabled),
         .Button.success:active:not(:disabled) {
-            color: !important;
+            color: white !important;
         }
         
         .Button.success .loader {
@@ -443,7 +443,7 @@
         
         .Button.outline.active:not(:disabled),
         .Button.outline:active:not(:disabled) {
-            color: !important;
+            color: white !important;
         }
         
         .Button.outline .loader {
@@ -469,7 +469,7 @@
         
         .Button.link.active:not(:disabled),
         .Button.link:active:not(:disabled) {
-            color: !important;
+            color: white !important;
         }
         
         .Button.link .loader {
