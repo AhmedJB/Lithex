@@ -15,6 +15,10 @@ urlpatterns = [
     #user
     path("register",Register.as_view()),
     path("upload",Upload.as_view()),
+    # get verification status
+    path("verify",CheckVerifStatus.as_view()),
+    # submit info
+    path("info",PersonalInfoView.as_view()),
 
 
 ]

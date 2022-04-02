@@ -8,10 +8,27 @@ import Link from "next/link";
 
 
 export default function IdentityVerification(props){
+  const verificationStatus = props.verificationStatus;
+
+  const verificationStep = () => {
+
+    switch (verificationStatus.status) {
+      case "personal":
+        Router.push(verificationStatus.path)
+        break;
+    
+      default:
+        console.log("not supported yet")
+        break;
+    }
+
+
+  }
 
 
     const html = (
       <Fragment>
+
         <div className="VerifyIdentityBanner">
           <div className="VerificationStatusIcon">
             <img
@@ -46,7 +63,7 @@ export default function IdentityVerification(props){
 
 
 
-    return html;
+    return ( !verificationStatus && html  ) ;
 
 
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser,Documents
+from .models import CustomUser,Documents,PersonalInfo,DocumentTicket
 
 # Register your models here.
 
@@ -7,3 +7,7 @@ from .models import CustomUser,Documents
 admin.site.register(CustomUser)
 
 admin.site.register(Documents)
+
+admin.site.register(PersonalInfo)
+
+admin.site.register(DocumentTicket)

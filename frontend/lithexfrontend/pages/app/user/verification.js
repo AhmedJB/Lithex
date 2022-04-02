@@ -1,4 +1,4 @@
-import { Fragment , useContext , useState } from "react";
+import { Fragment , useContext , useState, useEffect } from "react";
 import Header from "../../../components/header";
 import Footer from "../../../components/Footer";
 import Head from "next/head";
@@ -6,13 +6,109 @@ import Image from "next/image";
 import Loader from "../../../components/Loader";
 import { UserContext } from "../../../contexts/UserContext";
 import Profileaside from "../../../components/Profileaside";
+import Router from "next/router";
+import { req } from "../../../Utils";
+
+
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import {DropzoneDialog} from 'material-ui-dropzone'
+
 
 
 
 
 export default function verification(props){
     const [User,setUser] = useContext(UserContext);
+    const [ OpenAuth , setOpenAuth] = useState(false);
     const [loading,setLoading] = useState(true);
+    const [files, setFiles] = useState([]);
+    
+    const [verificationStatus , setVerificationStatus] = useState({
+      status : null,
+      path : null,
+      verified : null,
+    });
+
+    useEffect(
+      () => {
+          async function fetchVerificationStatus(){
+            let resp = await req("verify");
+            if (resp) {
+              console.log(resp);
+              setVerificationStatus(resp)
+            }else{
+              console.log("fetching verification failed");
+            }
+          }
+
+          fetchVerificationStatus().then( () => {
+            console.log("done fetching data")
+          })
+      },
+      [User]
+
+    )
+
+
+    const handleVerificationModal = () => {
+      console.log("starting");
+      setOpenAuth(true);
+    }
+
+
+    const verificationStep = () => {
+      let status = verificationStatus.status;
+      console.log(status);
+      switch (status) {
+        case "personal":
+          Router.push(verificationStatus.path)
+          break;
+
+        case "upload":
+          handleVerificationModal();
+          break;
+
+        
+      
+        default:
+          console.log("not supported yet")
+          break;
+      }
+  
+  
+    }
+
+
+    const handleFiles = (file) => {
+      console.log(file)
+
+    }
+
+
+    const handleFileUploadError = (error) => {
+      // Do something...
+    }
+    
+    const handleFilesChange = (files) => {
+      // Do something...
+    }
+
+    const style = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 400,
+      bgcolor: 'background.paper',
+      border: '2px solid #000',
+      boxShadow: 24,
+      p: 4,
+    };
+
+    
+
+
 
     const html = (
       <Fragment>
@@ -172,7 +268,7 @@ export default function verification(props){
                     />
                   </div>
                 </div>
-                <div className="VerificationCTA">
+                {!verificationStatus.verified && <div className="VerificationCTA">
                   <img alt src="/assets/svgs/mask-group.svg" />
                   <div>
                     <div>
@@ -186,11 +282,13 @@ export default function verification(props){
                     <button
                       type="button"
                       className="Button large secondary wide"
+                      onClick={ verificationStep }
                     >
                       Start Verification
                     </button>
                   </div>
-                </div>
+                </div>}
+                
                 <h5 className="mt-xl2">
                   Features that will be unlocked after successful Identity
                   verification
@@ -460,8 +558,40 @@ export default function verification(props){
                 </table>
               </div>
             </section>
+            <Footer />
           </main>
         </div>
+
+
+
+
+        {/* <Modal
+        open={OpenAuth}
+        onClose={() => setOpenAuth(false)}
+        aria-labelledby="Upload Modal"
+        aria-describedby="Documents Upload"
+      >
+        <Box sx={style}>
+
+        <h1 className="text-center ">Upload your documents</h1>
+     
+     {/*  <FileUpload value={files} onChange={handleFiles} /> 
+     
+
+
+
+        </Box>
+
+        </Modal> */}
+
+              <DropzoneDialog
+                    open={OpenAuth}
+                    onSave={handleFiles}
+                    acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                    showPreviews={true}
+                    maxFileSize={5000000}
+                    onClose={() => setOpenAuth(false)}
+                />
       </Fragment>
     );
 

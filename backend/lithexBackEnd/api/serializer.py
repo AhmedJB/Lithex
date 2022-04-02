@@ -1,6 +1,6 @@
 
 from rest_framework.serializers import ModelSerializer
-from .models import CustomUser,Documents
+from .models import CustomUser,Documents,PersonalInfo
 
 class RegisterSerializer(ModelSerializer):
     class Meta:
@@ -28,4 +28,11 @@ class DocumentSerializer(ModelSerializer):
         d = Documents.objects.create(**validated)
         d.save()
         return DocumentSerializer(d).data
+
+
+
+class PersonalInfoSerializer(ModelSerializer):
+    class Meta:
+        model = PersonalInfo
+        fields = "__all__"
 
