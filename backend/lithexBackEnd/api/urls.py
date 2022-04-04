@@ -19,6 +19,8 @@ urlpatterns = [
     path("verify",CheckVerifStatus.as_view()),
     # submit info
     path("info",PersonalInfoView.as_view()),
+    #test tasks
+    path("testtask",testTask.as_view()),
 
 
 ]

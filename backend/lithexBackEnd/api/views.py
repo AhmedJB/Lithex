@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,permissions
 from .serializer import RegisterSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer
+from .tasks import test
 
 # Create your views here.
 
@@ -175,3 +176,9 @@ class CheckVerifStatus(APIView):
         return Response(resp)
 
 
+class testTask(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self,request):
+        test.delay(10)
+        return Response({"success": True})
