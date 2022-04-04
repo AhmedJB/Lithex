@@ -6,6 +6,7 @@ export const UserContext = createContext();
 export const UserProvider = props => {
 
     let obj = {
+		id : null,
         logged : false,
         username : null,
 		joined : null,

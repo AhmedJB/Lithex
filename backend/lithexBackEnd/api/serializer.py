@@ -1,6 +1,6 @@
 
 from rest_framework.serializers import ModelSerializer
-from .models import CustomUser,Documents,PersonalInfo
+from .models import CustomUser,Documents,PersonalInfo,DocumentTicket
 
 class RegisterSerializer(ModelSerializer):
     class Meta:
@@ -20,15 +20,20 @@ class DocumentSerializer(ModelSerializer):
     class Meta:
         model = Documents
         fields = "__all__"
-        extra_kwards = {'user' : {'required': False}}
 
 
     def create(self,validated,*args,**kwargs):
-        input(validated)
+        #input(validated)
         d = Documents.objects.create(**validated)
         d.save()
         return DocumentSerializer(d).data
 
+
+class TicketSerializer(ModelSerializer):
+
+    class Meta:
+        model = DocumentTicket
+        fields = ['id','user','created','status','ticket_type','reviewed']
 
 
 class PersonalInfoSerializer(ModelSerializer):

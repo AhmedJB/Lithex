@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,permissions
-from .serializer import RegisterSerializer,DocumentSerializer,PersonalInfoSerializer
+from .serializer import RegisterSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer
 
 # Create your views here.
 
@@ -66,13 +66,46 @@ class Upload(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        Doc_serializer = DocumentSerializer(data=request.data)
-        if Doc_serializer.is_valid():
-            resp = Doc_serializer.save()
-            return Response(resp, status=status.HTTP_201_CREATED)
+        data = request.data
+        input(data)
+        ticket_data = {
+            "user" : user.id,
+            "status" : "open",
+            "ticket_type"  : data.get("ticket_type",None)
+        }
+        ticket_serializer = TicketSerializer(data=ticket_data)
+        if ticket_serializer.is_valid():
+            ticket = ticket_serializer.save()
+            files = dict(data.lists())['file']
+            
+            print(type(files))
+            input(files)
+            final_resp = []
+            if files:
+                for file in files:
+                    print(file)
+                    doc_data = {
+                        "ticket" : ticket.id,
+                        "doc_type" : data.get("doc_type",None),
+                        "file" : file
+                    }
+                    Doc_serializer = DocumentSerializer(data=doc_data)
+                    if Doc_serializer.is_valid():
+                        resp = Doc_serializer.save()
+                        final_resp.append(resp)
+                       
+                    else:
+                        ticket.delete()
+                        print('error', Doc_serializer.errors)
+                        return Response(Doc_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+                return Response(final_resp, status=status.HTTP_201_CREATED)
+            else:   
+                return Response('no files found', status=status.HTTP_400_BAD_REQUEST)
+            
         else:
-            print('error', Doc_serializer.errors)
-            return Response(Doc_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            print('error', ticket_serializer.errors)
+            return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -80,7 +113,6 @@ class Upload(APIView):
 
 class PersonalInfoView(APIView):
     permissions_classes = [permissions.IsAuthenticated]
-
 
 
     def post(self,request,*args,**kwargs):

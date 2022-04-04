@@ -1,14 +1,23 @@
+import axios from 'axios';
+
+
 const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
 const api = base_url + '/api/'
 
-function set_header(token = null){
+function set_header(token = null,file=false){
     try {
         console.log(token);
-        if ( token == null){
+        if ( token == null && file == false){
             var obj = {
                 'Content-Type': 'application/json',
             }
-        } else {
+		
+        }else if (file) {
+			var obj = {
+				'content-type': 'multipart/form-data',
+				'Authorization' : 'Bearer '+token
+			}
+		} else {
             var obj = {
                 'Content-Type': 'application/json',
                 'Authorization' : 'Bearer '+token
@@ -24,6 +33,55 @@ function set_header(token = null){
    
 }
 
+
+
+export const handleFileSubmit = async (files) => {
+	
+	let form_data = new FormData();
+	let access = sessionStorage.getItem('accessToken');
+	//access =  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4OTc3OTkwLCJqdGkiOiIyY2EyY2NjMjFmMjQ0YjQyYTc3MjgzYjAzZGM2MTdhMSIsInVzZXJfaWQiOjJ9.uGyjMDKwWTMowoBgxNLiDbfijFcwutbKBkLNrXlvnTA"
+    let headers = set_header(access,true);
+	console.log(files)
+	for(let i = 0 ; i < files.length ; i++){
+		form_data.append('file', files[i], files[i].name);
+	}	
+	
+	form_data.append('doc_type', 'auth');
+	form_data.append('ticket_type', 'auth');
+	let url = api  + 'upload';
+	try {
+		let  resp = await axios.post(url, form_data, {
+			headers
+		  })
+		  console.log(resp.status)
+		  
+		 	if (resp.status == 201){
+				 return true
+			 } 
+		  else{
+			  console.log("other errors")
+			  return false;
+		  }
+	} catch (error) {
+		let resp = error.response
+		if (resp.status == 401) {
+			let dec = await refreshToken();
+			if (dec){
+				return handleFileSubmit(files);
+			}else{
+				
+				return false;
+			}
+		  
+		}else{
+			console.log("other errors")
+			return false;
+		}
+		
+	}
+	
+		
+  };
 
 export async function get_token(username = null , password = null){
 

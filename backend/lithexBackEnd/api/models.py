@@ -21,7 +21,9 @@ class CustomUser(AbstractUser):
 class DocumentTicket(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+    # open | refused | approved
     status = models.CharField(max_length=255)
+
     ticket_type = models.CharField(max_length=255)
     reviewed = models.BooleanField(default=False)
 
@@ -59,4 +61,4 @@ class Documents(models.Model):
     file = models.ImageField(upload_to="documents")
 
     def __str__(self):
-        return self.user.username
+        return self.ticket.user.username

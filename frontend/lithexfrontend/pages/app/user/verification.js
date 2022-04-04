@@ -7,12 +7,15 @@ import Loader from "../../../components/Loader";
 import { UserContext } from "../../../contexts/UserContext";
 import Profileaside from "../../../components/Profileaside";
 import Router from "next/router";
-import { req } from "../../../Utils";
+import { req , handleFileSubmit } from "../../../Utils";
 
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import {DropzoneDialog} from 'material-ui-dropzone'
+
+import { useToasts } from "react-toast-notifications";
+
 
 
 
@@ -23,24 +26,31 @@ export default function verification(props){
     const [ OpenAuth , setOpenAuth] = useState(false);
     const [loading,setLoading] = useState(true);
     const [files, setFiles] = useState([]);
+    const {addToast } = useToasts();
     
     const [verificationStatus , setVerificationStatus] = useState({
       status : null,
       path : null,
       verified : null,
+
+
+
     });
+
+
+    async function fetchVerificationStatus(){
+      let resp = await req("verify");
+      if (resp) {
+        console.log(resp);
+        setVerificationStatus(resp)
+      }else{
+        console.log("fetching verification failed");
+      }
+    }
 
     useEffect(
       () => {
-          async function fetchVerificationStatus(){
-            let resp = await req("verify");
-            if (resp) {
-              console.log(resp);
-              setVerificationStatus(resp)
-            }else{
-              console.log("fetching verification failed");
-            }
-          }
+          
 
           fetchVerificationStatus().then( () => {
             console.log("done fetching data")
@@ -80,8 +90,20 @@ export default function verification(props){
     }
 
 
-    const handleFiles = (file) => {
-      console.log(file)
+    const handleFiles = async (files) => {
+      let res = await handleFileSubmit(files);
+      setOpenAuth(false);
+      if (res) {
+        addToast("success",{
+          appearance:"success",
+          autoDismiss:true
+        })
+      }else{
+        addToast("failed",{
+          appearance : "error",
+          autoDismiss : true
+        })
+      }
 
     }
 
@@ -93,6 +115,10 @@ export default function verification(props){
     const handleFilesChange = (files) => {
       // Do something...
     }
+
+
+
+    
 
     const style = {
       position: 'absolute',

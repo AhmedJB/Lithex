@@ -16,6 +16,7 @@ export default function Loader(props){
       let  resp = await isLogged();
       if (resp){
         let obj = {...User}
+        obj.id = resp.id;
         obj.logged =  true;
         obj.username = resp.username;
         obj.joined = resp.joined;
