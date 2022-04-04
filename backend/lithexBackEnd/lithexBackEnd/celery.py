@@ -13,6 +13,16 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
+""" app.conf.beat_schedule = {
+    # Executes every Monday morning at 7:30 a.m.
+    'print-every-30s': {
+        'task': 'api.tasks.printCheck',
+        'schedule': 30.0,
+        'args': ("test print this world hello hhihfosohjfkljshfhsfh",),
+    },
+} """
+
+
 @app.task(bind=True)
 def debug_task(self):
 	print('Request: {0!r}'.format(self.request))

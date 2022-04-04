@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',  # for rest api
     'corsheaders',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [

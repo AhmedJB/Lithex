@@ -180,5 +180,5 @@ class testTask(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self,request):
-        test.delay(10)
+        test.delay(3)
         return Response({"success": True})

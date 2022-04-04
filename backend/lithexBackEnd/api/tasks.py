@@ -10,3 +10,6 @@ def test(r):
         print(i)
 
 
+@shared_task
+def printCheck(text):
+    print(text)
