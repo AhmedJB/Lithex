@@ -14,13 +14,20 @@ urlpatterns = [
 
     #user
     path("register",Register.as_view()),
-    path("upload",Upload.as_view()),
+    path("upload",UploadAuth.as_view()),
     # get verification status
     path("verify",CheckVerifStatus.as_view()),
     # submit info
     path("info",PersonalInfoView.as_view()),
     #test tasks
     path("testtask",testTask.as_view()),
+
+
+
+
+    # admin endpoints
+    path("stats",getUserData.as_view()),
+    path('approve',setApproval.as_view())
 
 
 ]

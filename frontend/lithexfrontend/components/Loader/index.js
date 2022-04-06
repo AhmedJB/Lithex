@@ -19,8 +19,10 @@ export default function Loader(props){
         obj.id = resp.id;
         obj.logged =  true;
         obj.username = resp.username;
+        obj.path = resp.path;
+        obj.isA = resp.s;
         obj.joined = resp.joined;
-        obj.emal = resp.email;
+        obj.email = resp.email;
         setUser(obj)
         return obj;
       }else{
@@ -39,10 +41,23 @@ export default function Loader(props){
       console.log("done check");
       if (res.logged) {
         console.log("logged in");
+        console.log(res);
+        if (props.admin && !res.isA){
+          Router.push(res.path)
+
+        }else if (!props.admin && res.isA){
+          Router.push(res.path)
+        }
         props.setLoading(false);
       }else{
+        
         console.log("need login");
-        Router.push("/app/login")
+        if (props.register){
+          Router.push("/app/register")
+        }else{
+          Router.push("/app/login")
+        }
+        
       }
     })
 

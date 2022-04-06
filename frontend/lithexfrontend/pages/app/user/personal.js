@@ -81,14 +81,34 @@ export default function personal(props) {
     body['crypto_source'] = selectedCryptoSource.name;
     body['country_code'] = selectedPhone.value;
     console.log(body)
-    let resp = await postReq("info",body);
-    if (resp){
+    let resp = await postReq("info",body,true);
+    console.log(resp);
+    if (!resp.failed){
       console.log("saved");
       addToast('Saved', { appearance: 'success' , autoDismiss:true });
       Router.push("/app/profile")
       
     }else{
-      addToast("failed", { appearance : 'error', autoDismiss:true})
+      if (resp.failed){
+        for (let key of Object.keys(resp.result)){
+          if (key == "detail"){
+            addToast("failed : " + resp.result[key],{
+              appearance:'error',
+              autoDismiss:true
+            })
+          }else{
+            addToast("failed : " +  key + " : " + resp.result[key][0],{
+              appearance:'error',
+              autoDismiss:true
+            })
+          }
+          
+
+        }
+      }else{
+        addToast("failed", { appearance : 'error', autoDismiss:true})
+      }
+      
     }
 
   }

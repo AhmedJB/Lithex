@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
     is_validated = models.BooleanField(default=False)
     #submited_docs = models.BooleanField(default=False)
     has_personalInfo = models.BooleanField(default=False)
+    cus_id = models.CharField(max_length=255,default="")
 
 
 
@@ -26,6 +27,11 @@ class DocumentTicket(models.Model):
 
     ticket_type = models.CharField(max_length=255)
     reviewed = models.BooleanField(default=False)
+    api_reviewed = models.BooleanField(default=False)
+    api_status = models.CharField(default="",max_length=255)
+    score = models.FloatField(default=0)
+    match = models.BooleanField(default=False)
+    document_id = models.CharField(max_length=255,default="")
 
     def __str__(self):
         return self.user.username + " " + self.ticket_type
@@ -37,7 +43,7 @@ class PersonalInfo(models.Model):
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    postal = models.IntegerField(default=0)
+    postal = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     business = models.CharField(max_length=255)

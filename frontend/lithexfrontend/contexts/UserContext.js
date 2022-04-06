@@ -10,6 +10,8 @@ export const UserProvider = props => {
         logged : false,
         username : null,
 		joined : null,
+        isA : false,
+        path : null,
         email : null
     }
     

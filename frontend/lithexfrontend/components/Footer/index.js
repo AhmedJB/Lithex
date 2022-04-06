@@ -20,7 +20,7 @@ export default function Footer(props){
             <nav>
               ©2022{" "}
               <a href="https://nexo.io/" target="_blank">
-                Nexo
+                LIQD
               </a>
               <i>•</i>
               <a href="https://nexo.io/loan-terms" target="_blank">

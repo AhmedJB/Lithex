@@ -26,8 +26,13 @@ export default function verification(props){
     const [ OpenAuth , setOpenAuth] = useState(false);
     const [loading,setLoading] = useState(true);
     const [files, setFiles] = useState([]);
+    const [submited,setSubmited] = useState({
+      "front" : null,
+      "back"  : null,
+      "selfie" : null
+    })
     const {addToast } = useToasts();
-    
+    const [step,setStep] = useState("front");
     const [verificationStatus , setVerificationStatus] = useState({
       status : null,
       path : null,
@@ -36,6 +41,9 @@ export default function verification(props){
 
 
     });
+
+
+    
 
 
     async function fetchVerificationStatus(){
@@ -50,11 +58,15 @@ export default function verification(props){
 
     useEffect(
       () => {
+        fetchVerificationStatus().then( () => {
+          console.log("done fetching data")
+        })
+          setInterval(() => {
+            fetchVerificationStatus().then( () => {
+              console.log("done fetching data")
+            })
+          },5000);
           
-
-          fetchVerificationStatus().then( () => {
-            console.log("done fetching data")
-          })
       },
       [User]
 
@@ -78,6 +90,10 @@ export default function verification(props){
         case "upload":
           handleVerificationModal();
           break;
+        
+        case "refused":
+          handleVerificationModal();
+          break;
 
         
       
@@ -91,19 +107,40 @@ export default function verification(props){
 
 
     const handleFiles = async (files) => {
-      let res = await handleFileSubmit(files);
-      setOpenAuth(false);
+      let temp = {...submited};
+      if (!submited.front) {
+        temp.front = files[0]
+        setSubmited(temp);
+        setStep("back");
+      }else if (!submited.back) {
+        temp.back = files[0]
+        setSubmited(temp);
+        setStep("selfie");
+      }else if (!submited.selfie) {
+        temp.selfie = files[0]
+        setSubmited(temp);
+        setStep("front")
+        setOpenAuth(false);
+        let res = await handleFileSubmit(temp);
+        setSubmited({
+          "front" : null,
+          "back"  : null,
+          "selfie" : null
+        });
       if (res) {
-        addToast("success",{
+        addToast("Uploaded successfuly",{
           appearance:"success",
           autoDismiss:true
         })
       }else{
-        addToast("failed",{
+        addToast("failed upload",{
           appearance : "error",
           autoDismiss : true
         })
       }
+      }
+
+      
 
     }
 
@@ -257,12 +294,21 @@ export default function verification(props){
                         Submit your personal information and add а mobile phone
                         number
                       </p>
-                      <span className="step-status">
+                    {(!verificationStatus.verified && verificationStatus.status == "personal" ) && <span className="step-status">
                         <i className="fa fa-check-circle tc-grey-100 mr-xs" />
                         <span className="semi-bold tc-grey-300">
                           Not Verified
                         </span>
-                      </span>
+                      </span>}
+
+
+                      {( verificationStatus.status == "pending" || verificationStatus.status == "refused" || verificationStatus.status == "upload" ) && <span className="step-status">
+                        <i className="fa fa-check-circle tc-green-500 mr-xs" />
+                        <span className="semi-bold tc-grey-700">Verified</span>
+                      </span>}
+
+
+                      
                     </div>
                     <img
                       alt
@@ -278,12 +324,22 @@ export default function verification(props){
                       <p>
                         Complete Identity Verification to unlock all features
                       </p>
-                      <span className="step-status">
+                      {
+                        !verificationStatus.verified &&<span className="step-status">
                         <i className="fa fa-check-circle tc-grey-100 mr-xs" />
                         <span className="semi-bold tc-grey-300">
                           Not Verified
                         </span>
                       </span>
+                      }
+                      
+
+                      {
+                        verificationStatus.verified && <span className="step-status">
+                        <i className="fa fa-check-circle tc-green-500 mr-xs" />
+                        <span className="semi-bold tc-grey-700">Verified</span>
+                      </span>
+                      }
                     </div>
                     <img
                       alt
@@ -297,21 +353,44 @@ export default function verification(props){
                 {!verificationStatus.verified && <div className="VerificationCTA">
                   <img alt src="/assets/svgs/mask-group.svg" />
                   <div>
-                    <div>
+                    {verificationStatus.status == "refused" && <div>
+                      <h3>Your application is refused</h3>
+                      <p>
+                        Re Submit your documents and wait for approval
+                      </p>
+                    </div>}
+
+                    {(verificationStatus.status == "pending") && <div>
+                      <h3>Verification under process</h3>
+                      <p>
+                        your application waiting to be verified
+                      </p>
+                    </div>
+                    
+                    }
+
+                    {(verificationStatus.status != "pending" && verificationStatus.status != "refused" ) && <div>
                       <h3>Start Verification</h3>
                       <p>
                         Verify your identity and get access to all features of
                         the LIQD platform, including buying and selling crypto.
                         It will take just a few minutes.
                       </p>
-                    </div>
-                    <button
+                    </div>}
+                    
+
+
+                    
+                    {
+                      verificationStatus.status != "pending" && <button
                       type="button"
                       className="Button large secondary wide"
                       onClick={ verificationStep }
                     >
                       Start Verification
                     </button>
+                    }
+                    
                   </div>
                 </div>}
                 
@@ -611,9 +690,13 @@ export default function verification(props){
         </Modal> */}
 
               <DropzoneDialog
+                    
                     open={OpenAuth}
                     onSave={handleFiles}
+                    dropzoneText={`Drag or drop the ${step} Image`}
+                    previewText={`Drag or drop the ${step} Image`}
                     acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                    filesLimit={1}
                     showPreviews={true}
                     maxFileSize={5000000}
                     onClose={() => setOpenAuth(false)}

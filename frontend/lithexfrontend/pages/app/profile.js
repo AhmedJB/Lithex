@@ -11,12 +11,40 @@ import Link from "next/link"
 import { UserContext } from '../../contexts/UserContext';
 import  Router  from 'next/router';
 import Loader from '../../components/Loader';
+import { req } from '../../Utils';
 
 
 export default function profile(){
 
     const [User,setUser] = useContext(UserContext);
     const [loading,setLoading] = useState(true);
+    const [verificationStatus , setVerificationStatus] = useState({
+      status : null,
+      path : null,
+      verified : null,
+
+
+
+    });
+
+    async function fetchVerificationStatus(){
+      let resp = await req("verify");
+      if (resp) {
+        console.log(resp);
+        setVerificationStatus(resp)
+      }else{
+        console.log("fetching verification failed");
+      }
+    }
+
+    useEffect(
+      () => {
+        fetchVerificationStatus().then( () => {
+          console.log("done fetching data")
+        })
+      }
+, []
+    )
 
 
 
@@ -67,7 +95,8 @@ export default function profile(){
         </div>
 
         <BalancesCards />
-            <IdentityVerification />
+        { !verificationStatus.verified && <IdentityVerification /> }
+            
         <div className="card">
             <ProfileNavigation />
                 <CoinList />

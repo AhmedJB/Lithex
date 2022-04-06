@@ -7,6 +7,7 @@ import { UserContext } from '../../contexts/UserContext';
 import { get_token, isLogged } from '../../Utils';
 import Loader from '../../components/Loader';
 import Router from "next/router"
+import { useToasts } from 'react-toast-notifications'
 
 
 
@@ -15,12 +16,14 @@ export default function login(props){
   
   const [loading,setLoading] = useState(true);
   const [User,setUser] = useContext(UserContext);
+  const {addToast} = useToasts();
 
 
     useEffect( () => {
 
       if (User.logged){
-        Router.push("/app/profile");
+        console.log(User)
+        Router.push(User.path);
       }else{
         async function checkUser(){
           let  resp = await isLogged();
@@ -29,7 +32,10 @@ export default function login(props){
             obj.logged =  true;
             obj.username = resp.username;
             obj.joined = resp.joined;
+            obj.isA = resp.s;
+            obj.path = resp.path;
             obj.emal = resp.email;
+            console.log(obj);
             setUser(obj)
           }
   
@@ -51,16 +57,52 @@ export default function login(props){
       e.preventDefault();
       let username = document.getElementById("username").value;
       let password = document.getElementById("password").value;
-      let resp = await get_token(username,password)
+      let resp = await get_token(username,password,true)
+      console.log('resp here')
+      console.log(resp);
       if (resp) {
-        let obj = {...User}
+        if (resp.status == false){
+          console.log("login failed")
+        console.log(resp);
+
+        for (let key of Object.keys(resp.result)){
+          if (key == "detail"){
+            addToast("Login failed : " + resp.result[key],{
+              appearance:'error',
+              autoDismiss:true
+            })
+          }else{
+            addToast("Login failed : " +  key + " : " + resp.result[key][0],{
+              appearance:'error',
+              autoDismiss:true
+            })
+          }
+          
+
+        }
+        }else{
+          let obj = {...User}
+        obj.logged =  true;
         obj.username = resp.username;
-        obj.email = resp.email;
         obj.joined = resp.joined;
-        obj.logged = true;
+        obj.isA = resp.s;
+        obj.path = resp.path;
+        obj.emal = resp.email;
         setUser(obj)
+        addToast("Logged in",{
+          appearance: "success",
+          autoDismiss:true
+        })
+        }
+        
       }else{
-        console.log("login failed")
+       
+          addToast("Login failed",{
+            appearance:'error',
+            autoDismiss:true
+          })
+
+        
       }
 
 
@@ -234,6 +276,6 @@ export default function login(props){
     </Fragment>
 
 
-    return (loading ?  <Loader /> : html)
+    return (loading ?  <Loader setLoading={setLoading} /> : html)
 
 }

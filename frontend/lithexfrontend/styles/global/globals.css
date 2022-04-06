@@ -25,6 +25,14 @@ body.busy {
 
 }
 
+.MuiDialogContent-root{
+    overflow: hidden !important;
+}
+
+#ReactSimpleImageViewer{
+    z-index: 100;
+}
+
 
 @use "sass:map";
 @use "sass:string";
@@ -2449,7 +2457,7 @@ a.Button.block {
     overflow: auto;
     text-align: center;
     box-sizing: border-box;
-    z-index: 9300;
+    z-index: 5;
 }
 
 .Portal.backdrop {
@@ -28731,7 +28739,7 @@ body .application {
 
 html .application>header,
 body .application>header {
-    z-index: 3;
+    z-index: 2;
     color: white;
     height: 4.28571rem;
     grid-row: 1;

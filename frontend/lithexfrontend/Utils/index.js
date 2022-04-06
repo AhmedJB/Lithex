@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 
-const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
+//const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
+const base_url = "https://7033-105-69-194-58.ngrok.io"
 const api = base_url + '/api/'
 
 function set_header(token = null,file=false){
@@ -41,10 +42,15 @@ export const handleFileSubmit = async (files) => {
 	let access = sessionStorage.getItem('accessToken');
 	//access =  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ4OTc3OTkwLCJqdGkiOiIyY2EyY2NjMjFmMjQ0YjQyYTc3MjgzYjAzZGM2MTdhMSIsInVzZXJfaWQiOjJ9.uGyjMDKwWTMowoBgxNLiDbfijFcwutbKBkLNrXlvnTA"
     let headers = set_header(access,true);
-	console.log(files)
+	/* console.log(files)
 	for(let i = 0 ; i < files.length ; i++){
 		form_data.append('file', files[i], files[i].name);
-	}	
+	} */
+    
+    form_data.append('front',files.front,files.front.name);
+    form_data.append('back',files.back,files.back.name);
+    form_data.append('selfie',files.selfie,files.selfie.name);
+
 	
 	form_data.append('doc_type', 'auth');
 	form_data.append('ticket_type', 'auth');
@@ -83,7 +89,7 @@ export const handleFileSubmit = async (files) => {
 		
   };
 
-export async function get_token(username = null , password = null){
+export async function get_token(username = null , password = null,loginMode= false){
 
     let body = {
         username,
@@ -112,6 +118,9 @@ export async function get_token(username = null , password = null){
         resp = await isLogged();
         return resp;
     }else{
+        if (loginMode){
+            return {status : false,result : await preResp.json()}
+        }
         return false;
     }
     
@@ -135,8 +144,13 @@ export async function registerCall(data){
     
 
     let preResp = await fetch(api + 'register', options);
-    
+    console.log(preResp)
     if (preResp.ok) {
+        let d = await preResp.json()
+        console.log(d);
+        if (d.failed){
+            return d;
+        }
         let nextresp = await get_token(data.username,data.password);
         return nextresp;
 
@@ -180,7 +194,7 @@ export async function refreshToken(){
 
 
 
-export async function postReq(url,body){
+export async function postReq(url,body,infoMode=false){
     let access = sessionStorage.getItem('accessToken');
     let headers = set_header(access);
 
@@ -211,6 +225,10 @@ export async function postReq(url,body){
         }
     }else {
         console.log('other errors');
+        if (infoMode){
+            let res = await preResp.json()
+            return {failed:true,result : res};
+        }
         return false;
     }
 
@@ -293,9 +311,12 @@ export async function isLogged(){
 export function logout(setUser) {
     console.log("logged out")
     let obj = {
+		id : null,
         logged : false,
         username : null,
 		joined : null,
+        isA : false,
+        path : null,
         email : null
     }
     sessionStorage.removeItem("accessToken");

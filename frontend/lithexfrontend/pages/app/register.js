@@ -1,21 +1,27 @@
 import Head from 'next/head'
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext, useEffect,useState } from "react";
 import Script from "next/script"
 import Link from 'next/link';
 
 import { postReq , isLogged, registerCall} from '../../Utils';
 import { UserContext } from '../../contexts/UserContext';
 import  Router  from 'next/router';
+import { useToasts } from 'react-toast-notifications'
+
+import Loader from '../../components/Loader';
 
 export default function register(props){
 
     const [User,setUser] = useContext(UserContext);
+    const [loading,setLoading] = useState(true);
+    const [checked,setChecked] = useState(true);
+    const {addToast} = useToasts();
 
 
     useEffect( () => {
 
       if (User.logged){
-        Router.push("/app/profile");
+        Router.push(User.path);
       }else{
         async function checkUser(){
           let  resp = await isLogged();
@@ -24,6 +30,8 @@ export default function register(props){
             obj.logged =  true;
             obj.username = resp.username;
             obj.joined = resp.joined;
+            obj.isA = resp.s;
+            obj.path = resp.path;
             obj.emal = resp.email;
             setUser(obj)
           }
@@ -34,6 +42,7 @@ export default function register(props){
   
         checkUser().then( () => {
           console.log("done check")
+          setLoading(false);
         } )
       }
 
@@ -60,14 +69,37 @@ export default function register(props){
 
       let resp = await registerCall(data);
       if (resp){
-        let obj = {...User}
-            obj.logged =  true;
-            obj.username = resp.username;
-            obj.joined = resp.joined;
-            obj.emal = resp.email;
-            setUser(obj)
+        if(resp.failed){
+          for (let err of resp.result){
+            addToast("failed registeration : "+ err ,{
+              appearance:"error",
+              autoDismiss:true
+            })
+
+          }
+
+      
+        }else{
+          let obj = {...User}
+          obj.logged =  true;
+          obj.username = resp.username;
+          obj.joined = resp.joined;
+          obj.isA = resp.s;
+          obj.path = resp.path;
+          obj.emal = resp.email;
+          setUser(obj)
+          addToast("Registered",{
+            appearance: "success",
+            autoDismiss:true
+          })
+        }
+        
       }else{
-        console.log("failed  register");
+        console.log(resp);
+        addToast("failed register",{
+          appearance:"error",
+          autoDismiss:true
+        })
       }
 
 
@@ -231,11 +263,11 @@ export default function register(props){
           <div className="TextBox"><input type="email" id="email" /></div>
           <label className="mt-xl">Password</label>
           <div className="TextBox"><input type="password" id="password" /></div>
-          <div className="toc-container flex mt-xl">
+          <div className="flex items-center justify-center">
             <div className="CheckBox">
-              <span><input type="checkbox" /></span>
+              <span onClick={(e) => setChecked(e.target.value)}><input value={checked} type="checkbox" /></span>
             </div>
-            <div className="toc">
+            <div className="w-4/6">
               I hereby confirm that I have read and agree to the <a href="terms-and-conditions" target="_blank">Terms &amp; Conditions</a>,
               <a href="wallet-terms" target="_blank">Wallet Terms</a>, <a href="earn-terms" target="_blank">Earn Terms</a>,
               <a href="exchange-terms" target="_blank">Exchange Terms</a>, and <a href="privacy-policy" target="_blank">Privacy Policy</a> of Nexo
@@ -256,7 +288,7 @@ export default function register(props){
 
     </Fragment>
 
-    return html;
+    return (loading ?  <Loader setLoading={setLoading} register={true} /> : html);
 
 
 
