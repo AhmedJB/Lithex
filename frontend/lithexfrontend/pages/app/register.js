@@ -10,7 +10,7 @@ import { useToasts } from 'react-toast-notifications'
 
 import Loader from '../../components/Loader';
 
-export default function register(props){
+export default function Register(props){
 
     const [User,setUser] = useContext(UserContext);
     const [loading,setLoading] = useState(true);
@@ -135,11 +135,11 @@ export default function register(props){
     <header id="Header">
       <section>
         <aside>
-          <a className="m-t-5" href="/"><img alt="Nexo" width={98} src="/assets/images/logo.png" /></a>
+          <a className="m-t-5" f="/"><img alt="Nexo" width={98} src="/assets/images/logo.png" /></a>
         </aside>
         <nav />
         <aside>
-          <a className="button" href="/register">New Account</a><a className="button" href="/">Login</a><a className="MenuHelp" aria-expanded="false"><i className="far fa-question-circle" /></a>
+          <a className="button" f="/register">New Account</a><a className="button" f="/">Login</a><a className="MenuHelp" aria-expanded="false"><i className="far fa-question-circle" /></a>
         </aside>
       </section>
     </header>
@@ -174,12 +174,12 @@ export default function register(props){
             </div>
           </div>
           <div className="banners">
-            <a href="/exchange/swap">
+            <a f="/exchange/swap">
               <div className="Banner lowestCryptCreditLineRates" style={{backgroundImage: 'url("https://static.nexo.io/banners/platform/lower-interest-bg.png")'}}>
                 <img  width="100%" src="https://static.nexo.io/banners/platform/lower-interest-text.png" />
               </div>
             </a>
-            <a href="/exchange/buy">
+            <a f="/exchange/buy">
               <div className="Banner earnUpTo10PercentsOnAssets" style={{backgroundImage: 'url("https://static.nexo.io/banners/platform/interest-bg.png")'}}>
                 <img  width="100%" src="https://static.nexo.io/banners/platform/earn-on-crypto-content.png" />
               </div>
@@ -204,19 +204,19 @@ export default function register(props){
               <i className="far fa-question-circle" />
               <h6>Interest Earned</h6>
               <div />
-              <span className="tc-mint-500">$128.00</span><a href="/interest-earned">See Interest Details <i className="far fa-long-arrow-right" /></a>
+              <span className="tc-mint-500">$128.00</span><a f="/interest-earned">See Interest Details <i className="far fa-long-arrow-right" /></a>
             </div>
             <div>
               <h6>Loyalty Level</h6>
               <div />
-              <span>Platinum</span><a href="/profile/loyalty-levels">You’re Platinum Now! <i className="far fa-long-arrow-right" /></a>
+              <span>Platinum</span><a f="/profile/loyalty-levels">You’re Platinum Now! <i className="far fa-long-arrow-right" /></a>
             </div>
           </div>
           <div className="card">
             <div className="actions">
-              <a className="ActionButton" href="/borrow"><img  src="/assets/icons/borrow-dashboard.svg" /><strong>Borrow</strong><span>Cash or Stablecoins</span></a>
-              <a className="ActionButton" href="/repayment"><img  src="/assets/icons/repay-dashboard.svg" /><strong>Repay</strong><span>with Crypto, Cash or Stablecoins</span></a>
-              <a className="ActionButton" href="/exchange"><img alt="Nexo Wallet" src="/assets/icons/exchange-dashboard.svg" /><strong>Exchange</strong><span>Buy, Sell and Swap</span></a>
+              <a className="ActionButton" f="/borrow"><img  src="/assets/icons/borrow-dashboard.svg" /><strong>Borrow</strong><span>Cash or Stablecoins</span></a>
+              <a className="ActionButton" f="/repayment"><img  src="/assets/icons/repay-dashboard.svg" /><strong>Repay</strong><span>with Crypto, Cash or Stablecoins</span></a>
+              <a className="ActionButton" f="/exchange"><img alt="Nexo Wallet" src="/assets/icons/exchange-dashboard.svg" /><strong>Exchange</strong><span>Buy, Sell and Swap</span></a>
             </div>
             <table className="AssetList" id="AssetList" cellSpacing={0} cellPadding={0} border={0}>
               <thead>
@@ -239,13 +239,17 @@ export default function register(props){
         <section>
           <button type="button" className="Button link LanguagePickerButton m-b-5" aria-expanded="false"><i className="far fa-language" /> Language</button>
           <nav>
-            ©2022 <a href target="_blank">Nexo</a><i>•</i><a href target="_blank">Credit Line Terms</a><i>•</i>
-            <a href target="_blank">Privacy Policy</a><i>•</i><a href target="_blank">Terms &amp; Conditions</a>
+            ©2022 <a f target="_blank">Nexo</a><i>•</i><a f target="_blank">Credit Line Terms</a><i>•</i>
+            <a f target="_blank">Privacy Policy</a><i>•</i><a f target="_blank">Terms &amp; Conditions</a>
           </nav>
         </section>
       </footer>
     </main>
   </div>
+
+
+
+
   <div className="Portal backdrop">
     <div className="Modal FormRegister" style={{width: 500}}>
       <main>

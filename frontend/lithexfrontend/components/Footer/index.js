@@ -19,19 +19,19 @@ export default function Footer(props){
             </button>
             <nav>
               ©2022{" "}
-              <a href="https://nexo.io/" target="_blank">
+              <a href="https://nexo.io/" target="_blank" rel="noopener noreferrer">
                 LIQD
               </a>
               <i>•</i>
-              <a href="https://nexo.io/loan-terms" target="_blank">
+              <a href="https://nexo.io/loan-terms" target="_blank" rel="noopener noreferrer">
                 Credit Line Terms
               </a>
               <i>•</i>
-              <a href="https://nexo.io/privacy-policy" target="_blank">
+              <a href="https://nexo.io/privacy-policy" target="_blank" rel="noopener noreferrer">
                 Privacy Policy
               </a>
               <i>•</i>
-              <a href="https://nexo.io/terms-and-conditions" target="_blank">
+              <a href="https://nexo.io/terms-and-conditions" target="_blank" rel="noopener noreferrer">
                 Terms &amp; Conditions
               </a>
             </nav>

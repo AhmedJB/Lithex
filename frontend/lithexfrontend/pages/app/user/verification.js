@@ -21,7 +21,7 @@ import { useToasts } from "react-toast-notifications";
 
 
 
-export default function verification(props){
+export default function Verification(props){
     const [User,setUser] = useContext(UserContext);
     const [ OpenAuth , setOpenAuth] = useState(false);
     const [loading,setLoading] = useState(true);
@@ -259,7 +259,7 @@ export default function verification(props){
           <Header location="verification" setLoading={setLoading} />
 
           <main>
-            <section class="ProfilePage">
+            <section className="ProfilePage">
               <Profileaside location="verification" />
               <div className="ProfileVerifyIdentity">
                 <h1>Identity Verification</h1>

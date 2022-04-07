@@ -14,7 +14,7 @@ import Loader from '../../components/Loader';
 import { req } from '../../Utils';
 
 
-export default function profile(){
+export default function Profile(){
 
     const [User,setUser] = useContext(UserContext);
     const [loading,setLoading] = useState(true);

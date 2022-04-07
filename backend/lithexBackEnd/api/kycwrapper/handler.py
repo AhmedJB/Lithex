@@ -90,8 +90,10 @@ class Handler:
 
 		print(files_values)
 		url = self.api_url + 'customers/'+(customer if customer is not None else self.c_id) + '/documents'
-		#print(url)
+		print(url)
 		headers = self.get_header(t="form")
+		print(data)
+		print(headers)
 		resp = requests.post(url,files=files_values,data=data,headers=headers)
 		resp = self.check_resp(resp)
 		if resp:
@@ -118,6 +120,8 @@ class Handler:
 		url = self.api_url + 'customers/'+(customer if customer is not None else self.c_id) + '/identifications'
 		print(url)
 		headers = self.get_header(t="json")
+		print(data)
+		print(headers)
 		resp = requests.post(url,json=data,headers=headers)
 		resp = self.check_resp(resp)
 		if resp:

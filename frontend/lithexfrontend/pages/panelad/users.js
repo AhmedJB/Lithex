@@ -7,9 +7,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import ImageViewer from 'react-simple-image-viewer';
 import { postReq, req } from '../../Utils';
 import {useToasts} from "react-toast-notifications"
+import Footer from '../../components/Footer';
 
 
-export default function users(props){
+export default function Users(props){
 
 	const [loading,setLoading] = useState(true);
   const [images,setImages] = useState([]);
@@ -189,7 +190,7 @@ export default function users(props){
             </thead>
             <tbody>
               { filtered.map((e,i) => {
-                return <tr>
+                return <tr key={i}>
                   <td align="left">
                     <span className="AssetVisual">
                       <strong>{e.username}</strong>
@@ -231,20 +232,7 @@ export default function users(props){
           </table>
         </div>
       </div></section>
-    <footer>
-      <section>
-        <button type="button" className="Button link LanguagePickerButton m-b-5" aria-expanded="false">
-          <i className="fa fa-language" /> Language </button>
-        <nav> ©2022 <a href="https://LIQD.io/" target="_blank">LIQD</a>
-          <i>•</i>
-          <a href="https://LIQD.io/loan-terms" target="_blank">Credit Line Terms</a>
-          <i>•</i>
-          <a href="https://LIQD.io/privacy-policy" target="_blank">Privacy Policy</a>
-          <i>•</i>
-          <a href="https://LIQD.io/terms-and-conditions" target="_blank">Terms &amp; Conditions</a>
-        </nav>
-      </section>
-    </footer>
+    <Footer />
   </main>
 </div>
 

@@ -9,7 +9,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 
 
-export default function transactions(props){
+export default function Transactions(props){
 
 
     const [User,setUser] = useContext(UserContext);

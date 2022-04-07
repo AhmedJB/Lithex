@@ -123,8 +123,8 @@ export default function Header(props) {
                 style={{ opacity: 1, transform: "translateY(0px)" }}
               >
                 <div className="tippy-content">
-                  <a href="/app/profile">My Profile</a>
-                  <a href="/security">Security</a>
+                 <Link href="/app/profile"><a >My Profile</a></Link> 
+                  <Link href="/app/secrity"><a>Security</a></Link>
                   <hr />
                   <a>English (EN)</a>
                   <hr />
@@ -152,20 +152,23 @@ export default function Header(props) {
       {props.admin && <header id="Header">
     <section>
       <aside>
-        <a className="m-t-5" href="/">
+        <Link href="/">
+        <a className="m-t-5">
           <Image src="/assets/images/logo.png" width={100} height={25} />
           
         </a>
+        </Link>
+        
       </aside>
       <nav>
-        <Link href="/adpanel/users">
+        <Link href="/panelad/users">
         <a className={ props.location == "users" ? "active" : "" }  aria-current="page">
           <i className="fa fa-user" />
           <span>Users List</span>
         </a>
         </Link>
         
-          <Link href="/adpanel/deposits">
+          <Link href="/panelad/deposits">
           <a className={ props.location == "deposits" ? "active" : "" } aria-current="page">
           <i className="fa fa-user" />
           <span>Deposits</span>

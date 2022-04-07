@@ -11,7 +11,7 @@ import { useToasts } from 'react-toast-notifications'
 
 
 
-export default function login(props){
+export default function Login(props){
 
   
   const [loading,setLoading] = useState(true);
@@ -137,11 +137,11 @@ export default function login(props){
   <header id="Header">
     <section>
       <aside>
-        <a className="m-t-5" href="/"><img alt="Nexo" width={98} src="/assets/images/logo.png" /></a>
+        <a className="m-t-5" hrefff="/"><img alt="Nexo" width={98} src="/assets/images/logo.png" /></a>
       </aside>
       <nav />
       <aside>
-        <a className="button" href="/register">New Account</a><a className="button" href="/">Login</a><a className="MenuHelp" aria-expanded="false"><i className="far fa-question-circle" /></a>
+        <a className="button" hrefff="/register">New Account</a><a className="button" hrefff="/">Login</a><a className="MenuHelp" aria-expanded="false"><i className="far fa-question-circle" /></a>
       </aside>
     </section>
   </header>
@@ -177,12 +177,12 @@ export default function login(props){
           </div>
         </div>
         <div className="banners">
-          <a href="/exchange/swap">
+          <a hrefff="/exchange/swap">
             <div className="Banner lowestCryptCreditLineRates" style={{backgroundImage: 'url("https://static.nexo.io/banners/platform/lower-interest-bg.png")'}}>
               <img alt width="100%" src="https://static.nexo.io/banners/platform/lower-interest-text.png" />
             </div>
           </a>
-          <a href="/exchange/buy">
+          <a hrefff="/exchange/buy">
             <div className="Banner earnUpTo10PercentsOnAssets" style={{backgroundImage: 'url("https://static.nexo.io/banners/platform/interest-bg.png")'}}>
               <img alt width="100%" src="https://static.nexo.io/banners/platform/earn-on-crypto-content.png" />
             </div>
@@ -207,19 +207,19 @@ export default function login(props){
             <i className="far fa-question-circle" />
             <h6>Interest Earned</h6>
             <div />
-            <span className="tc-mint-500">$128.00</span><a href="/interest-earned">See Interest Details <i className="far fa-long-arrow-right" /></a>
+            <span className="tc-mint-500">$128.00</span><a hrefff="/interest-earned">See Interest Details <i className="far fa-long-arrow-right" /></a>
           </div>
           <div>
             <h6>Loyalty Level</h6>
             <div />
-            <span>Platinum</span><a href="/profile/loyalty-levels">You’re Platinum Now! <i className="far fa-long-arrow-right" /></a>
+            <span>Platinum</span><a hrefff="/profile/loyalty-levels">You’re Platinum Now! <i className="far fa-long-arrow-right" /></a>
           </div>
         </div>
         <div className="card">
           <div className="actions">
-            <a className="ActionButton" href="/borrow"><img alt src="/assets/icons/borrow-dashboard.svg" /><strong>Borrow</strong><span>Cash or Stablecoins</span></a>
-            <a className="ActionButton" href="/repayment"><img alt src="/assets/icons/repay-dashboard.svg" /><strong>Repay</strong><span>with Crypto, Cash or Stablecoins</span></a>
-            <a className="ActionButton" href="/exchange"><img alt="Nexo Wallet" src="/assets/icons/exchange-dashboard.svg" /><strong>Exchange</strong><span>Buy, Sell and Swap</span></a>
+            <a className="ActionButton" hrefff="/borrow"><img alt src="/assets/icons/borrow-dashboard.svg" /><strong>Borrow</strong><span>Cash or Stablecoins</span></a>
+            <a className="ActionButton" hrefff="/repayment"><img alt src="/assets/icons/repay-dashboard.svg" /><strong>Repay</strong><span>with Crypto, Cash or Stablecoins</span></a>
+            <a className="ActionButton" hrefff="/exchange"><img alt="Nexo Wallet" src="/assets/icons/exchange-dashboard.svg" /><strong>Exchange</strong><span>Buy, Sell and Swap</span></a>
           </div>
           <table className="AssetList" id="AssetList" cellSpacing={0} cellPadding={0} border={0}>
             <thead>
@@ -241,6 +241,10 @@ export default function login(props){
   </main>
   </div>
   </div>
+
+
+
+
   <div className="Portal backdrop">
     <div className="Modal FormLogin" style={{width: 500}}>
       <main>
@@ -259,7 +263,7 @@ export default function login(props){
           <div className="flex mt-xl"><button type="submit" onClick={loginMethod} className="Button large primary block">Login</button></div>
         </form>
         <div className="flex center fs-medium semi-bold links mt-l">
-          <span className="light">Don't have a LIQD Account?</span><i className="m-h-5">•</i> <Link href="/app/register/"><a>New Account</a></Link><i className="m-h-5">•</i><a href="/recover-password">Forgot Password</a>
+          <span className="light">{"Don't have a LIQD Account?"}</span><i className="m-h-5">•</i> <Link href="/app/register/"><a>New Account</a></Link><i className="m-h-5">•</i> <Link href="/app/recover"><a>Forgot Password</a></Link>
         </div>
         <div className="center mt-xl">
           <button type="button" className="Button link LanguagePickerButton" aria-expanded="false"><i className="far fa-language" /> Language</button>

@@ -18,7 +18,7 @@ class TestSession(APIView):
     def get(self,request,format=None):
         user = request.user
         if (user.is_superuser):
-            url_path = "/adpanel/users"
+            url_path = "/panelad/users"
             super_user = True
         else:
             url_path = "/app/profile"
@@ -241,12 +241,12 @@ class getUserData(APIView) :
     def get(self,request,format=None):
         user = request.user
         print(user)
-        base = "http://7033-105-69-194-58.ngrok.io"
+        base = "http://127.0.0.1:8000"
         all_users_count =  CustomUser.objects.all().count()
         approved_count = CustomUser.objects.filter(is_validated=True).count()
         not_approved_count = all_users_count - approved_count
         tickets = []
-        open_tickets = DocumentTicket.objects.filter(api_reviewed = True,reviewed=False)
+        open_tickets = DocumentTicket.objects.filter(api_reviewed = True,reviewed=False).order_by('-created')
         for ticket in open_tickets:
             obj = {
                 "id" : ticket.user.id,

@@ -20,7 +20,7 @@ import  Router  from "next/router";
 
 
 
-export default function personal(props) {
+export default function Personal(props) {
   const [User, setUser] = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToasts();
@@ -290,7 +290,7 @@ export default function personal(props) {
                             </label>
                             <i className="fa fa-chevron-down" />
                             <select onChange= { (e) =>  handleSelectChange(e,"country")} >
-                              { countries.map( (e,i) => <option value={i}>{e.name}</option>  ) }
+                              { countries.map( (e,i) => <option key={i} value={i}>{e.name}</option>  ) }
                               
                             </select>
                           </span>
@@ -319,7 +319,7 @@ export default function personal(props) {
                             <label>{selectedBusiness.name}</label>
                             <i className="fa fa-chevron-down" />
                             <select onChange= { (e) =>  handleSelectChange(e,"business")} >
-                              { businesses.map( (e,i) => <option value={i}>{e.name}</option>  ) }
+                              { businesses.map( (e,i) => <option key={i} value={i}>{e.name}</option>  ) }
                               
                             </select>
                           </span>
@@ -332,7 +332,7 @@ export default function personal(props) {
                             <label>{selectedEmployment.name}</label>
                             <i className="fa fa-chevron-down" />
                             <select onChange= { (e) =>  handleSelectChange(e,"employment")} >
-                              { employments.map( (e,i) => <option value={i}>{e.name}</option>  ) }
+                              { employments.map( (e,i) => <option key={i} value={i}>{e.name}</option>  ) }
                               
                             </select>
                           </span>
@@ -345,7 +345,7 @@ export default function personal(props) {
                             <label>{selectedSource.name}</label>
                             <i className="fa fa-chevron-down" />
                             <select onChange= { (e) =>  handleSelectChange(e,"source")} >
-                              { sources.map( (e,i) => <option value={i}>{e.name}</option>  ) }
+                              { sources.map( (e,i) => <option key={i} value={i}>{e.name}</option>  ) }
                               
                             </select>
                           </span>
@@ -358,7 +358,7 @@ export default function personal(props) {
                             <label>{selectedCryptoSource.name}</label>
                             <i className="fa fa-chevron-down" />
                             <select onChange= { (e) =>  handleSelectChange(e,"crypto")} >
-                              { cryptos_s.map( (e,i) => <option value={i}>{e.name}</option>  ) }
+                              { cryptos_s.map( (e,i) => <option key={i} value={i}>{e.name}</option>  ) }
                               
                             </select>
                           </span>
@@ -378,7 +378,7 @@ export default function personal(props) {
                             </label>
                             <i className="fa fa-chevron-down" />
                             <select onChange= { (e) =>  handleSelectChange(e,"phone")} >
-                              { phone_codes.map( (e,i) => <option value={i}>{e.name}</option>  ) }
+                              { phone_codes.map( (e,i) => <option key={i} value={i}>{e.name}</option>  ) }
                               
                             </select>
                           </span>

@@ -10,7 +10,7 @@ import {useToasts} from "react-toast-notifications"
 
 
 
-export default function deposits(props){
+export default function Deposits(props){
 	const [loading,setLoading] = useState(true);
 
 	const html = <Fragment>
