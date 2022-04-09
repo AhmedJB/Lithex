@@ -1,9 +1,14 @@
+aiodns==3.0.0
+aiohttp==3.8.1
+aiosignal==1.2.0
 amqp==5.1.0
 asgiref==3.5.0
 async-timeout==4.0.2
+attrs==21.4.0
 backports.zoneinfo==0.2.1
 billiard==3.6.4.0
-celery==5.2.5
+ccxt==1.78.51
+celery==5.2.3
 certifi==2021.10.8
 cffi==1.15.0
 charset-normalizer==2.0.12
@@ -12,6 +17,7 @@ click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.2.0
 colorama==0.4.4
+cryptography==36.0.2
 Deprecated==1.2.13
 Django==3.2.12
 django-celery-beat==2.2.1
@@ -19,13 +25,16 @@ django-cors-headers==3.11.0
 django-timezone-field==4.2.3
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.1.0
+frozenlist==1.3.0
 gevent==21.12.0
 greenlet==1.1.2
 idna==3.3
 kombu==5.2.4
+multidict==6.0.2
 packaging==21.3
 Pillow==9.0.1
 prompt-toolkit==3.0.28
+pycares==4.1.2
 pycparser==2.21
 PyJWT==2.3.0
 pyparsing==3.0.7
@@ -41,5 +50,6 @@ urllib3==1.26.9
 vine==5.0.0
 wcwidth==0.2.5
 wrapt==1.14.0
+yarl==1.7.2
 zope.event==4.5.0
 zope.interface==5.4.0
