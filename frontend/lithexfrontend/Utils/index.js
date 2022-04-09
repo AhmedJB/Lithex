@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
-//const base_url = "https://7033-105-69-194-58.ngrok.io"
+//const base_url = "http://35eb-105-69-234-197.ngrok.io"
 const api = base_url + '/api/'
 
 function set_header(token = null,file=false){
@@ -88,6 +88,52 @@ export const handleFileSubmit = async (files) => {
 	
 		
   };
+
+export const handleSingleFileSubmit = async (file,endpoint,body=null) => {
+    let form_data = new FormData();
+	let access = sessionStorage.getItem('accessToken');
+    let headers = set_header(access,true);
+    if (body){
+        for (let key of Object.keys(body)){
+            form_data.append(key,body[key])
+        }
+    }
+
+    form_data.append("file",file,file.name);
+    let url = api + endpoint
+    try {
+		let  resp = await axios.post(url, form_data, {
+			headers
+		  })
+		  console.log(resp.status)
+		  
+		 	if (resp.status == 201){
+				 return true
+			 } 
+		  else{
+			  console.log("other errors")
+			  return false;
+		  }
+	} catch (error) {
+		let resp = error.response
+		if (resp.status == 401) {
+			let dec = await refreshToken();
+			if (dec){
+				return handleSingleFileSubmit(file,endpoint,body);
+			}else{
+				
+				return false;
+			}
+		  
+		}else{
+			console.log("other errors")
+			return false;
+		}
+		
+	}
+	
+
+}
 
 export async function get_token(username = null , password = null,loginMode= false){
 

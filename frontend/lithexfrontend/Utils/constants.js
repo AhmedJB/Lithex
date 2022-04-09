@@ -2199,3 +2199,355 @@ export const phone_codes = [
       "value": "+263"
     }
   ]
+
+const unused_coins = [{
+  "im_src": "https://static.nexo.io/currencies/BTC.svg",
+  "coin": "Bitcoin",
+  "symbol": "BTC",
+  "id" : "bitcoin",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/ETH.svg",
+  "coin": "Ether",
+  "symbol": "ETH",
+  "id" : "ethereum",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/NEXO.svg",
+  "coin": "NEXO Token",
+  "symbol": "NEXO",
+  "id" : "nexo",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/XRP.svg",
+  "coin": "XRP",
+  "symbol": "XRP",
+  "id": "ripple",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/USDT.svg",
+  "coin": "Tether",
+  "id": "tether",
+  "symbol": "USDT",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/USDC.svg",
+  "coin": "USD Coin",
+  "id": "usd-coin",
+  "symbol": "USDC",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/USDP.svg",
+  "coin": "Pax Dollar",
+  "id": "paxos-standard",
+  "symbol": "USDP",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/TUSD.svg",
+  "coin": "TrueUSD",
+  "id": "true-usd",
+  "symbol": "TUSD",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/DAI.svg",
+  "coin": "Dai",
+  "symbol": "DAI",
+  "id": "dai",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/USDX.svg",
+  "coin": "USD",
+  "symbol": "USD",
+  "id" : "None",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/EURX.svg",
+  "coin": "EUR",
+  "symbol": "EUR",
+  "id" : "None",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/GBPX.svg",
+  "coin": "GBP",
+  "symbol": "GBP",
+  "id" : "None",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/BCH.svg",
+  "coin": "Bitcoin Cash",
+  "symbol": "BCH",
+  "id": "bitcoin-cash",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/LTC.svg",
+  "coin": "Litecoin",
+  "symbol": "LTC",
+  "id": "litecoin",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/EOS.svg",
+  "coin": "EOS",
+  "symbol": "EOS",
+  "id": "eos",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/BNB.svg",
+  "coin": "BNB",
+  "symbol": "BNB",
+  "id": "binancecoin",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/XLM.svg",
+  "coin": "Stellar",
+  "symbol": "XLM",
+  "id": "stellar",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/PAXG.svg",
+  "coin": "PAX Gold",
+  "symbol": "PAXG",
+  "id": "pax-gold",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/LINK.svg",
+  "coin": "Chainlink",
+  "symbol": "LINK",
+  "id": "chainlink",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/TRX.svg",
+  "coin": "Tron",
+  "symbol": "TRX",
+  "id": "tron",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/ADA.svg",
+  "coin": "Cardano",
+  "symbol": "ADA",
+  "id": "cardano",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/DOT.svg",
+  "coin": "Polkadot",
+  "symbol": "DOT",
+  "id": "polkadot",
+  "interest": "15",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/DOGE.svg",
+  "coin": "Dogecoin",
+  "symbol": "DOGE",
+  "id": "dogecoin",
+  "interest": "3",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/AXS.svg",
+  "coin": "Axie Infinity",
+  "symbol": "AXS",
+  "id": "axie-infinity",
+  "interest": "36",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/MATIC.svg",
+  "coin": "Polygon",
+  "symbol": "MATIC",
+  "id": "matic-network",
+  "interest": "16",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/MANA.svg",
+  "coin": "Decentraland",
+  "id": "decentraland",
+  "symbol": "MANA",
+  "interest": "Unavailable",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/SAND.svg",
+  "coin": "The Sandbox",
+  "symbol": "SAND",
+  "id": "the-sandbox",
+  "interest": "Unavailable",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/UNI.svg",
+  "coin": "Uniswap",
+  "symbol": "UNI",
+  "id": "uniswap",
+  "interest": "Unavailable",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/SOL.svg",
+  "coin": "Solana",
+  "symbol": "SOL",
+  "id": "solana",
+  "interest": "8",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/AVAX.svg",
+  "coin": "Avalanche",
+  "symbol": "AVAX",
+  "id": "avalanche-2",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/LUNA.svg",
+  "coin": "Terra",
+  "symbol": "LUNA",
+  "id": "terra-luna",
+  "interest": "13",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/FTM.svg",
+  "coin": "Fantom",
+  "symbol": "FTM",
+  "id": "fantom",
+  "interest": "10",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/UST.svg",
+  "coin": "TerraUSD",
+  "symbol": "UST",
+  "id": "terrausd",
+  "interest": "20",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/ATOM.svg",
+  "coin": "Cosmos",
+  "symbol": "ATOM",
+  "id": "cosmos",
+  "interest": "11",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+},
+{
+  "im_src": "https://static.nexo.io/currencies/KSM.svg",
+  "coin": "Kusama",
+  "symbol": "KSM",
+  "id": "kusama",
+  "interest": "12",
+  "balance": 0,
+  "usd_balance": 0,
+  "credit": 0
+}
+]

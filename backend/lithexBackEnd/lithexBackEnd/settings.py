@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-%3@4rf@-#1^+^)u%3vv4(uvjuohu4)6!1f^h8j97$u7fqy4dmg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["weak-cobra-55.loca.lt","127.0.0.1","localhost","be92-105-69-202-246.ngrok.io","7033-105-69-194-58.ngrok.io","https://modern-sheep-70.loca.lt"]
+ALLOWED_HOSTS = ["weak-cobra-55.loca.lt","127.0.0.1","localhost","be92-105-69-202-246.ngrok.io","7033-105-69-194-58.ngrok.io","35eb-105-69-234-197.ngrok.io"]
 
 
 # Application definition
@@ -54,7 +54,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -113,16 +112,16 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://strong-frog-84.loca.lt',
-    'https://hot-falcon-85.loca.lt',
-    'http://7033-105-69-194-58.ngrok.io',
-    'https://massive-bat-42.loca.lt',
-    'https://angry-sheep-67.loca.lt',
-    'https://selfish-moth-59.loca.lt'
+    'http://127.0.0.1:4040',
+    'http://localhost:4040',
+    'https://lazy-bobcat-24.loca.lt',
+    'http://lazy-bobcat-24.loca.lt',
+    'http://35eb-105-69-234-197.ngrok.io',
+    'https://35eb-105-69-234-197.ngrok.io'
 ]
 
-#CORS_ORIGIN_ALLOW_ALL = True
-#CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

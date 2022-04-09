@@ -1,6 +1,6 @@
 
 from rest_framework.serializers import ModelSerializer
-from .models import CustomUser,Documents,PersonalInfo,DocumentTicket
+from .models import CustomUser, DepositDocs,Documents,PersonalInfo,DocumentTicket,Balance,Coin
 
 class RegisterSerializer(ModelSerializer):
     class Meta:
@@ -29,6 +29,17 @@ class DocumentSerializer(ModelSerializer):
         return DocumentSerializer(d).data
 
 
+class DepositDocsSerializer(ModelSerializer):
+    class Meta:
+        model = DepositDocs
+        fields = "__all__"
+
+    def create(self,validated,*args,**kwargs):
+        d = DepositDocs.objects.create(**validated)
+        d.save()
+        return DepositDocsSerializer(d).data
+
+
 class TicketSerializer(ModelSerializer):
 
     class Meta:
@@ -39,5 +50,18 @@ class TicketSerializer(ModelSerializer):
 class PersonalInfoSerializer(ModelSerializer):
     class Meta:
         model = PersonalInfo
+        fields = "__all__"
+
+
+
+class BalanceSerializer(ModelSerializer):
+    class Meta:
+        model = Balance
+        fields = "__all__"
+
+
+class CoinSerializer(ModelSerializer):
+    class Meta:
+        model = Coin
         fields = "__all__"
 

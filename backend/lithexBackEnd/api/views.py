@@ -1,14 +1,20 @@
+from re import L
 from urllib import response
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,permissions
-from .serializer import RegisterSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer
+from .serializer import DepositDocsSerializer, RegisterSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer,BalanceSerializer,CoinSerializer
 from .tasks import test,createCustomer,verify
 
 # Create your views here.
 
 from .models import *
+
+
+from .constants import base
+
+
 
 
 class TestSession(APIView):
@@ -123,6 +129,66 @@ class UploadAuth(APIView):
         else:
             print('error', ticket_serializer.errors)
             return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# deposit process
+
+class BalanceView(APIView):
+    permissions_classes = [permissions.IsAuthenticated]
+
+
+    def get(self,request,*args,**kwargs):
+        user = request.user
+        balances = Balance.objects.filter(user= user)
+        res = []
+        for balance in balances:
+            coin_data = CoinSerializer(balance.coin).data
+            coin_data['balance'] = balance.balance
+            coin_data['credit'] = balance.credit
+            res.append(coin_data)
+        
+        return Response(res)
+
+
+class handleDepositDocs(APIView):
+    permissions_classes = [permissions.IsAuthenticated]
+
+    def get(self,request,format=None):
+        pass
+
+    def post(self,request,format=None):
+        user = request.user
+        data = request.data
+        print(data)
+        deposit_ticket = DepositTicket.objects.create(user=user)
+        deposit_ticket.save()
+
+        coin_id = data.get('coin_id',False)
+        if coin_id:
+            coin  = Coin.objects.filter(id=coin_id).first()
+            if coin:
+                doc_data = {
+                    'ticket':deposit_ticket.id,
+                    'coin' : coin.id,
+                    'file' : data['file']
+                }
+                doc_serializer = DepositDocsSerializer(data=doc_data)
+                if doc_serializer.is_valid():
+                    resp = doc_serializer.save()
+                    return Response(resp,status.HTTP_201_CREATED)
+
+                else:
+                    deposit_ticket.delete()
+                    return Response({'failed':True,'error' : doc_serializer.errors},status.HTTP_400_BAD_REQUEST)
+                
+            else:
+                return Response({'failed':True},status.HTTP_400_BAD_REQUEST)
+        else:
+            print("here")
+            return Response({'failed':True},status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 
@@ -241,7 +307,7 @@ class getUserData(APIView) :
     def get(self,request,format=None):
         user = request.user
         print(user)
-        base = "http://127.0.0.1:8000"
+        
         all_users_count =  CustomUser.objects.all().count()
         approved_count = CustomUser.objects.filter(is_validated=True).count()
         not_approved_count = all_users_count - approved_count
@@ -296,4 +362,60 @@ class setApproval(APIView):
         
         return Response({"done":True})
         
+
+# admin get Deposit Docs
+
+class GetDepositDocs(APIView):
+
+    permissions_classes = [ permissions.IsAdminUser ]
+
+    def get(self,request,format=None):
+        deposit_tickets = DepositTicket.objects.all().order_by('-created')
+        tickets = []
+        for ticket in deposit_tickets:
+            doc = DepositDocs.objects.filter(ticket = ticket).first()
+            obj = {
+                'id' : ticket.id,
+                'username' : ticket.user.username,
+                'coin' : CoinSerializer(doc.coin).data,
+                'receipt':  base + doc.file.url
+            }
+            tickets.append(obj)
+        return Response(tickets)
+
+
+# approve balance 
+
+class ApproveBalanceView(APIView):
+
+    permissions_classes = [ permissions.IsAdminUser ]
+
+    def post(self,request,format=None):
+        data = request.data
+        ticket = DepositTicket.objects.filter(id=data['id']).first()
+        coin = Coin.objects.filter(id=data['coin']['id']).first()
+        if ticket and coin :
+            
+            status = data['status']
+            if status:
+                try:
+                    amount = float(data['amount'])
+                except:
+                    return Response({"failed" : True, "reason" : "not correct amount"},status.HTTP_400_BAD_REQUEST)
+                balance=  Balance.objects.filter(user = ticket.user , coin = coin).first()
+                if balance:
+                    balance.balance += amount
+                    balance.save()
+                    ticket.delete()
+                    return Response({"failed": False,"reason" : "Balance Modified"})
+                else:
+                    return Response({"failed" : True, "reason" : "Balance not found"},status.HTTP_400_BAD_REQUEST)
+            else:
+                ticket.delete()
+                return Response({"failed" : False, "reason" : "Ticket Rejected"})
+                    
+
+           
+        else:
+            return Response({"failed":True,"reason" : "no ticket or coin found"},status.HTTP_400_BAD_REQUEST)    
 

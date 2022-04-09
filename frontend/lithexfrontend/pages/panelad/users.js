@@ -27,6 +27,8 @@ export default function Users(props){
     
   ])
 
+  const [filtered,setFiltered] = useState(data)
+
 
   async function refreshData(){
     let resp = await req("stats");
@@ -78,7 +80,7 @@ export default function Users(props){
 
   },[])
 
-  const [filtered,setFiltered] = useState(data)
+  
 
   
 

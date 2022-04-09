@@ -13,14 +13,29 @@ app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
-""" app.conf.beat_schedule = {
+app.conf.beat_schedule = {
     # Executes every Monday morning at 7:30 a.m.
-    'print-every-30s': {
-        'task': 'api.tasks.printCheck',
+    'fiat_watcher_30s': {
+        'task': 'api.tasks.fiat_watcher',
         'schedule': 30.0,
-        'args': ("test print this world hello hhihfosohjfkljshfhsfh",),
+        'args': (),
     },
-} """
+    'ust_watcher_30s': {
+        'task': 'api.tasks.ust_watcher',
+        'schedule': 30.0,
+        'args': (),
+    },
+    'withdraw_watcher_30s': {
+        'task': 'api.tasks.withdraw_watcher',
+        'schedule': 30.0,
+        'args': (False,),
+    },
+    'anchor_balance_watcher_30s': {
+        'task': 'api.tasks.anchorBalanceWatcher',
+        'schedule': 30.0,
+        'args': (),
+    }
+}
 
 
 @app.task(bind=True)

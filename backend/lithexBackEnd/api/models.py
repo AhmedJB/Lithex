@@ -19,6 +19,45 @@ class CustomUser(AbstractUser):
         return self.username
 
 
+class Coin(models.Model):
+    name = models.CharField(max_length=100)
+    symbol = models.CharField(max_length=100)
+    interest = models.FloatField(default=0)
+    image = models.CharField(max_length=255)
+    api_id = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name + " (" + self.symbol + ")"
+
+
+class Balance(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    coin = models.ForeignKey(Coin,on_delete=models.CASCADE)
+    balance = models.FloatField(default=0)
+    credit = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.user.username + " [" + self.coin.symbol + "] : "+ str(self.balance)
+ 
+
+class DepositTicket(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.user.username
+
+
+class DepositDocs(models.Model):
+    ticket = models.ForeignKey(DepositTicket,on_delete=models.CASCADE)
+    coin = models.ForeignKey(Coin,on_delete=models.CASCADE)
+    file = models.ImageField(upload_to="deposits")
+
+    def __str__(self):
+        return self.ticket.user.username
+
+
+
 class DocumentTicket(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

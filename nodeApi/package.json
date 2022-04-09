@@ -1,0 +1,18 @@
+{
+  "name": "nodeapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "nodemon server.js"
+  },
+  "type" : "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anchor-protocol/anchor-earn": "^2.0.0",
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  }
+}

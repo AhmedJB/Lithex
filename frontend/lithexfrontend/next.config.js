@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ['static.nexo.io'],
   },
+
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if

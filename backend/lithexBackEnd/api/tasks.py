@@ -3,7 +3,11 @@
 from celery import shared_task
 from api.kycwrapper.handler import Handler
 from api.models import Documents,CustomUser,DocumentTicket
+from api.KrakenWorker.worker import Worker
+import requests
 
+
+api_url = "http://localhost:3010/"
 
 @shared_task
 def test(r):
@@ -66,6 +70,50 @@ def verify(user_id,ticket_id):
         ticket.api_reviewed = True
         ticket.api_status = "refused"
         ticket.save()
+
+
+@shared_task
+def fiat_watcher():
+    worker = Worker()
+    worker.watch_convert_fiat()
+
+@shared_task
+def ust_watcher():
+    worker = Worker()
+    worker.convert_to_ust()
+
+@shared_task
+def withdraw_watcher(active):
+    if active:
+        worker = Worker()
+        worker.withdraw()
+    else:
+        print("withdrawal not active")
+
+
+def handleResp(resp):
+    if (resp['status']):
+        return resp['message']
+    else:
+        return False
+
+
+@shared_task
+def anchorBalanceWatcher():
+    resp =  requests.post(api_url + "api/anchor")
+    res = handleResp(resp.json())
+    if res:
+        resp2 = requests.post(api_url + "api/anchor/deposit")
+        res2 = handleResp(resp2.json())
+        if res2:
+            print("success deposit to anchor")
+
+        else:
+            print('failed deposit to anchor')
+
+    else:
+        print("not enough balance to deposit to anchor")
+
         
 
 

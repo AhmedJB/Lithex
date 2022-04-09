@@ -1,5 +1,8 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState , useEffect } from "react";
 import Image from "next/image"
+import {DropzoneDialog} from 'material-ui-dropzone'
+import { handleSingleFileSubmit, postReq, req } from "../../Utils";
+import { useToasts  } from "react-toast-notifications";
 
 
 
@@ -8,344 +11,87 @@ import Image from "next/image"
 export default function CoinList(props){
 
     const [coins,setCoins] = useState([
-        {
-          "im_src": "https://static.nexo.io/currencies/BTC.svg",
-          "coin": "Bitcoin",
-          "symbol": "BTC",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/ETH.svg",
-          "coin": "Ether",
-          "symbol": "ETH",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/NEXO.svg",
-          "coin": "NEXO Token",
-          "symbol": "NEXO",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/XRP.svg",
-          "coin": "XRP",
-          "symbol": "XRP",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/USDT.svg",
-          "coin": "Tether",
-          "symbol": "USDT",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/USDC.svg",
-          "coin": "USD Coin",
-          "symbol": "USDC",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/USDP.svg",
-          "coin": "Pax Dollar",
-          "symbol": "USDP",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/TUSD.svg",
-          "coin": "TrueUSD",
-          "symbol": "TUSD",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/DAI.svg",
-          "coin": "Dai",
-          "symbol": "DAI",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/USDX.svg",
-          "coin": "USD",
-          "symbol": "USD",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/EURX.svg",
-          "coin": "EUR",
-          "symbol": "EUR",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/GBPX.svg",
-          "coin": "GBP",
-          "symbol": "GBP",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/BCH.svg",
-          "coin": "Bitcoin Cash",
-          "symbol": "BCH",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/LTC.svg",
-          "coin": "Litecoin",
-          "symbol": "LTC",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/EOS.svg",
-          "coin": "EOS",
-          "symbol": "EOS",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/BNB.svg",
-          "coin": "BNB",
-          "symbol": "BNB",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/XLM.svg",
-          "coin": "Stellar",
-          "symbol": "XLM",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/PAXG.svg",
-          "coin": "PAX Gold",
-          "symbol": "PAXG",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/LINK.svg",
-          "coin": "Chainlink",
-          "symbol": "LINK",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/TRX.svg",
-          "coin": "Tron",
-          "symbol": "TRX",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/ADA.svg",
-          "coin": "Cardano",
-          "symbol": "ADA",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/DOT.svg",
-          "coin": "Polkadot",
-          "symbol": "DOT",
-          "interest": "15",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/DOGE.svg",
-          "coin": "Dogecoin",
-          "symbol": "DOGE",
-          "interest": "3",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/AXS.svg",
-          "coin": "Axie Infinity",
-          "symbol": "AXS",
-          "interest": "36",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/MATIC.svg",
-          "coin": "Polygon",
-          "symbol": "MATIC",
-          "interest": "16",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/MANA.svg",
-          "coin": "Decentraland",
-          "symbol": "MANA",
-          "interest": "Unavailable",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/SAND.svg",
-          "coin": "The Sandbox",
-          "symbol": "SAND",
-          "interest": "Unavailable",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/UNI.svg",
-          "coin": "Uniswap",
-          "symbol": "UNI",
-          "interest": "Unavailable",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/SOL.svg",
-          "coin": "Solana",
-          "symbol": "SOL",
-          "interest": "8",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/AVAX.svg",
-          "coin": "Avalanche",
-          "symbol": "AVAX",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/LUNA.svg",
-          "coin": "Terra",
-          "symbol": "LUNA",
-          "interest": "13",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/FTM.svg",
-          "coin": "Fantom",
-          "symbol": "FTM",
-          "interest": "10",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/UST.svg",
-          "coin": "TerraUSD",
-          "symbol": "UST",
-          "interest": "20",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/ATOM.svg",
-          "coin": "Cosmos",
-          "symbol": "ATOM",
-          "interest": "11",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        },
-        {
-          "im_src": "https://static.nexo.io/currencies/KSM.svg",
-          "coin": "Kusama",
-          "symbol": "KSM",
-          "interest": "12",
-          "balance": 0,
-          "usd_balance": 0,
-          "credit": 0
-        }
-      ])
+    ])
+
+    const [openDeposit,setOpenDeposit] = useState(false)
+    const [selectedCoin,setSelectedCoin] = useState(null)
+    const {addToast} = useToasts();
+
+    async function fetchBalances() {
+      let resp = await req("balance");
+      if (resp){
+        setCoins(resp);
+        addToast("Success",{
+          appearance:"success",
+          autoDismiss : true
+        })
+      }else{
+        addToast("fetching balances failed",{
+          appearance:"error",
+          autoDismiss : true
+        })
+      }
+    }
+
+    async function handleFile(file){
+      console.log(file)
+      let body = {
+        coin_id : selectedCoin,
+        file : file
+      }
+      console.log(body);
+      setOpenDeposit(false);
+      setSelectedCoin(null);
+      let resp = await handleSingleFileSubmit(file[0],'fiat',body);
+      if (resp){
+        addToast("Success",{
+          appearance:"success",
+          autoDismiss : true
+        })
+      }else{
+        addToast("Failed Sending Document",{
+          appearance:"error",
+          autoDismiss : true
+        })
+      }
+
+      
+    }
+
+    function openDepositModal(c_id){
+      setSelectedCoin(c_id)
+      setOpenDeposit(true);
+    }
 
 
-    const coinField = (data) => {
-        return <tr>
+    useEffect( () => {
+        fetchBalances().then(() => console.log("finished fetching balances"))
+    },[])
+
+    const fiats = ['GBP','EUR','USD']
+
+
+
+    const coinField = (data,key) => {
+        return <tr key={key}>
         <td align="left">
           <span className="AssetVisual">
-              <Image src={data.im_src} height={32} width={32} />
+              <Image src={data.image} height={32} width={32} />
             {/* <img
               alt
               height={32}
               src={data.im_src}
             /> */}
-            <strong>{data.coin}</strong>
+            <strong>{data.name}</strong>
           </span>
         </td>
         <td align="right">
           <span className="AssetBalance right semi-bold">
             <span>
               {data.symbol}
-              <strong className="semi-bold">{data.blance}</strong>
+              <strong className="semi-bold">{" " + data.balance}</strong>
             </span>
-            <span className="usd">${data.usd_balance}</span>
+            <span className="usd">{ data.api_id == "None" ? "--" :   "$" + 0}</span>
           </span>
         </td>
         <td align="right">
@@ -353,11 +99,11 @@ export default function CoinList(props){
         </td>
         <td align="right">
           <span className="HighlightLabel success clickable">
-            Earn up to {data.interest}%
+           { data.interest != -1  ? `Earn up to ${data.interest}%` : "No Interest"  } 
           </span>
         </td>
         <td style={{ paddingRight: 0 }}>
-          <a href="deposit/btc.html">
+          <a onClick= { fiats.includes(data.symbol) ?   () => openDepositModal(data.id)  : () => console.log("crypto not supported yet")  }>
             <button type="button" className="Button primary block">
               Top Up
             </button>
@@ -412,10 +158,23 @@ export default function CoinList(props){
             </tr>
           </thead>
           <tbody>
-              {coins.map((e) => coinField(e))}
+              {coins &&  coins.map((e,i) => coinField(e,i))}
             
           </tbody>
         </table>
+
+        <DropzoneDialog
+                    
+                    open={openDeposit}
+                    onSave={handleFile}
+                    dropzoneText={`Drag or drop the Receipt Image`}
+                    previewText={`Drag or drop the Receipt Image`}
+                    acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                    filesLimit={1}
+                    showPreviews={true}
+                    maxFileSize={5000000}
+                    onClose={() =>{ setSelectedCoin(null); setOpenDeposit(false)}}
+                />
       </Fragment>
     );
 
