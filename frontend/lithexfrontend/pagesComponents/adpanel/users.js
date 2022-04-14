@@ -7,161 +7,166 @@ import Autocomplete from '@mui/material/Autocomplete';
 import ImageViewer from 'react-simple-image-viewer';
 import { postReq, req } from '../../Utils';
 import {useToasts} from "react-toast-notifications"
+import Footer from '../../components/Footer';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import Router from "next/router"
+
 
 
 export default function Users(props){
-
 	const [loading,setLoading] = useState(true);
-  const [images,setImages] = useState([]);
-  const [currentIndex,setCurrentIndex] = useState(0);
-  const [isOpen,setIsOpen] = useState(false);
-  const {addToast} = useToasts();
-  const [stats,setStats] = useState({
-    all_c :  0,
-    a_c : 0,
-    n_c : 0
-  });
-  
-  const [data,setData] = useState([
+	const [images,setImages] = useState([]);
+	const [currentIndex,setCurrentIndex] = useState(0);
+	const [isOpen,setIsOpen] = useState(false);
+	const [openModal,setOpenModal ] = useState(false);
+	const {addToast} = useToasts();
+	const [selectedTicket,setSelectedTicket] = useState(null);
+
+	const [data,setData] = useState([
     
-  ])
-
-
-  async function refreshData(){
-    let resp = await req("stats");
-    if (resp){
-      console.log(resp);
-      setStats(resp.stats);
-      setData(resp.tickets);
-      setFiltered(resp.tickets);
-    }else{
-      console.log("failed");
-    }
-  }
-
-  async function approve(dec,i){
-    let opt = filtered[i];
-    let body = {
-      user_id : opt.id,
-      ticket_id : opt.ticket_id,
-      approved : dec
-    }
-    let resp = await postReq("approve",body);
-    if (resp){
-      if (dec){
-        addToast("User " + opt.username + " approved", {
-          appearance: "success",
-          autoDismiss : true
-        } )
-      }else{
-        addToast("User " + opt.username + " rejected", {
-          appearance: "success",
-          autoDismiss : true
-        } )
-      }
-      refreshData();
-    }else{
-      addToast("failed", {
-        appearance: "error",
-        autoDismiss : true
-      } )
-
-    }
-  }
-
-  useEffect(() => {
-
-    refreshData().then(() => {
-      console.log("done fetching")
-    })
-
-  },[])
-
-  const [filtered,setFiltered] = useState(data)
-
+	])
   
+	const [filtered,setFiltered] = useState(data)
 
-  const defaultProps = {
-    options: data,
-    getOptionLabel: (option) => option.username,
-  };
+	async function refreshData(){
+		let resp = await req("getadminusers");
+		if (resp){
+		  console.log(resp);
+		  setData(resp);
+		  setFiltered(resp);
+		}else{
+		  console.log("failed");
+		}
+	  }
 
-  const style = {
-    width : 200
-  }
+	useEffect(() => {
 
-  function handleFilter(option,newValue){
-    console.log(newValue)
-    let option_fil = data.filter((e) => e == newValue);
-    if (option_fil.length == 0) {
-      setFiltered(data);
-    }else{
-      setFiltered(option_fil)
-    }
-  }
+		refreshData().then(() => {
+		  console.log("done fetching")
+		})
+	
+	  },[])
 
+	const defaultProps = {
+		options: data,
+		getOptionLabel: (option) => option.username,
+	  };
+	
+	  const style = {
+		width : 200
+	  }
+	
+	  function handleFilter(option,newValue){
+		console.log(newValue)
+		let option_fil = data.filter((e) => e == newValue);
+		if (option_fil.length == 0) {
+		  setFiltered(data);
+		}else{
+		  setFiltered(option_fil)
+		}
+	  }
+	
+	
+	function viewDocs(i){
+		console.log(i)
+		setImages([filtered[i].receipt]);
+		setIsOpen(true);
+	  }
+	
 
-  function viewDocs(i){
-    setImages(filtered[i].docs);
-    setIsOpen(true);
-  }
+	const modalStyle = {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		width: 400,
+		bgcolor: 'white',
+		border: '1px solid #000',
+		boxShadow: 24,
+		borderRadius:5,
+		p: 4,
+	  };
 
+	function handleApprovalModal(i){
+		setSelectedTicket(i);
+		setOpenModal(true);
+	}
+
+	function handleClose(){
+		setOpenModal(false);
+		setSelectedTicket(null);
+	}
+
+	async function approve(status,index){
+		let selected = filtered[index];
+		selected["status"] = status
+		let amount = 0;
+		if (status){
+			amount = Number(document.getElementById("balance").value);
+		}
+		
+		selected["amount"] = amount
+		console.log(selected)
+		handleClose();
+		let resp = await postReq("balanceApprove",selected);
+		if (resp){
+			
+			addToast(resp.reason,{
+				appearance:"success",
+				autoDismiss: true
+			})
+			await refreshData();
+		}else{
+			addToast("Failed",{
+				appearance : "error",
+				autoDismiss : true
+			})
+		}
+
+	}
+
+    function showDetails(id){
+        Router.push("/panelad/userdetails/"+id);
+      }
+    
 
 	const html = <Fragment>
-			<Head>
-        
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no" />
-        <link rel="manifest" href="/assets/meta/manifest.json" />
-        <link rel="shortcut icon" href="/assets/meta/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="57x57" href="/assets/meta/apple-icon-57x57.png" />
-        <link rel="apple-touch-icon" sizes="60x60" href="/assets/meta/apple-icon-60x60.png" />
-        <link rel="apple-touch-icon" sizes="72x72" href="/assets/meta/apple-icon-72x72.png" />
-        <link rel="apple-touch-icon" sizes="76x76" href="/assets/meta/apple-icon-76x76.png" />
-        <link rel="apple-touch-icon" sizes="114x114" href="/assets/meta/apple-icon-114x114.png" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/assets/meta/apple-icon-120x120.png" />
-        <link rel="apple-touch-icon" sizes="144x144" href="/assets/meta/apple-icon-144x144.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/assets/meta/apple-icon-152x152.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/meta/apple-icon-180x180.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/assets/meta/android-icon-192x192.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/assets/meta/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="96x96" href="/assets/meta/favicon-96x96.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/assets/meta/favicon-16x16.png" />
-        
-        <title>Admin | Registered Users</title>
-        </Head>
+	<Head>
+
+<meta charSet="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no" />
+<link rel="manifest" href="/assets/meta/manifest.json" />
+<link rel="shortcut icon" href="/assets/meta/favicon.ico" />
+<link rel="apple-touch-icon" sizes="57x57" href="/assets/meta/apple-icon-57x57.png" />
+<link rel="apple-touch-icon" sizes="60x60" href="/assets/meta/apple-icon-60x60.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="/assets/meta/apple-icon-72x72.png" />
+<link rel="apple-touch-icon" sizes="76x76" href="/assets/meta/apple-icon-76x76.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="/assets/meta/apple-icon-114x114.png" />
+<link rel="apple-touch-icon" sizes="120x120" href="/assets/meta/apple-icon-120x120.png" />
+<link rel="apple-touch-icon" sizes="144x144" href="/assets/meta/apple-icon-144x144.png" />
+<link rel="apple-touch-icon" sizes="152x152" href="/assets/meta/apple-icon-152x152.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/meta/apple-icon-180x180.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/meta/android-icon-192x192.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/meta/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/meta/favicon-96x96.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/meta/favicon-16x16.png" />
+
+<title>Admin | Deposits</title>
+</Head>
 
 
 
-		<div id="nexo-platform" className="application">
-			<Header admin={true} location="users" />
-  <main>
+<div id="nexo-platform" className="application">
+	<Header admin={true} location="users" />
+	
+	<main>
     <section className="DashboardPage">
       <div>
-        <div className="AccountFinancialOverview">
-          <div>
-            <i className="fa fa-question-circle" />
-            <h6>Registered Users</h6>
-            <div />
-            <span>{stats.all_c}</span>
-          </div>
-          {/* <div>
-            <i className="fa fa-question-circle" />
-            <h6>Active Users</h6>
-            <span className="tc-indigo-500">300</span>
-            <div />
-            <h6>Inactive Users</h6>
-            <span className="tc-blue-500">200</span>
-          </div> */}
-          <div>
-            <i className="fa fa-question-circle" />
-            <h6>Approved Users</h6>
-            <span className="tc-indigo-500">{stats.a_c}</span>
-            <div />
-            <h6>Unapproved Users</h6>
-            <span className="tc-blue-500">{stats.n_c}</span>
-          </div>
-        </div>
+        
         <div className="card">
           <div className="w-full flex items-center justify-between">
             <h3>Verification Tickets</h3>
@@ -181,15 +186,16 @@ export default function Users(props){
               <tr>
                 <th align="left" width={200}>Username</th>
                 <th align="left" width={200}>Email</th>
-                <th align="left">Matched</th>
-                <th align="left">Score</th>
+                <th align="left" width={200}>Personal Information Status</th>
+                <th align="left" width={200}>Identity Status</th>
+                
                 
                 <th colSpan={3} align="left" />
               </tr>
             </thead>
             <tbody>
               { filtered.map((e,i) => {
-                return <tr>
+                return <tr key={i}>
                   <td align="left">
                     <span className="AssetVisual">
                       <strong>{e.username}</strong>
@@ -201,25 +207,20 @@ export default function Users(props){
                     </span>
                   </td>
                   <td align="left">
-                    <span className="tc-red">{e.matched ? "Matched" : "Not Matched"}</span>
+                    <span className="AssetBalance right semi-bold">
+                      {e.has_personalInfo ? "Submitted" :  "Not Submitted" }
+                    </span>
                   </td>
                   <td align="left">
-                    <span className="tc-red">{e.score}</span>
+                    <span className="AssetBalance right semi-bold">
+                      {e.is_validated ? "Approved" : "Not Approved"}
+                    </span>
                   </td>
+                  
 
-                  <td style={{paddingRight: 0}}>
-                    <a>
-                      <button type="button" className="Button primary block" onClick={() => viewDocs(i)} > View Documents </button>
-                    </a>
-                  </td>
                   <td align="left" width={110}>
                     <a>
-                      <button type="button" onClick={() => approve(true,i)} className="Button primary block"> Approve </button>
-                    </a>
-                  </td>
-                  <td align="left" width={110}>
-                    <a>
-                      <button type="button" onClick={() => approve(false,i)} className="Button secondary block"> Reject </button>
+                      <button type="button" onClick={() => showDetails(e.id)} className="Button primary block"> Details </button>
                     </a>
                   </td>
                 </tr>
@@ -231,23 +232,9 @@ export default function Users(props){
           </table>
         </div>
       </div></section>
-    <footer>
-      <section>
-        <button type="button" className="Button link LanguagePickerButton m-b-5" aria-expanded="false">
-          <i className="fa fa-language" /> Language </button>
-        <nav> ©2022 <a href="https://LIQD.io/" target="_blank">LIQD</a>
-          <i>•</i>
-          <a href="https://LIQD.io/loan-terms" target="_blank">Credit Line Terms</a>
-          <i>•</i>
-          <a href="https://LIQD.io/privacy-policy" target="_blank">Privacy Policy</a>
-          <i>•</i>
-          <a href="https://LIQD.io/terms-and-conditions" target="_blank">Terms &amp; Conditions</a>
-        </nav>
-      </section>
-    </footer>
+    <Footer />
   </main>
 </div>
-
 
 {isOpen && (
         <ImageViewer
@@ -260,12 +247,22 @@ export default function Users(props){
       )}
 
 
+<Modal
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
 
-	</Fragment>
-
+		<label className="mt-l" style={{margin:10}}>Amount</label>
+          <div className="TextBox m-4" style={{margin:10}}><input type="decimal" id="balance" placeholder="add Amount" /></div>
+          <button type="button" onClick={() => approve(true,selectedTicket)} className="Button primary block"> Add Balance </button>
+        </Box>
+      </Modal>
+</Fragment>
 
 return (loading ?  <Loader admin={true} setLoading={setLoading} /> : html);
-
 
 
 }

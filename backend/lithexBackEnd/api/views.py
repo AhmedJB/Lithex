@@ -235,6 +235,7 @@ class CheckVerifStatus(APIView):
         user = request.user
         verified = False
         status = ""
+        reason = ""
         if not user.has_personalInfo :
             status = "personal"
             path = "/app/user/personal"
@@ -247,6 +248,10 @@ class CheckVerifStatus(APIView):
             if refused_ticket:
                 status = "refused"
                 path = "/app/profile"
+                if refused_ticket.reason == "":
+                    reason = "API Refused"
+                else:
+                    reason = refused_ticket.reason
                 verified = False
             else:
                 active_ticket = DocumentTicket.objects.filter(reviewed = False,user=user,api_reviewed = True,api_status="done").order_by('-created').first()
@@ -258,6 +263,7 @@ class CheckVerifStatus(APIView):
                             verified = True
                         else:
                             status = "refused"
+                            reason = active_ticket.reason
                             path = "/app/profile"
                             verified = False
 
@@ -281,7 +287,8 @@ class CheckVerifStatus(APIView):
         resp  = {
             "status" :  status,
             "path"  : path,
-            "verified" : verified
+            "verified" : verified,
+            "reason" : reason
         }
 
         return Response(resp)
@@ -351,12 +358,14 @@ class setApproval(APIView):
             user.is_validated = True
             ticket.status = "approved"
             ticket.reviewed = True
+            ticket.reason = data['reason']
             user.save()
             ticket.save()
         else:
             user.is_validated = False
             ticket.status = "refused"
             ticket.reviewed = True
+            ticket.reason = data['reason']
             user.save()
             ticket.save()
         
@@ -419,3 +428,69 @@ class ApproveBalanceView(APIView):
         else:
             return Response({"failed":True,"reason" : "no ticket or coin found"},status.HTTP_400_BAD_REQUEST)    
 
+
+# fetch user details:
+class getUserDetails(APIView):
+    permissions_classes = [ permissions.IsAdminUser ]
+
+
+    
+
+    def post(self,request,format=None):
+        data = request.data
+        print(data)
+        user = CustomUser.objects.filter(id=data['id']).first()
+        if user:
+            info = PersonalInfo.objects.filter(user = user).first()
+            if info:
+                resp = {}
+                # getting documents
+                ticket = DocumentTicket.objects.filter(user = user,status="approved",reviewed=True).first()
+                if ticket:
+                    auth_docs = []
+                    docs = Documents.objects.filter(ticket = ticket)
+                    for doc in docs:
+                        auth_docs.append(base + doc.file.url)
+                else:
+                    auth_docs = []
+                
+                resp['auth_docs'] = auth_docs
+
+                
+                resp['user'] = RegisterSerializer(user).data
+                resp['info'] = PersonalInfoSerializer(info).data
+                return Response(resp)
+            else:
+                return Response({"failed":True,"reason" : "no Info for User"},status.HTTP_400_BAD_REQUEST) 
+        else:
+            return Response({"failed":True,"reason" : "no User found"},status.HTTP_400_BAD_REQUEST) 
+
+
+class modifyInfo(APIView):
+    permissions_classes = [ permissions.IsAdminUser ]
+    
+
+    def post(self,request,format=None):
+        data = request.data
+        user = CustomUser.objects.filter(id=data['user']).first()
+        info = PersonalInfo.objects.filter(user = user).first()
+        
+        s = PersonalInfoSerializer(info,data=data)
+        
+        if s.is_valid():
+            print('valid')
+            resp = s.save()
+            print(resp)
+            return Response(s.data, status= status.HTTP_202_ACCEPTED )
+        else:
+            print('not valid')
+            return Response(s.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUsers(APIView):
+    permissions_classes = [ permissions.IsAdminUser ]
+
+    def get(self,request,format=None):
+        users = CustomUser.objects.all()
+        resp = RegisterSerializer(users,many=True).data
+        return Response(resp)

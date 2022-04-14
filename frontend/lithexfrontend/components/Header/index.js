@@ -167,6 +167,12 @@ export default function Header(props) {
           <span>Users List</span>
         </a>
         </Link>
+        <Link href="/panelad/manageusers">
+        <a className={ props.location == "manageusers" ? "active" : "" }  aria-current="page">
+          <i className="fa fa-user" />
+          <span>Manage Users</span>
+        </a>
+        </Link>
         
           <Link href="/panelad/deposits">
           <a className={ props.location == "deposits" ? "active" : "" } aria-current="page">

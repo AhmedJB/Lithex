@@ -18,6 +18,25 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+class PersonalInfo(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    postal = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    business = models.CharField(max_length=255)
+    employment = models.CharField(max_length=255)
+    source = models.CharField(max_length=255)
+    crypto_source = models.CharField(max_length=255)
+    country_code =  models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=255)
+
+
+    def __str__(self):
+        return self.user.username
+
 
 class Coin(models.Model):
     name = models.CharField(max_length=100)
@@ -63,7 +82,7 @@ class DocumentTicket(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     # open | refused | approved
     status = models.CharField(max_length=255)
-
+    reason = models.CharField(max_length=255,default="")
     ticket_type = models.CharField(max_length=255)
     reviewed = models.BooleanField(default=False)
     api_reviewed = models.BooleanField(default=False)
@@ -77,24 +96,7 @@ class DocumentTicket(models.Model):
 
 
 
-class PersonalInfo(models.Model):
-    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    postal = models.CharField(max_length=255)
-    country = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    business = models.CharField(max_length=255)
-    employment = models.CharField(max_length=255)
-    source = models.CharField(max_length=255)
-    crypto_source = models.CharField(max_length=255)
-    country_code =  models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=255)
 
-
-    def __str__(self):
-        return self.user.username
 
 
 

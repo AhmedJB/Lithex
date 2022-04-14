@@ -356,6 +356,9 @@ export default function Verification(props){
                     {verificationStatus.status == "refused" && <div>
                       <h3>Your application is refused</h3>
                       <p>
+                        Reason : {verificationStatus.reason}
+                        </p>
+                      <p>
                         Re Submit your documents and wait for approval
                       </p>
                     </div>}

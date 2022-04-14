@@ -34,6 +34,9 @@ urlpatterns = [
     path('approve',setApproval.as_view()),
     path("depositTickets",GetDepositDocs.as_view()),
     path("balanceApprove",ApproveBalanceView.as_view()),
+    path("loaduser",getUserDetails.as_view()),
+    path("modifyadminuser",modifyInfo.as_view()),
+    path("getadminusers",GetUsers.as_view()),
 
 
 
