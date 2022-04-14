@@ -6,11 +6,17 @@ import Details from "../../../pagesComponents/adpanel/Details";
 
 
 export default function User(props){
+    const [usr,setUser] = useState(null);
     
 
-    const {user} = Router.query;
+    useEffect(
+        () => {
+            const {user}  = Router.query;
+            setUser(usr)
+        }
+    , [])
 
 
-    return <Details userid={user} />
+    return <Details userid={usr} />
 
 }
