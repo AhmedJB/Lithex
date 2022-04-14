@@ -172,6 +172,7 @@ export default function Header(props) {
           <i className="fa fa-user" />
           <span>Manage Users</span>
         </a>
+
         </Link>
         
           <Link href="/panelad/deposits">
