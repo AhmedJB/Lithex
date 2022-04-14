@@ -12,7 +12,7 @@ export default function User(props){
     useEffect(
         () => {
             const {user}  = Router.query;
-            setUser(usr)
+            setUser(user)
         }
     , [])
 
