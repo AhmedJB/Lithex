@@ -2551,3 +2551,16 @@ const unused_coins = [{
   "credit": 0
 }
 ]
+
+
+export const transaction_types = [
+  "deposit",
+  "withdraw",
+  "exchange"
+]
+
+export const fiats = [
+  "USD",
+  "GBP",
+  "EUR"
+]

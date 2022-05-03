@@ -45,7 +45,8 @@ export default function IdentityVerification(props){
                 Verify Identity
               </span>
               <span className="fs-l">
-                Complete Identity Verification to unlock all features
+                {props.customText ? props.customText : "Complete Identity Verification to unlock all features"}
+                
               </span>
             </div>
           </div>

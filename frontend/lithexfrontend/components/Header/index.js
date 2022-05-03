@@ -54,15 +54,15 @@ export default function Header(props) {
               <span>Transactions</span>
             </a>
             </Link>
-            
+            <Link href="/app/exchange">
             <a
-              className="ExchangeTab"
+              className={ props.location == "exchange" ? "active" : "" }
               aria-expanded="false"
-              href="exchange/buy.html"
             >
               Exchange
-              <i className="fas fa-caret-down" />
+              {/* <i className="fas fa-caret-down" /> */}
             </a>
+            </Link>
             <a>
               <i className="fa fa-poll" />
               <span>Vote</span>
@@ -164,13 +164,13 @@ export default function Header(props) {
         <Link href="/panelad/users">
         <a className={ props.location == "users" ? "active" : "" }  aria-current="page">
           <i className="fa fa-user" />
-          <span>Users List</span>
+          <span>Users</span>
         </a>
         </Link>
         <Link href="/panelad/manageusers">
         <a className={ props.location == "manageusers" ? "active" : "" }  aria-current="page">
           <i className="fa fa-user" />
-          <span>Manage Users</span>
+          <span>Verification</span>
         </a>
 
         </Link>
@@ -181,6 +181,19 @@ export default function Header(props) {
           <span>Deposits</span>
         </a>
           </Link>
+          <Link href="/panelad/coins">
+          <a className={ props.location == "coins" ? "active" : "" } aria-current="page">
+          <i className="fa fa-user" />
+          <span>Coins</span>
+        </a>
+          </Link>
+
+          {/* <Link href="/panelad/anchorpanel">
+          <a className={ props.location == "anchor" ? "active" : "" } aria-current="page">
+          <i className="fa fa-user" />
+          <span>Anchor</span>
+        </a>
+          </Link> */}
         
 
       </nav>

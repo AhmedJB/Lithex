@@ -37,6 +37,20 @@ class PersonalInfo(models.Model):
     def __str__(self):
         return self.user.username
 
+    
+
+
+class Address(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    public = models.CharField(max_length=255,default="")
+    private = models.CharField(max_length=255,default="")
+    address = models.CharField(max_length=255,default="")
+    network = models.CharField(max_length=100,default="")
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.address
+
 
 class Coin(models.Model):
     name = models.CharField(max_length=100)
@@ -44,15 +58,33 @@ class Coin(models.Model):
     interest = models.FloatField(default=0)
     image = models.CharField(max_length=255)
     api_id = models.CharField(max_length=255)
+    decimals = models.IntegerField(default=18)
+    disabled = models.BooleanField(default=False)
+    d_fee = models.FloatField(default=0)
+    e_fee = models.FloatField(default=0)
+    w_fee = models.FloatField(default=0)
 
     def __str__(self):
         return self.name + " (" + self.symbol + ")"
 
 
+class Transactions(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    coin = models.ForeignKey(Coin,on_delete=models.CASCADE)
+    t_type = models.CharField(max_length=255) # deposit | withdraw | exchange
+    message = models.CharField(max_length=255)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.message
+
+
 class Balance(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     coin = models.ForeignKey(Coin,on_delete=models.CASCADE)
+    address = models.ForeignKey(Address,on_delete=models.CASCADE)
     balance = models.FloatField(default=0)
+    old_balance = models.FloatField(default=0)
     credit = models.FloatField(default=0)
 
     def __str__(self):

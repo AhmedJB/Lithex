@@ -12,12 +12,14 @@ import { UserContext } from '../../contexts/UserContext';
 import  Router  from 'next/router';
 import Loader from '../../components/Loader';
 import { req } from '../../Utils';
+import SimpleLoader from '../../components/SimpleLoader';
 
 
 export default function Profile(){
 
     const [User,setUser] = useContext(UserContext);
     const [loading,setLoading] = useState(true);
+    const [balanceLoader,setBalanceLoader] = useState(true);
     const [verificationStatus , setVerificationStatus] = useState({
       status : null,
       path : null,
@@ -98,16 +100,23 @@ export default function Profile(){
         { !verificationStatus.verified && <IdentityVerification /> }
             
         <div className="card">
-            <ProfileNavigation />
-                <CoinList />
-          <div className="AccountTotalAssetValuePerWallet">
-            <h5 aria-expanded="false">
-              Estimated Total Value of Crypto: <span>$0.00</span>
-            </h5>
-            <small>If the value of your collateralassets reaches
-              <span>$0.00</span>, small partial loan repayments will be
-              initiated automatically</small>
-          </div>
+          {
+            !balanceLoader && <Fragment>
+                <ProfileNavigation />
+                
+          
+            </Fragment>
+          }
+          {
+            balanceLoader && <div style={{display:"flex",flexDirection:"column"}} className="items-center justify-center h-[400px]">
+              <h3>Loading Balances ... </h3><br></br>
+              <SimpleLoader />
+            </div>
+          }
+
+          <CoinList setBalanceLoader={setBalanceLoader} balanceLoader={balanceLoader} />
+          
+            
         </div>
         <div className="SocialShare standalone card">
           <h6 className="fs-18 m-b-15">

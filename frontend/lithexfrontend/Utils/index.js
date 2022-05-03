@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import {ethers} from "ethers"
 
 //const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
 //const base_url = "http://35eb-105-69-234-197.ngrok.io"
@@ -282,6 +282,19 @@ export async function postReq(url,body,infoMode=false){
 }
 
 
+function padTo2Digits(num) {
+    return num.toString().padStart(2, '0');
+  }
+
+export function formatDate(date) {
+    return [
+      padTo2Digits(date.getDate()),
+      padTo2Digits(date.getMonth() + 1),
+      date.getFullYear(),
+    ].join('/');
+  }
+
+
 
 
 
@@ -354,6 +367,14 @@ export async function isLogged(){
     return resp;
 }
 
+export function numberToBN(num,decimals){
+    let string_number = Number(Number(num) / 10**decimals).toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: decimals })
+    console.log(string_number)
+    let number = ethers.utils.parseUnits( string_number,decimals)
+    console.log(number.toString())
+    return number
+  }
+
 
 export function logout(setUser) {
     console.log("logged out")
@@ -370,3 +391,8 @@ export function logout(setUser) {
     sessionStorage.removeItem("refreshToken");
     setUser(obj);
   }
+
+
+export function round(num,prec){
+    return Math.floor(num * 10**prec) / 10**prec
+}

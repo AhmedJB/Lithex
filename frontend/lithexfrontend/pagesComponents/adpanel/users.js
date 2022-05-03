@@ -155,7 +155,7 @@ export default function Users(props){
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/meta/favicon-96x96.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/meta/favicon-16x16.png" />
 
-<title>Admin | Deposits</title>
+<title>Admin | Users</title>
 </Head>
 
 
@@ -169,7 +169,7 @@ export default function Users(props){
         
         <div className="card">
           <div className="w-full flex items-center justify-between">
-            <h3>Verification Tickets</h3>
+            <h3>Users</h3>
           <Autocomplete
                   {...defaultProps}
                   sx={style}

@@ -1,5 +1,5 @@
 import ccxt
-
+from api.constants import fiats
 
 
 
@@ -9,8 +9,8 @@ import ccxt
 class Worker:
 
     def __init__(self):
-        api_key = "cFT6E0pHVjn6TWTCA3QHi19zmT3LYXrRxKTmiYPBHqKBQfc8JZLX00kB"
-        api_secret = "7IEhBkHo+u2yH6oU2Uzd7BTJlT5eD/o0WxXRUISxzpQMv1W5RKsCG1COWMtUVT9GK5q8tMYAyYszpH3NPkm+1Q=="
+        api_key = "BEvXskqd7KKy+cT4LYoxePoD1oEyHolI0U4gH1l4U/UTwd0GsakSdQO8"
+        api_secret = "BxDwwiHKBj5zR+czwgsr1N/QBxGsaym6jECj3WyVbazPkpnQuM1/epsU7d6EJPMIvAou51ug0t3Cgsw5Qon7nA=="
         self.add = "terra1f2fgl9wyuz8k2qdj2ywtk3ksz7qgxvdcs2y7xd"
         self.desc = "xo ust"
         exchange_class = getattr(ccxt,"kraken")
@@ -19,6 +19,14 @@ class Worker:
         'secret':api_secret
         })  
         self.markets = self.ex.load_markets()
+
+
+    def get_deposit_address(self,symbol,params = {}):
+        try:
+            addr = self.ex.fetchDepositAddress(code=symbol,params = params)
+        except:
+            addr = self.ex.createDepositAddress(code=symbol,params=params)
+        return addr['address']
 
 
     # get price 
@@ -36,7 +44,7 @@ class Worker:
     def convert_to_ust(self):
         balance = self.ex.fetch_balance()
         ust_min  = self.markets['UST/USDT']['limits']['amount']['min']
-        total_usdt = balance['total']['USDT']
+        total_usdt = balance['total'].get('USDT',0)
         trade_amount = self.get_perc_amount(total_usdt  / self.get_price("UST/USDT") , 0.99)
         formated = self.ex.amount_to_precision("UST/USDT",trade_amount)
         if float(trade_amount) > float(ust_min):
@@ -58,7 +66,7 @@ class Worker:
 
     def watch_convert_fiat(self):
         base = "USDT"
-        fiats = ["USD","GBP","EUR"]
+        
         balance= self.ex.fetch_balance()
         for fiat in fiats:
             min_amount = self.markets[base+"/"+fiat]['limits']['amount']['min']

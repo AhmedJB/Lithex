@@ -4,15 +4,19 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,permissions
-from .serializer import DepositDocsSerializer, RegisterSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer,BalanceSerializer,CoinSerializer
+from .serializer import DepositDocsSerializer, RegisterSerializer, TransactionsSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer,BalanceSerializer,CoinSerializer
 from .tasks import test,createCustomer,verify
-
+from .blockcypherwrapper.watcher import get_address
 # Create your views here.
 
 from .models import *
 
 
 from .constants import base
+from api.Web3Wrapper.worker import Web3Worker
+from api.KrakenWorker.worker import Worker
+from api.constants import rpc_urls,chain_ids,fiats
+import math
 
 
 
@@ -43,19 +47,63 @@ def format_error(err):
         st.append(key + " : " + str(err[key][0]))
     return st
 
+def generateAddr(network):
+    w3w = Web3Worker(rpc_urls[network],chain_ids[network])
+    return w3w.gen_address()
+
+
+
 class Register(APIView):
 
     permission_classes = [permissions.AllowAny]
 
     def post(self,request,format=None):
+        skip = ['GBP','EUR','USD']
+        eth_tokens = ['ETH']
+        BSC_tokens = ["BNB"]
+        MATIC_tokens = ["MATIC"]
+        LTC_tokens = ['LTC']
         data = request.data
         print(data)
         o_u = CustomUser.objects.filter(email = data['username'])
+        coins = Coin.objects.filter(disabled=False)
         if len(o_u) == 0:
             s = RegisterSerializer(data=data)
             if s.is_valid():
                 print('valid')
                 resp = s.save()
+                user = CustomUser.objects.filter(id=resp['id']).first()
+                eth_address = get_address("eth")
+                btc_address = get_address("bcy")
+                ltc_address = get_address("ltc")
+                bsc_address = generateAddr("BNB")
+                matic_address = generateAddr("MATIC")
+                
+                for coin in coins:
+                    if coin.symbol in skip:
+                        network = "FIAT"
+                        chosen = bsc_address
+                    elif coin.symbol in eth_tokens:
+                        network = 'ETH'
+                        chosen = eth_address
+                    elif coin.symbol in BSC_tokens:
+                        network = 'BSC'
+                        chosen = bsc_address
+                    elif coin.symbol in MATIC_tokens:
+                        network = 'MATIC'
+                        chosen = matic_address
+                    elif coin.symbol in LTC_tokens:
+                        network = "LTC"
+                        chosen = ltc_address
+                    elif coin.symbol == 'BTC':
+                        network = "BTC"
+                        chosen = btc_address
+                    addr = Address.objects.filter(user = user,network = network).first()
+                    if not addr:
+                        addr = Address.objects.create(user = user,public=chosen['public'],private=chosen['private'],address=chosen['address'],network=network)
+                        addr.save()
+                    balance = Balance.objects.create(user= user,coin=coin,address = addr)
+                    balance.save()
                 print(resp)
                 return Response(resp)
             else:
@@ -70,7 +118,7 @@ class Register(APIView):
 # upload functionality
 
 class UploadAuth(APIView):
-    permissions_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 
     def get(self, request, *args, **kwargs):
@@ -130,19 +178,129 @@ class UploadAuth(APIView):
             print('error', ticket_serializer.errors)
             return Response(ticket_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# get Data 
+
+
+# get Active coins
+
+class CoinView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+
+    def get(self,request,*args,**kwargs):
+        coins = Coin.objects.filter(disabled=False)
+        resp = CoinSerializer(coins,many=True).data
+        return Response(resp)
+
+# get Transactions
+
+class TransactionView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+
+    def get(self,request,*args,**kwargs):
+        user = request.user
+        transactions = Transactions.objects.filter(user=user).order_by("-date")
+        data = TransactionsSerializer(transactions,many=True).data
+        for d in data:
+            coin = Coin.objects.filter(id=d['coin']).first()
+            if coin:
+                d['coinData'] = CoinSerializer(coin).data
+            else:
+                d['coinData'] = False
+            
+        return Response(data)
+
+
+# get price
+class PriceView(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self,request,coin,*args,**kwargs):
+        print(coin)
+        k_w = Worker()
+        if coin == "USD":
+            price = 1
+        else:
+            price = k_w.get_price(coin+"/USD")
+        return Response({"price" : price}) 
+
+# swap view
+class Swap(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+
+    def form_error(self,message,failed=True):
+        return {'failed' : failed,"message" : message}
+
+    def round_down(self,num,dec):
+        return math.floor(num * 10**dec)/10**dec
+
+    def post(self,request,*args,**kwargs):
+        user = request.user
+        data = request.data
+        amount = float(data['amount'])
+        coin1 = Coin.objects.filter(id=data['from'],disabled=False).first()
+        coin2 = Coin.objects.filter(id=data['to'],disabled=False).first()
+        k_w = Worker()
+        if coin1 and coin2:
+            balance1 = Balance.objects.filter(user= user,coin=coin1).first()
+            balance2 = Balance.objects.filter(user= user,coin=coin2).first()
+            if balance1.balance >= amount:
+                price1 = k_w.get_price(coin1.symbol+"/USD") if coin1.symbol != "USD" else 1
+                price2 = k_w.get_price(coin2.symbol+"/USD") if coin2.symbol != "USD" else 1
+                rate = price1 / price2
+                fees = amount * rate * coin2.e_fee
+                new_bal = self.round_down((rate * amount ) - fees , 18)
+                balance1.balance -= amount * 10 ** balance1.coin.decimals
+                balance2.balance += new_bal * 10 ** balance2.coin.decimals
+                balance1.save()
+                balance2.save()
+                return Response(self.form_error("Successfuly exchanged",failed=False))
+            else:
+                return Response(self.form_error("You don't have enough balance"))
+            
+
+
+        else:
+            return Response(self.form_error("Coin Not Available"))
+        
+
+
 
 # deposit process
 
+
 class BalanceView(APIView):
-    permissions_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 
     def get(self,request,*args,**kwargs):
         user = request.user
         balances = Balance.objects.filter(user= user)
+        k_w = Worker()
         res = []
         for balance in balances:
+            if balance.coin.disabled:
+                continue
             coin_data = CoinSerializer(balance.coin).data
+            if coin_data['symbol'] == "USD":
+                price = 1
+            else:
+                price = k_w.get_price(coin_data['symbol']+"/USD")
+            
+            decimals = 1
+            if coin_data['symbol'] not in fiats:
+                decimals = coin_data['decimals']
+                bal = float(balance.balance) / 10**(decimals)
+                
+            else:
+                coin_data['decimals']
+                bal = float(balance.balance)
+            
+            coin_data['usd_price'] = round(price * bal,2)
+            coin_data['address'] = balance.address.address
             coin_data['balance'] = balance.balance
             coin_data['credit'] = balance.credit
             res.append(coin_data)
@@ -151,7 +309,7 @@ class BalanceView(APIView):
 
 
 class handleDepositDocs(APIView):
-    permissions_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self,request,format=None):
         pass
@@ -195,7 +353,7 @@ class handleDepositDocs(APIView):
 # verification process
 
 class PersonalInfoView(APIView):
-    permissions_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 
     def post(self,request,*args,**kwargs):
@@ -228,7 +386,7 @@ class PersonalInfoView(APIView):
 
 class CheckVerifStatus(APIView):
 
-    permissions_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 
     def get(self,request,*args,**kwargs):
@@ -307,7 +465,7 @@ class testTask(APIView):
 
 
 class getUserData(APIView) :
-    permissions_classes = [ permissions.IsAdminUser ]
+    permission_classes = [ permissions.IsAdminUser ]
 
 
 
@@ -347,7 +505,7 @@ class getUserData(APIView) :
         return Response(resp);
 
 class setApproval(APIView):
-    permissions_classes = [ permissions.IsAdminUser ]
+    permission_classes = [ permissions.IsAdminUser ]
 
 
     def post(self,request,format=None):
@@ -376,7 +534,7 @@ class setApproval(APIView):
 
 class GetDepositDocs(APIView):
 
-    permissions_classes = [ permissions.IsAdminUser ]
+    permission_classes = [ permissions.IsAdminUser ]
 
     def get(self,request,format=None):
         deposit_tickets = DepositTicket.objects.all().order_by('-created')
@@ -397,7 +555,7 @@ class GetDepositDocs(APIView):
 
 class ApproveBalanceView(APIView):
 
-    permissions_classes = [ permissions.IsAdminUser ]
+    permission_classes = [ permissions.IsAdminUser ]
 
     def post(self,request,format=None):
         data = request.data
@@ -414,6 +572,11 @@ class ApproveBalanceView(APIView):
                 balance=  Balance.objects.filter(user = ticket.user , coin = coin).first()
                 if balance:
                     balance.balance += amount
+                    tr = Transactions.objects.create(user = ticket.user, coin = coin,
+                    message = "Received Deposit of " + str(round( (amount) / 10 ** coin.decimals , coin.decimals )) + " " + coin.symbol,
+                    t_type = "deposit"
+                    )
+                    tr.save()
                     balance.save()
                     ticket.delete()
                     return Response({"failed": False,"reason" : "Balance Modified"})
@@ -431,7 +594,7 @@ class ApproveBalanceView(APIView):
 
 # fetch user details:
 class getUserDetails(APIView):
-    permissions_classes = [ permissions.IsAdminUser ]
+    permission_classes = [ permissions.IsAdminUser ]
 
 
     
@@ -467,7 +630,7 @@ class getUserDetails(APIView):
 
 
 class modifyInfo(APIView):
-    permissions_classes = [ permissions.IsAdminUser ]
+    permission_classes = [ permissions.IsAdminUser ]
     
 
     def post(self,request,format=None):
@@ -487,8 +650,30 @@ class modifyInfo(APIView):
             return Response(s.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Modify Fees 
+class ModifyCoinFees(APIView):
+    permission_classes = [ permissions.IsAdminUser ]
+    def post(self,request,format=None):
+        data = request.data
+        coin = Coin.objects.filter(id=data['id']).first()
+        if coin:
+            s = CoinSerializer(coin,data=data)
+            if s.is_valid():
+                print('valid')
+                resp = s.save()
+                print(resp)
+                return Response(s.data, status= status.HTTP_202_ACCEPTED )
+            else:
+                print('not valid')
+                return Response(s.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            return Response("Coin Not Found", status=status.HTTP_400_BAD_REQUEST)
+    
+
+
 class GetUsers(APIView):
-    permissions_classes = [ permissions.IsAdminUser ]
+    permission_classes = [ permissions.IsAdminUser ]
 
     def get(self,request,format=None):
         users = CustomUser.objects.all()

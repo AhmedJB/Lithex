@@ -13,6 +13,22 @@ body {
     background: #f9f9fb;
 }
 
+.btn-outline-secondary {
+    color: #6c757d !important;
+    border-color: #ced4da !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-left: none !important;
+}
+
+.btn-outline-secondary:hover {
+    background: none !important;
+}
+
+.form-control-lg {
+    height: calc(2.5em + 1rem + 2px); 
+}
+
 body.busy {
     background: linear-gradient( 34deg, rgba(40, 83, 195, 1) 30%, rgba(52, 192, 255, 1) 100%) rgba(52, 192, 255, 1);
 }

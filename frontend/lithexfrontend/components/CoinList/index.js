@@ -1,8 +1,13 @@
 import { Fragment, useState , useEffect } from "react";
 import Image from "next/image"
 import {DropzoneDialog} from 'material-ui-dropzone'
-import { handleSingleFileSubmit, postReq, req } from "../../Utils";
+import { handleSingleFileSubmit, postReq, req, numberToBN } from "../../Utils";
 import { useToasts  } from "react-toast-notifications";
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import {ethers} from "ethers";
+import { fiats } from "../../Utils/constants";
 
 
 
@@ -12,15 +17,34 @@ export default function CoinList(props){
 
     const [coins,setCoins] = useState([
     ])
-
+    const [openModal,setOpenModal] = useState(false);
     const [openDeposit,setOpenDeposit] = useState(false)
     const [selectedCoin,setSelectedCoin] = useState(null)
+    const [selectedAddress,setSelectedAddress] = useState("");
     const {addToast} = useToasts();
+    const [total,setTotal] = useState(0);
+
+    const style = {
+      position: 'absolute' ,
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: "min(100%,1000px)",
+      minHeight:"300px",
+      bgcolor: 'background.paper',
+      borderRadius:8,
+      boxShadow: 24,
+    };
+
+    
+    
 
     async function fetchBalances() {
       let resp = await req("balance");
+      props.setBalanceLoader(false);
       if (resp){
         setCoins(resp);
+        getTotal(resp);
         addToast("Success",{
           appearance:"success",
           autoDismiss : true
@@ -32,6 +56,8 @@ export default function CoinList(props){
         })
       }
     }
+
+    
 
     async function handleFile(file){
       console.log(file)
@@ -68,7 +94,31 @@ export default function CoinList(props){
         fetchBalances().then(() => console.log("finished fetching balances"))
     },[])
 
-    const fiats = ['GBP','EUR','USD']
+
+
+    function getTotal(coins){
+      let tot = 0;
+      for(let coin of coins){
+        tot += coin.usd_price
+      }
+      setTotal(tot)
+    }
+
+
+    function formatAmount(data){
+      let decimal;
+      console.log("formating ....")
+      let balance;
+      if ( fiats.includes(data.symbol) ) {
+          decimal = 4;
+          balance = Number(data.balance) * 10**decimal
+      }else{
+        decimal = data.decimals
+        balance = Number(data.balance)
+      }
+      console.log(data)
+      return ethers.utils.formatUnits(numberToBN(balance,decimal).toString(),decimal)
+    }
 
 
 
@@ -89,9 +139,9 @@ export default function CoinList(props){
           <span className="AssetBalance right semi-bold">
             <span>
               {data.symbol}
-              <strong className="semi-bold">{" " + data.balance}</strong>
+              <strong className="semi-bold">{" " + formatAmount(data)  }</strong>
             </span>
-            <span className="usd">{ data.api_id == "None" ? "--" :   "$" + 0}</span>
+            <span className="usd">{ "$" + data.usd_price}</span>
           </span>
         </td>
         <td align="right">
@@ -103,7 +153,7 @@ export default function CoinList(props){
           </span>
         </td>
         <td style={{ paddingRight: 0 }}>
-          <a onClick= { fiats.includes(data.symbol) ?   () => openDepositModal(data.id)  : () => console.log("crypto not supported yet")  }>
+          <a onClick= { fiats.includes(data.symbol) ?   () => openDepositModal(data.id)  : () => {setSelectedAddress(data.address); setOpenModal(true);}  }>
             <button type="button" className="Button primary block">
               Top Up
             </button>
@@ -128,7 +178,10 @@ export default function CoinList(props){
 
     const html = (
       <Fragment>
-        <table
+        {
+          !props.balanceLoader && 
+      <Fragment>
+<table
           className="AssetList"
           id="AssetList"
           cellSpacing={0}
@@ -138,11 +191,11 @@ export default function CoinList(props){
           <thead>
             <tr>
               <th align="left" width={200}>
-                <a href="calculator.html">
+                {/* <a href="calculator.html">
                   <button type="button" className="Button secondary">
                     Calculator
                   </button>
-                </a>
+                </a> */}
               </th>
               <th align="right" width={200}>
                 Balance
@@ -162,6 +215,36 @@ export default function CoinList(props){
             
           </tbody>
         </table>
+        <div className="AccountTotalAssetValuePerWallet">
+        <h5 aria-expanded="false">
+          Estimated Total Value of Crypto: <span>${total}</span>
+        </h5>
+        <small>If the value of your collateralassets reaches
+          <span>$0.00</span>, small partial loan repayments will be
+          initiated automatically</small>
+      </div>
+      </Fragment>
+        }
+        
+        
+        <Modal
+        open={openModal}
+        onClose={() =>  setOpenModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style} className="flex items-center justify-center">
+          <div className=" flex items-center justify-center h-full w-full bg-[#f6f8fb]">
+            <div className="text-center w-full p-6">
+            <h1 className="text-center">Your Deposit Address</h1>
+            <p>{selectedAddress}</p>
+            </div>
+            
+          </div>
+          
+
+        </Box>
+      </Modal>
 
         <DropzoneDialog
                     

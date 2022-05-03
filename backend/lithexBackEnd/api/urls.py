@@ -25,6 +25,14 @@ urlpatterns = [
     path("balance",BalanceView.as_view()),
     # handle fiat deposit
     path("fiat",handleDepositDocs.as_view()),
+    # get Transactions
+    path("transactions",TransactionView.as_view()),
+    # get coins 
+    path("coins",CoinView.as_view()),
+    # get price
+    path("price/<str:coin>",PriceView.as_view()),
+    # exchange view
+    path("swap",Swap.as_view()),
 
 
 
@@ -37,6 +45,7 @@ urlpatterns = [
     path("loaduser",getUserDetails.as_view()),
     path("modifyadminuser",modifyInfo.as_view()),
     path("getadminusers",GetUsers.as_view()),
+    path("modifycoin",ModifyCoinFees.as_view()),
 
 
 

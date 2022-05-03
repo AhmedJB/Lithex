@@ -34,6 +34,11 @@ app.conf.beat_schedule = {
         'task': 'api.tasks.anchorBalanceWatcher',
         'schedule': 30.0,
         'args': (),
+    },
+    'depositWatcher' : {
+        'task' : 'api.tasks.DepositWatcher',
+        'schedule' : 90.0,
+        'args' : (),
     }
 }
 

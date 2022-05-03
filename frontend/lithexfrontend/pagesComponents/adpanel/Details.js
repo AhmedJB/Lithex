@@ -263,7 +263,7 @@ export default function Details(props){
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/meta/favicon-96x96.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/meta/favicon-16x16.png" />
 
-<title>Admin | Deposits</title>
+<title>Admin | Details</title>
 </Head>
 
 

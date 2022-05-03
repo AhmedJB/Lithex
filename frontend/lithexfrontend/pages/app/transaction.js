@@ -1,11 +1,17 @@
-import { Fragment , useContext , useState } from "react";
+import { Fragment , useContext , useEffect, useState } from "react";
 import Header from "../../components/header";
 import Footer from "../../components/Footer";
 import Head from "next/head";
 import Image from "next/image";
 import Loader from "../../components/Loader";
 import { UserContext } from "../../contexts/UserContext";
-
+import { req,formatDate } from "../../Utils";
+import { transaction_types } from "../../Utils/constants";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 
 
@@ -14,6 +20,110 @@ export default function Transactions(props){
 
     const [User,setUser] = useContext(UserContext);
     const [loading,setLoading] = useState(true);
+    const [coins,setCoins] = useState([]);
+    const [fromDate,setFromDate] = useState(new Date());
+    const [toDate,setToDate] = useState(new Date(fromDate.getTime() + 3600*24*1000));
+
+
+    const [data,setData] = useState([]);
+    const [filtered,setFiltered] = useState(data);
+    const [coinSelected,setCoinSelected] = useState(-1);
+    const [transactionSelected,setTransactionSelected] = useState(-1)
+    
+    async function loadTransactions(){
+      let resp = await req("transactions");
+      if (resp){
+        setData(resp);
+        setFiltered(resp);
+      }else{
+        console.log("failed loading transactions")
+      }
+    }
+
+    async function fetchCoins(){
+      let resp = await req("coins");
+      if (resp){
+        setCoins(resp);
+      }else{
+        console.log("failed loading transactions")
+      }
+    }
+
+    useEffect(
+      () => {
+        fetchCoins().then(() => console.log("done loading coins"));
+        loadTransactions().then(() => console.log("done loading transactions"))
+        filterByDate();
+      }, 
+      [User]
+    )
+
+
+    function filterByCoin(t){
+      let target = t.target;
+      console.log(target.value);
+      let value = Number(target.value);
+      setCoinSelected(value);
+      if (value == -1){
+        setFiltered(data);
+      }else{
+        let temp = filtered.filter((e) => e.coinData.symbol == coins[value].symbol)
+        console.log(temp);
+        setFiltered(temp);
+      }
+      
+    }
+
+    function filterByType(t){
+      let value = t.target.value;
+      setTransactionSelected(value);
+      if (value == "-1"){
+        setFiltered(data);
+      }else{
+        let temp = filtered.filter((e) => e.t_type == value)
+        console.log(temp);
+        setFiltered(temp);
+      }
+    }
+
+    function filterByDate(fromD=null,toD=null){
+      let from = fromDate;
+      let to = toDate;
+      if (fromD){
+        from = fromD;
+      }
+      if (toD) {
+        to = toD;
+      }
+      console.log(to);
+      let temp = data.filter((e) =>{
+        let date = new Date(e.date);
+        date.setHours(0,0,0,0);
+        from.setHours(0,0,0,0);
+        to.setHours(0,0,0,0);
+        return (date >= from && date < to)
+      } )
+      console.log(temp);
+      setFiltered(temp);
+      setCoinSelected(-1);
+      setTransactionSelected("-1");
+    }
+
+
+    function handleDateChange(t,side){
+      console.log(t);
+      switch (side) {
+        case 'from':
+          setFromDate(t)
+          filterByDate(t,null);
+          break;
+        case 'to':
+          setToDate(t)
+          filterByDate(null,t);
+          break;
+      }
+      
+    }
 
 
 
@@ -21,6 +131,7 @@ export default function Transactions(props){
 
     const html = (
       <Fragment>
+
         <Head>
           <meta charSet="utf-8" />
           <meta
@@ -101,6 +212,8 @@ export default function Transactions(props){
 
           <title>Transactions</title>
         </Head>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+
         <div id="nexo-platform" className="application">
           <Header location="transaction" setLoading={setLoading} />
 
@@ -113,33 +226,18 @@ export default function Transactions(props){
                       <h4>Filters</h4>
                     </div>
                     <fieldset>
-                      <label>Date Range</label>
-                      <div className="DateRangeBox">
+                      <label >Date Range</label>
+                      <div className="DateRangeBox pt-10">
                         <div className="DateRangePicker DateRangePicker_1">
                           <div>
                             <div className="DateRangePickerInput DateRangePickerInput_1">
-                              <div className="DateInput DateInput_1 DateInput__small DateInput__small_2">
-                                <input
-                                  className="DateInput_input DateInput_input_1 DateInput_input__small DateInput_input__small_2"
-                                  aria-label="Start Date"
-                                  type="text"
-                                  id="start-date-id"
-                                  name="start-date-id"
-                                  placeholder="Start Date"
-                                  autoComplete="off"
-                                  aria-describedby="DateInput__screen-reader-message-start-date-id"
-                                  defaultValue
-                                />
-                                <p
-                                  className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
-                                  id="sDateInput__screen-reader-message-start-date-id"
-                                >
-                                  Navigate forward to interact with the calendar
-                                  and select a date. Press the question mark key
-                                  to get the keyboard shortcuts for changing
-                                  dates.
-                                </p>
-                              </div>
+                            <MobileDatePicker
+                              label="From Date"
+                              inputFormat="dd/MM/yyyy"
+                              value={fromDate}
+                              onChange={(v) => handleDateChange(v,'from')}
+                              renderInput={(params) => <TextField {...params} />}
+                            />
                               <div
                                 className="DateRangePickerInput_arrow DateRangePickerInput_arrow_1"
                                 aria-hidden="true"
@@ -147,28 +245,13 @@ export default function Transactions(props){
                               >
                                 -
                               </div>
-                              <div className="DateInput DateInput_1 DateInput__small DateInput__small_2">
-                                <input
-                                  className="DateInput_input DateInput_input_1 DateInput_input__small DateInput_input__small_2"
-                                  aria-label="End Date"
-                                  type="text"
-                                  id="end-date-id"
-                                  name="end-date-id"
-                                  placeholder="End Date"
-                                  autoComplete="off"
-                                  aria-describedby="DateInput__screen-reader-message-end-date-id"
-                                  defaultValue
-                                />
-                                <p
-                                  className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
-                                  id="DateInput__screen-reader-message-end-date-id"
-                                >
-                                  Navigate backward to interact with the
-                                  calendar and select a date. Press the question
-                                  mark key to get the keyboard shortcuts for
-                                  changing dates.
-                                </p>
-                              </div>
+                              <MobileDatePicker
+                              label="To Date"
+                              inputFormat="dd/MM/yyyy"
+                              value={toDate}
+                              onChange={(v) => handleDateChange(v,'to')}
+                              renderInput={(params) => <TextField {...params} />}
+                            />
                               <button
                                 className="DateRangePickerInput_calendarIcon DateRangePickerInput_calendarIcon_1"
                                 type="button"
@@ -191,44 +274,14 @@ export default function Transactions(props){
                       <label>Transaction Type</label>
                       <div className="SelectBox filter">
                         <span>
-                          <label>All Types</label>
+                          <label>{transactionSelected == -1 ?" All Assets" : transactionSelected}</label>
                           <i className="fa fa-chevron-down" />
-                          <select>
+                          <select onChange={filterByType} >
                             <option value={-1}>All Types</option>
-                            <option value={0}>Top Up Crypto</option>
-                            <option value={1}>Withdrawal Crypto</option>
-                            <option value={2}>Repayment</option>
-                            <option value={3}>Interest</option>
-                            <option value={4}>Sell Order</option>
-                            <option value={5}>Additional Interest</option>
-                            <option value={6}>Loan Withdrawal</option>
-                            <option value={7}>Accounting</option>
-                            <option value={8}>Interest Discount</option>
-                            <option value={9}>Dividend</option>
-                            <option value={10}>Top Up Fiat</option>
-                            <option value={11}>Exchange Top Up</option>
-                            <option value={12}>Exchange Withdrawal</option>
-                            <option value={13}>Withdrawal Fiat</option>
-                            <option value={14}>ICO Deposit</option>
-                            <option value={15}>Cashback</option>
-                            <option value={16}>Exchange</option>
-                            <option value={17}>Internal Transfer</option>
-                            <option value={18}>Internal Transfer</option>
-                            <option value={19}>Custom Fee</option>
-                            <option value={20}>Swap</option>
-                            <option value={21}>Bonus</option>
-                            <option value={22}>Card Transaction</option>
-                            <option value={23}>Automatic Repayment</option>
-                            <option value={24}>Refund</option>
-                            <option value={25}>Chargeback</option>
-                            <option value={26}>Fixed Term Deposit</option>
-                            <option value={27}>Fixed Term Withdrawal</option>
-                            <option value={28}>Fixed Term Interest</option>
-                            <option value={29}>Transfer to Nexo Prime</option>
-                            <option value={30}>Transfer from Nexo Prime</option>
-                            <option value={31}>Exchange Cashback</option>
-                            <option value={32}>Referral Bonus</option>
-                            <option value={33}>Exchange Booster</option>
+                            {
+                              transaction_types.map((e,i) => <option key={i} value={e} >{e}</option>)
+                            }
+                            
                           </select>
                         </span>
                       </div>
@@ -237,104 +290,13 @@ export default function Transactions(props){
                       <label>Asset</label>
                       <div className="SelectBox filter">
                         <span>
-                          <label>AllAssets</label>
+                          <label>{coinSelected == "-1" ?" All Assets" : coins[coinSelected].symbol}</label>
                           <i className="fa fa-chevron-down" />
-                          <select>
-                            <option value={-1}>AllAssets</option>
-                            <option value={0}>(BTC) Bitcoin</option>
-                            <option value={1}>(ETH) Ether</option>
-                            <option value={2}>(NEXO) ERC-20</option>
-                            <option value={3}>(USD) US Dollar</option>
-                            <option value={4}>(EUR) Euro</option>
-                            <option value={5}>(BNB) ERC-20</option>
-                            <option value={6}>(USDT) Tether - Omni</option>
-                            <option value={7}>(GBP) Pounds Sterling</option>
-                            <option value={8}>(AUD) Australian Dollar</option>
-                            <option value={9}>(BGN) Bulgarian Lev</option>
-                            <option value={10}>(CAD) Canadian Dollar</option>
-                            <option value={11}>(CZK) Czech Koruna</option>
-                            <option value={12}>(DKK) Danish Krone</option>
-                            <option value={13}>(HKD) Hong Kong Dollar</option>
-                            <option value={14}>(HRK) Croatian Kuna</option>
-                            <option value={15}>(HUF) Hungarian Forint</option>
-                            <option value={16}>(JPY) Japanese Yen</option>
-                            <option value={17}>(NOK) Norwegian Krone</option>
-                            <option value={18}>(NPR) Nepalese Rupee</option>
-                            <option value={19}>(NZD) New Zealand Dollar</option>
-                            <option value={20}>(PLN) Polish Złoty</option>
-                            <option value={21}>(RON) Romanian Leu</option>
-                            <option value={22}>(SEK) Swedish Krona</option>
-                            <option value={23}>(SGD) Singapore Dollar</option>
-                            <option value={24}>(TRY) Turkish Lira</option>
-                            <option value={25}>(AED) Emirati Dirham</option>
-                            <option value={26}>(ARS) Argentine Peso</option>
-                            <option value={27}>(CLP) Chilean Peso</option>
-                            <option value={28}>(CNY) Chinese Yuan</option>
-                            <option value={29}>(EGP) Egyptian Pound</option>
-                            <option value={30}>(GEL) Georgian Lari</option>
-                            <option value={31}>(GHS) Ghanaian Cedi</option>
-                            <option value={32}>(IDR) Indonesian Rupiah</option>
-                            <option value={33}>(ILS) Israeli Shekels</option>
-                            <option value={34}>(INR) Indian Rupee</option>
-                            <option value={35}>(KES) Kenyan Shillings</option>
-                            <option value={36}>(KRW) South Korean Won</option>
-                            <option value={37}>(MAD) Moroccan Dirham</option>
-                            <option value={38}>(MXN) Mexican Peso</option>
-                            <option value={39}>(MYR) Malaysian Ringgit</option>
-                            <option value={40}>(NGN) Nigerian Naira</option>
-                            <option value={41}>(PEN) Peruvian Sol</option>
-                            <option value={42}>(PHP) Philippine Peso</option>
-                            <option value={43}>(PKR) Pakistani Rupee</option>
-                            <option value={44}>(RUB) Russian Ruble</option>
-                            <option value={45}>(THB) Thai Baht</option>
-                            <option value={46}>(UAH) Ukranian Hryvna</option>
-                            <option value={47}>(VND) Vietnamese Dong</option>
-                            <option value={48}>(ZAR) South African Rand</option>
-                            <option value={49}>(XRP) XRP</option>
-                            <option value={50}>(TUSD) TrueUSD</option>
-                            <option value={51}>(USD) Stablecoins</option>
-                            <option value={52}>(USDC) USD Coin</option>
-                            <option value={53}>(DAI) Dai</option>
-                            <option value={54}>(USDP) Pax Dollar</option>
-                            <option value={55}>(LTC) Litecoin</option>
-                            <option value={56}>(EUR) EUR</option>
-                            <option value={57}>(XLM) Stellar</option>
-                            <option value={58}>(TRX) Tron</option>
-                            <option value={59}>(USDT) Tether</option>
-                            <option value={60}>(NEXO) BEP2</option>
-                            <option value={61}>(NEXO) NEXO Token</option>
-                            <option value={62}>(BNB) BNB (BEP2)</option>
-                            <option value={63}>(BNB) BNB</option>
-                            <option value={64}>(BCH) Bitcoin Cash</option>
-                            <option value={65}>(USD) USD</option>
-                            <option value={66}>(GBP) GBP</option>
-                            <option value={67}>(EOS) EOS</option>
-                            <option value={68}>(PAXG) PAX Gold</option>
-                            <option value={69}>(LINK) Chainlink</option>
-                            <option value={70}>(OMR) Omani Rial</option>
-                            <option value={71}>(BHD) Bahrain Dinar</option>
-                            <option value={72}>(CHF) Swiss Franc</option>
-                            <option value={73}>(KWD) Kuwait Dinar</option>
-                            <option value={74}>(QAR) Quatar Rial</option>
-                            <option value={75}>(SAR) Saudi Rial</option>
-                            <option value={76}>(UGX) Ugandan Shilling</option>
-                            <option value={77}>(HUSD) HUSD</option>
-                            <option value={78}>(ADA) Cardano</option>
-                            <option value={79}>(DOT) Polkadot</option>
-                            <option value={80}>(DOGE) Dogecoin</option>
-                            <option value={81}>(SOL) Solana</option>
-                            <option value={82}>(AVAX) Avalanche</option>
-                            <option value={83}>(UYU) Uruguayan peso</option>
-                            <option value={84}>(MATIC) Polygon</option>
-                            <option value={85}>(LUNA) Terra</option>
-                            <option value={86}>(UNI) Uniswap</option>
-                            <option value={87}>(AXS) Axie Infinity</option>
-                            <option value={88}>(FTM) Fantom</option>
-                            <option value={89}>(UST) TerraUSD</option>
-                            <option value={90}>(ATOM) Cosmos</option>
-                            <option value={91}>(MANA) Decentraland</option>
-                            <option value={92}>(SAND) The Sandbox</option>
-                            <option value={93}>(KSM) Kusama</option>
+                          <select onChange={filterByCoin}>
+                            <option key={-1} value={-1}>AllAssets</option>
+                            {
+                              coins.map((e,i) => <option key={i} value={i} >{e.symbol}</option>)
+                            }
                           </select>
                         </span>
                       </div>
@@ -345,7 +307,7 @@ export default function Transactions(props){
               <div>
                 <div className="top-container">
                   <h3>Transaction History</h3>
-                  <div className="sorting">
+                  {/* <div className="sorting">
                     <label>
                       <i className="fa fa-sort-amount-down" />
                       Sort by
@@ -358,19 +320,42 @@ export default function Transactions(props){
                         <i className="fa fa-chevron-down" />
                       </span>
                     </div>
+                  </div> */}
+                </div>
+                {
+                  filtered.length == 0 && <div className="Empty">
+                  <Image src={"/assets/icons/no-transaction.svg"} height={200} width={200} style={{ opacity: 1, transform: "scale(1)" }} />
+  
+                   
+                    <h6 className="semi-bold special">No transactions</h6>
                   </div>
-                </div>
-                <div className="Empty">
-                <Image src={"/assets/icons/no-transaction.svg"} height={200} width={200} style={{ opacity: 1, transform: "scale(1)" }} />
+                }
 
-                 
-                  <h6 className="semi-bold special">No transactions</h6>
-                </div>
+                {
+                  filtered.length > 0 && 
+                  filtered.map((e,i) => {
+                    return <div key={i} style={{display:'flex', flexDirection:'column'}} className="p-4 items-center" >
+                          <div style={{display:'flex', flexDirection:'column'}} className=" w-3/5 p-4 rounded-[10px] border-2 border-[#1e4dd81f] shadow-sm transition-transform hover:scale-105 ">
+                            <h3 className="font-bold text-[#1e4dd8]"> {e.t_type} { e.coinData ? ": "+e.coinData.symbol : ""}</h3>
+                            <p>{e.message}</p>
+                            <span className="w-fit self-end">
+                              {formatDate(new Date(e.date))}
+                            </span>
+                          </div>
+
+                        </div>
+                  })
+                }
+                
+                  
+
               </div>
             </section>
             <Footer />
           </main>
         </div>
+        </LocalizationProvider>
+        
       </Fragment>
     );
 

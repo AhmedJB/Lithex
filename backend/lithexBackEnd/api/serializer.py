@@ -1,6 +1,6 @@
 
 from rest_framework.serializers import ModelSerializer
-from .models import CustomUser, DepositDocs,Documents,PersonalInfo,DocumentTicket,Balance,Coin
+from .models import CustomUser, DepositDocs,Documents,PersonalInfo,DocumentTicket,Balance,Coin, Transactions
 
 class RegisterSerializer(ModelSerializer):
     class Meta:
@@ -57,7 +57,7 @@ class PersonalInfoSerializer(ModelSerializer):
 class BalanceSerializer(ModelSerializer):
     class Meta:
         model = Balance
-        fields = "__all__"
+        fields = ['id','coin','balance','credit']
 
 
 class CoinSerializer(ModelSerializer):
@@ -65,3 +65,7 @@ class CoinSerializer(ModelSerializer):
         model = Coin
         fields = "__all__"
 
+class TransactionsSerializer(ModelSerializer):
+    class Meta:
+        model = Transactions
+        fields = "__all__"

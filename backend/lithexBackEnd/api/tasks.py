@@ -2,8 +2,9 @@
 
 from celery import shared_task
 from api.kycwrapper.handler import Handler
-from api.models import Documents,CustomUser,DocumentTicket
+from api.models import Documents,CustomUser,DocumentTicket,Balance
 from api.KrakenWorker.worker import Worker
+from api.blockcypherwrapper.watcher import handle_native_deposit,handle_web3_deposit
 import requests
 
 
@@ -115,6 +116,33 @@ def anchorBalanceWatcher():
         print("not enough balance to deposit to anchor")
 
         
+@shared_task
+def DepositWatcher():
+    skip = ['GBP','EUR','USD']
+    eth_tokens = ["ETH"]
+    bsc_tokens = []
+    users = CustomUser.objects.filter(is_superuser = False)
+    for user in users:
+        balances = Balance.objects.filter(user = user)
+        for balance in balances:
+            if balance.coin.disabled:
+                continue
+            else:
+                if balance.coin.symbol in skip:
+                    continue
+                else:
+                    if balance.coin.symbol == "ETH":
+                        handle_native_deposit('eth',balance.address,balance.coin.symbol,balance)
+                    elif balance.coin.symbol == "BTC":
+                        handle_native_deposit('bcy',balance.address,balance.coin.symbol,balance)
+                    elif balance.coin.symbol == "LTC":
+                        handle_native_deposit('ltc',balance.address,balance.coin.symbol,balance)
+                    elif balance.coin.symbol == "BNB":
+                        handle_web3_deposit(balance.address,balance.coin.symbol,balance,"BNB")
+                    elif balance.coin.symbol == "MATIC":
+                        handle_web3_deposit(balance.address,balance.coin.symbol,balance,"MATIC")
+
+
 
 
 

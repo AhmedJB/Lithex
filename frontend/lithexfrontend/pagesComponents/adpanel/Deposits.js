@@ -163,7 +163,7 @@ export default function Deposits(props){
         
         <div className="card">
           <div className="w-full flex items-center justify-between">
-            <h3>Verification Tickets</h3>
+            <h3>Deposits</h3>
           <Autocomplete
                   {...defaultProps}
                   sx={style}
