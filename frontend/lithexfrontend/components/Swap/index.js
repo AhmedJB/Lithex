@@ -40,9 +40,10 @@ export default function Swap(props) {
     let resp = await req("coins");
     if (resp){
       setCoins(resp);
-      setSelectedTopSide(coins[0]);
-      setselectedBottomSide(coins[1]);
-      setLoadingRates(false);
+      setSelectedTopSide(resp[0]);
+      setselectedBottomSide(resp[1]);
+      calculateOutRate(resp[1]);
+      
     }else{
       console.log("failed getting tokens");
     }

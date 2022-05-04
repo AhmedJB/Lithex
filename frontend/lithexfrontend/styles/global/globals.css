@@ -13,6 +13,11 @@ body {
     background: #f9f9fb;
 }
 
+.neum{
+    box-shadow:  5px 5px 10px #d1d1d1,
+             -5px -5px 10px #ffffff;
+}
+
 .btn-outline-secondary {
     color: #6c757d !important;
     border-color: #ced4da !important;

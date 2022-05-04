@@ -16,3 +16,5 @@ chain_ids = {
 }
 
 fiats = ["USD","GBP","EUR"]
+
+watch_coins = ["USD","GBP","EUR","ETH","LTC","BTC","MATIC"]

@@ -97,9 +97,9 @@ export default function Coins(props){
         let withdraw_fee = Number(document.getElementById("w_fee").value)
         let exchange_fee = Number(document.getElementById("e_fee").value)
         let body = selectedCoin;
-        body['d_fee'] = deposit_fee;
-        body['w_fee'] = withdraw_fee;
-        body['e_fee'] = exchange_fee;
+        body['d_fee'] = deposit_fee/100;
+        body['w_fee'] = withdraw_fee/100;
+        body['e_fee'] = exchange_fee/100;
         console.log(body);
         setOpenModal(false);
         let resp = await postReq("modifycoin",body);
@@ -194,17 +194,17 @@ const html = <Fragment>
                   </td>
                   <td align="left">
                     <span className="AssetBalance right semi-bold">
-                      {e.d_fee}%
+                      {e.d_fee*100}%
                     </span>
                   </td>
                   <td align="left">
                     <span className="AssetBalance right semi-bold">
-                      {e.w_fee}%
+                      {e.w_fee*100}%
                     </span>
                   </td>
                   <td align="left">
                     <span className="AssetBalance right semi-bold">
-                      {e.e_fee}%
+                      {e.e_fee*100}%
                     </span>
                   </td>
                   
@@ -242,11 +242,11 @@ const html = <Fragment>
                 {
                     selectedCoin && <Fragment>
                             <label className="mt-l" style={{margin:10}}>Deposit Fee</label>
-          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="d_fee" defaultValue={ selectedCoin.d_fee } placeholder="Value" /></div>
+          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="d_fee" defaultValue={ selectedCoin.d_fee*100 } placeholder="Value" /></div>
           <label className="mt-l" style={{margin:10}}>Withdraw Fee</label>
-          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="w_fee" defaultValue={ selectedCoin.w_fee } placeholder="Value" /></div>
+          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="w_fee" defaultValue={ selectedCoin.w_fee*100 } placeholder="Value" /></div>
           <label className="mt-l" style={{margin:10}}>Exchange Fee</label>
-          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="e_fee" defaultValue={ selectedCoin.e_fee } placeholder="Value" /></div>
+          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="e_fee" defaultValue={ selectedCoin.e_fee*100 } placeholder="Value" /></div>
           <button type="button" onClick={() => updateFee()} className="Button primary block"> Modify </button>
                     </Fragment>
                 }

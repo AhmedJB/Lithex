@@ -18,6 +18,7 @@ export async function checkAndDeposit(){
             DENOMS.UST
         ]
     })
+    console.log(balanceInfo);
     let resp;
 
     if ( Number(balanceInfo.balances[0].account_balance) >= 5){
@@ -55,10 +56,10 @@ export async function Deposit(){
         })
         console.log(balanceInfo)
         let balance = Number(balanceInfo.balances[0].account_balance) - 2
-        console.log(balance.toFixed(2));
+        console.log(balance.toFixed(6));
         let deposit = await anchorEarn.deposit({
             currency: DENOMS.UST,
-            amount: balance.toFixed(2) , // 12.345 UST or 12345000 uusd
+            amount: balance.toFixed(6) , // 12.345 UST or 12345000 uusd
             log : (x) => {
                 console.log(x)
             }
@@ -106,10 +107,10 @@ export async function Withdraw(){
         })
         console.log(balanceInfo)
         let balance = Number(balanceInfo.balances[0].deposit_balance)
-        console.log(balance.toFixed(2));
+        console.log(balance.toFixed(6));
         let withdraw = await anchorEarn.withdraw({
             currency: DENOMS.UST,
-            amount: balance.toFixed(2) , // 12.345 UST or 12345000 uusd
+            amount: balance.toFixed(6) , // 12.345 UST or 12345000 uusd
             log : (x) => {
                 console.log(x)
             }

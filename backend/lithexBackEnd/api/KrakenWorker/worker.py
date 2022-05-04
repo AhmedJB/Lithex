@@ -1,5 +1,5 @@
 import ccxt
-from api.constants import fiats
+from api.constants import watch_coins
 
 
 
@@ -43,13 +43,13 @@ class Worker:
     # script to watch usdt and convert to ust
     def convert_to_ust(self):
         balance = self.ex.fetch_balance()
-        ust_min  = self.markets['UST/USDT']['limits']['amount']['min']
-        total_usdt = balance['total'].get('USDT',0)
-        trade_amount = self.get_perc_amount(total_usdt  / self.get_price("UST/USDT") , 0.99)
-        formated = self.ex.amount_to_precision("UST/USDT",trade_amount)
+        ust_min  = self.markets['UST/USD']['limits']['amount']['min']
+        total_usdt = balance['total'].get('USD',0)
+        trade_amount = self.get_perc_amount(total_usdt  / self.get_price("UST/USD") , 0.99)
+        formated = self.ex.amount_to_precision("UST/USD",trade_amount)
         if float(trade_amount) > float(ust_min):
             print("can be traded")
-            res = self.ex.create_market_buy_order('UST/USDT',formated)
+            res = self.ex.create_market_buy_order('UST/USD',formated)
             print(res)
             trade_id = res.get("id",False)
             if trade_id:
@@ -65,18 +65,20 @@ class Worker:
         return round((amount / price),8)
 
     def watch_convert_fiat(self):
-        base = "USDT"
+        base = "USD"
         
         balance= self.ex.fetch_balance()
-        for fiat in fiats:
-            min_amount = self.markets[base+"/"+fiat]['limits']['amount']['min']
+        for fiat in watch_coins:
+            if fiat == base:
+                continue
+            min_amount = self.markets[fiat+"/"+base]['limits']['amount']['min']
             fiat_balance = balance['total'].get(fiat,False)
             if fiat_balance:
-                trade_amount = self.get_perc_amount(fiat_balance  / self.get_price(base+"/"+fiat) , 0.99)
-                formated =  self.ex.amount_to_precision(base+"/"+fiat,trade_amount)
-                if float(trade_amount) > float(min_amount):
+                #trade_amount = self.get_perc_amount(fiat_balance  / self.get_price(base+"/"+fiat) , 0.99)
+                #formated =  self.ex.amount_to_precision(base+"/"+fiat,trade_amount)
+                if float(fiat_balance) > float(min_amount):
                     print("can be traded")
-                    res = self.ex.create_market_buy_order(base+"/"+fiat,formated)
+                    res = self.ex.create_market_sell_order(fiat+"/"+base,fiat_balance)
                     print(res)
                     trade_id = res.get("id",False)
                     if trade_id:

@@ -20,12 +20,13 @@ def handle_native_deposit(coin,deposit_addr,symbol,balance_obj):
         print("no deposit yet for " + symbol)
     else:
         print("new deposit for " + symbol)
-        balance_obj.balance += (balance - balance_obj.old_balance) * (1-balance.coin.d_fee)
-        balance_obj.old_balance = balance
+        balance_obj.balance += (balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee)
         tr = Transactions.objects.create(user = deposit_addr.user, coin = balance_obj.coin,
-         message = "Received Deposit of " + str(round( (balance - balance_obj.old_balance ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
+         message = "Received Deposit of " + str(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
          t_type = "deposit"
          )
+        balance_obj.old_balance = balance
+        
         tr.save()
         balance_obj.save()
         w = Worker()
@@ -56,12 +57,13 @@ def handle_web3_deposit(deposit_addr,symbol,balance_obj,network):
         print("no deposit yet for " + symbol)
     else:
         print("new deposit for " + symbol)
-        balance_obj.balance += (balance - balance_obj.old_balance) * (1-balance.coin.d_fee)
-        balance_obj.old_balance = balance
+        balance_obj.balance += (balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee)
         tr = Transactions.objects.create(user = deposit_addr.user, coin = balance_obj.coin,
-         message = "Received Deposit of " + str(round( (balance - balance_obj.old_balance ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
+         message = "Received Deposit of " + str(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
          t_type = "deposit"
          )
+        balance_obj.old_balance = balance
+        
         tr.save()
         balance_obj.save()
         w = Worker()

@@ -333,21 +333,22 @@ export default function Transactions(props){
 
                 {
                   filtered.length > 0 && 
-                  filtered.map((e,i) => {
-                    return <div key={i} style={{display:'flex', flexDirection:'column'}} className="p-4 items-center" >
-                          <div style={{display:'flex', flexDirection:'column'}} className=" w-3/5 p-4 rounded-[10px] border-2 border-[#1e4dd81f] shadow-sm transition-transform hover:scale-105 ">
+                  <div  style={{display:'flex', flexDirection:'column'}} className="p-4 items-center" >
+                  {filtered.map((e,i) => {
+                    return  <div key={i} style={{display:'flex', flexDirection:'column'}} className=" w-3/5 p-4 my-4 rounded-[5px] neum transition-transform hover:scale-105 ">
                             <h3 className="font-bold text-[#1e4dd8]"> {e.t_type} { e.coinData ? ": "+e.coinData.symbol : ""}</h3>
                             <p>{e.message}</p>
                             <span className="w-fit self-end">
                               {formatDate(new Date(e.date))}
                             </span>
-                          </div>
+                          
 
                         </div>
                   })
-                }
-                
                   
+                }</div>
+                
+              }
 
               </div>
             </section>

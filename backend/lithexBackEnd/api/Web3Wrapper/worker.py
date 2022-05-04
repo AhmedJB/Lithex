@@ -17,7 +17,7 @@ class Web3Worker:
         return res
 
     def get_confirmed_balance(self,address):
-        return self.w3.eth.getBalance(address)
+        return self.w3.eth.getBalance(Web3.toChecksumAddress(address))
 
     def signAndSendTransaction(self,tx,privateKey):
         try:
@@ -30,9 +30,10 @@ class Web3Worker:
     
 
     def transferFull(self,to,from_acc):
-        amount = self.get_confirmed_balance(from_acc.address)
+        address = Web3.toChecksumAddress(from_acc.address)
+        amount = self.get_confirmed_balance(address)
         print(amount)
-        nonce = self.w3.eth.getTransactionCount(from_acc.address)
+        nonce = self.w3.eth.getTransactionCount(address)
         tx = {
         'chainId' : self.chainId,
         'nonce': nonce,
