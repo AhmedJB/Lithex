@@ -1,8 +1,10 @@
 
 
+from ast import With
+from tkinter import W
 from celery import shared_task
 from api.kycwrapper.handler import Handler
-from api.models import Documents,CustomUser,DocumentTicket,Balance
+from api.models import Documents,CustomUser,DocumentTicket,Balance,WithdrawSettings
 from api.KrakenWorker.worker import Worker
 from api.blockcypherwrapper.watcher import handle_native_deposit,handle_web3_deposit
 import requests
@@ -85,7 +87,9 @@ def ust_watcher():
 
 @shared_task
 def withdraw_watcher(active):
-    if active:
+    sett = WithdrawSettings.objects.all()[0]
+    disabled = sett.disable_ust_withdrawals
+    if not disabled:
         worker = Worker()
         worker.withdraw()
     else:

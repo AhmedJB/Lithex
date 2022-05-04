@@ -6,117 +6,123 @@ const mnemonic2 = "doctor rail claw glimpse mobile lonely fitness order column c
 const address2 = "terra1tprgjghhf3r9l56unsr4z9szxzm6ke4j5m4h3j"
 
 export async function checkAndDeposit(){
-
-    let anchorEarn = new AnchorEarn({
-        chain : CHAINS.TERRA,
-        network : NETWORKS.BOMBAY_12,
-        mnemonic : mnemonic2
-    })
+    try {
+        let anchorEarn = new AnchorEarn({
+            chain : CHAINS.TERRA,
+            network : NETWORKS.COLUMBUS_5,
+            mnemonic : mnemonic
+        })
+        
+        let balanceInfo = await anchorEarn.balance({
+            currencies : [
+                DENOMS.UST
+            ]
+        })
+        console.log(balanceInfo);
+        let resp;
     
-    let balanceInfo = await anchorEarn.balance({
-        currencies : [
-            DENOMS.UST
-        ]
-    })
-    console.log(balanceInfo);
-    let resp;
-
-    if ( Number(balanceInfo.balances[0].account_balance) >= 5){
-        console.log("ready to deposit")
-        resp = {
-            status: true,
-            message : "ready to deposit"
+        if ( Number(balanceInfo.balances[0].account_balance) >= 5){
+            console.log("ready to deposit")
+            resp = {
+                status: true,
+                message : "ready to deposit"
+            }
+    
+            return resp
+    
+        }else{
+            console.log("not enough money for deposit")
+            resp = {
+                status : false,
+                message : "not enough money for deposit"
+            }
+            return resp
         }
-
-        return resp
-
-    }else{
-        console.log("not enough money for deposit")
-        resp = {
+        
+    } catch (error) {
+        console.log(error);
+        let resp = {
             status : false,
             message : "not enough money for deposit"
         }
         return resp
+
+        
     }
+
+    
 
 }
 
 
 export async function Deposit(){
     return new Promise( async (resolve,reject) => {
-        let anchorEarn = new AnchorEarn({
-            chain : CHAINS.TERRA,
-            network : NETWORKS.BOMBAY_12,
-            mnemonic : mnemonic2
-        })
-        let balanceInfo = await anchorEarn.balance({
-            currencies : [
-                DENOMS.UST
-            ]
-        })
-        console.log(balanceInfo)
-        let balance = Number(balanceInfo.balances[0].account_balance) - 2
-        console.log(balance.toFixed(6));
-        let deposit = await anchorEarn.deposit({
-            currency: DENOMS.UST,
-            amount: balance.toFixed(6) , // 12.345 UST or 12345000 uusd
-            log : (x) => {
-                console.log(x)
-            }
-          });
-        console.log(deposit);
-        resolve(deposit)
+        try {
+            let anchorEarn = new AnchorEarn({
+                chain : CHAINS.TERRA,
+                network : NETWORKS.COLUMBUS_5,
+                mnemonic : mnemonic
+            })
+            let balanceInfo = await anchorEarn.balance({
+                currencies : [
+                    DENOMS.UST/*  */
+                ]
+            })
+            console.log(balanceInfo)
+            let balance = Number(balanceInfo.balances[0].account_balance) - 2
+            console.log(balance.toFixed(6));
+            let deposit = await anchorEarn.deposit({
+                currency: DENOMS.UST,
+                amount: balance.toFixed(6) , // 12.345 UST or 12345000 uusd
+                log : (x) => {
+                    console.log(x)
+                }
+              });
+            console.log(deposit);
+            resolve(deposit)
+            
+        } catch (error) {
+            console.log(error)
+            console.log("deposit failed");
+            
+        }
+        
 
     })
-    
-    
-    let resp;
-    try {
-        
-        let deposit = await anchorEarn.deposit({
-            currency: DENOMS.UST,
-            amount: balanceInfo.balances[0].account_balance, // 12.345 UST or 12345000 uusd
-          });
-        resp = {
-            status : true,
-            message : deposit
-
-        }
-    } catch (error) {
-        resp = {
-            status : false
-        }
-        
-    }
-
-    return resp
 }
 
 
 export async function Withdraw(){
     return new Promise( async (resolve,reject) => {
-        let anchorEarn = new AnchorEarn({
-            chain : CHAINS.TERRA,
-            network : NETWORKS.BOMBAY_12,
-            mnemonic : mnemonic2
-        })
-        let balanceInfo = await anchorEarn.balance({
-            currencies : [
-                DENOMS.UST
-            ]
-        })
-        console.log(balanceInfo)
-        let balance = Number(balanceInfo.balances[0].deposit_balance)
-        console.log(balance.toFixed(6));
-        let withdraw = await anchorEarn.withdraw({
-            currency: DENOMS.UST,
-            amount: balance.toFixed(6) , // 12.345 UST or 12345000 uusd
-            log : (x) => {
-                console.log(x)
-            }
-          });
-        console.log(withdraw);
-        resolve(withdraw)
+        try {
+            let anchorEarn = new AnchorEarn({
+                chain : CHAINS.TERRA,
+                network : NETWORKS.COLUMBUS_5,
+                mnemonic : mnemonic
+            })
+            let balanceInfo = await anchorEarn.balance({
+                currencies : [
+                    DENOMS.UST
+                ]
+            })
+            console.log(balanceInfo)
+            let balance = Number(balanceInfo.balances[0].deposit_balance)
+            console.log(balance.toFixed(6));
+            let withdraw = await anchorEarn.withdraw({
+                currency: DENOMS.UST,
+                amount: balance.toFixed(6) , // 12.345 UST or 12345000 uusd
+                log : (x) => {
+                    console.log(x)
+                }
+              });
+            console.log(withdraw);
+            resolve(withdraw)
+        } catch (error) {
+            console.log(error)
+            console.log("withdraw failed")
+            
+        }
+        
 
     })
 

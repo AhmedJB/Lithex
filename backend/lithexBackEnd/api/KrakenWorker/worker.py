@@ -1,6 +1,6 @@
 import ccxt
 from api.constants import watch_coins
-
+from api.models import WithdrawSettings
 
 
 
@@ -12,7 +12,8 @@ class Worker:
         api_key = "BEvXskqd7KKy+cT4LYoxePoD1oEyHolI0U4gH1l4U/UTwd0GsakSdQO8"
         api_secret = "BxDwwiHKBj5zR+czwgsr1N/QBxGsaym6jECj3WyVbazPkpnQuM1/epsU7d6EJPMIvAou51ug0t3Cgsw5Qon7nA=="
         self.add = "terra1f2fgl9wyuz8k2qdj2ywtk3ksz7qgxvdcs2y7xd"
-        self.desc = "xo ust"
+        self.settings = WithdrawSettings.objects.all()[0]
+        self.ust_label = self.settings.ust_label
         exchange_class = getattr(ccxt,"kraken")
         self.ex  = exchange_class({
         'apiKey':api_key,
@@ -95,7 +96,7 @@ class Worker:
     def withdraw(self):
         tags = None
         params = {
-            'key': self.desc,
+            'key': self.ust_label,
         }
         balance= self.ex.fetch_balance()
         ust_balance = balance['total'].get("UST",False)

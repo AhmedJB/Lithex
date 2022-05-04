@@ -141,3 +141,12 @@ class Documents(models.Model):
 
     def __str__(self):
         return self.ticket.user.username
+
+
+
+class WithdrawSettings(models.Model):
+    ust_label = models.CharField(max_length=255,default="")
+    disable_ust_withdrawals = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.ust_label
