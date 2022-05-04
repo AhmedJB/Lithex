@@ -1,9 +1,9 @@
 import axios from 'axios';
 import {ethers} from "ethers"
 
-const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
+//const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
 //const base_url = "http://35eb-105-69-234-197.ngrok.io"
-/* const base_url = "http://dev.liqd.fi" */
+const base_url = "http://dev.liqd.fi"
 const api = base_url + '/api/'
 
 function set_header(token = null,file=false){
