@@ -1,7 +1,3 @@
-
-
-from ast import With
-from tkinter import W
 from celery import shared_task
 from api.kycwrapper.handler import Handler
 from api.models import Documents,CustomUser,DocumentTicket,Balance,WithdrawSettings
