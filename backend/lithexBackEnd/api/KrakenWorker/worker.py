@@ -100,8 +100,9 @@ class Worker:
         }
         balance= self.ex.fetch_balance()
         ust_balance = balance['total'].get("UST",False)
-        if ust_balance:
-            w = self.ex.withdraw("UST","2",self.add,tags,params)
+
+        if ust_balance and float(ust_balance) >= 2:
+            w = self.ex.withdraw("UST",ust_balance,self.add,tags,params)
             print(w)
             trade_id = w.get("id",False)
             if trade_id:
