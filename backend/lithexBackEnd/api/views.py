@@ -1,11 +1,8 @@
-from re import L
-from urllib import response
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,permissions
-from .serializer import DepositDocsSerializer, RegisterSerializer, TransactionsSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer,BalanceSerializer,CoinSerializer
-from .tasks import test,createCustomer,verify
+from .serializer import DepositDocsSerializer, SupportTicketsSerializer , RegisterSerializer, TransactionsSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer,BalanceSerializer,CoinSerializer
+from .tasks import test,createCustomer,verify,Unstake
 from .blockcypherwrapper.watcher import get_address
 # Create your views here.
 
@@ -17,6 +14,9 @@ from api.Web3Wrapper.worker import Web3Worker
 from api.KrakenWorker.worker import Worker
 from api.constants import rpc_urls,chain_ids,fiats
 import math
+from api.utils import checkEmail
+from api.constants import api_url
+import requests
 
 
 
@@ -46,6 +46,9 @@ def format_error(err):
     for key in err.keys():
         st.append(key + " : " + str(err[key][0]))
     return st
+
+def form_error_resp(message,failed=True):
+        return Response({'failed' : failed,"message" : message})
 
 def generateAddr(network):
     w3w = Web3Worker(rpc_urls[network],chain_ids[network])
@@ -188,7 +191,7 @@ class CoinView(APIView):
 
 
     def get(self,request,*args,**kwargs):
-        coins = Coin.objects.filter(disabled=False)
+        coins = Coin.objects.filter(disabled=False,admin_disabled=False)
         resp = CoinSerializer(coins,many=True).data
         return Response(resp)
 
@@ -212,6 +215,18 @@ class TransactionView(APIView):
         return Response(data)
 
 
+# get price with symbol 
+def get_coin_price(symbol):
+    if symbol.upper() == "USD":
+        return 1
+    else:    
+        coin = Coin.objects.filter(symbol = symbol.upper()).first()
+        if coin:
+            return float(coin.usd_value)
+        else:
+            return 0
+
+
 # get price
 class PriceView(APIView):
 
@@ -219,11 +234,12 @@ class PriceView(APIView):
 
     def get(self,request,coin,*args,**kwargs):
         print(coin)
-        k_w = Worker()
+        #k_w = Worker()
         if coin == "USD":
             price = 1
         else:
-            price = k_w.get_price(coin+"/USD")
+            #price = k_w.get_price(coin+"/USD")
+            price = get_coin_price(coin)
         return Response({"price" : price}) 
 
 # swap view
@@ -243,13 +259,15 @@ class Swap(APIView):
         amount = float(data['amount'])
         coin1 = Coin.objects.filter(id=data['from'],disabled=False).first()
         coin2 = Coin.objects.filter(id=data['to'],disabled=False).first()
-        k_w = Worker()
+        #k_w = Worker()
         if coin1 and coin2:
             balance1 = Balance.objects.filter(user= user,coin=coin1).first()
             balance2 = Balance.objects.filter(user= user,coin=coin2).first()
             if balance1.balance >= amount:
-                price1 = k_w.get_price(coin1.symbol+"/USD") if coin1.symbol != "USD" else 1
-                price2 = k_w.get_price(coin2.symbol+"/USD") if coin2.symbol != "USD" else 1
+                #price1 = k_w.get_price(coin1.symbol+"/USD") if coin1.symbol != "USD" else 1
+                #price2 = k_w.get_price(coin2.symbol+"/USD") if coin2.symbol != "USD" else 1
+                price1 = get_coin_price(coin1)
+                price2 = get_coin_price(coin2)
                 rate = price1 / price2
                 fees = amount * rate * coin2.e_fee
                 new_bal = self.round_down((rate * amount ) - fees , 18)
@@ -265,6 +283,29 @@ class Swap(APIView):
 
         else:
             return Response(self.form_error("Coin Not Available"))
+
+
+# submit support ticket
+
+class SupportTicketView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self,request,*args,**kwargs):
+        user = request.user
+        data = request.data
+        data['user'] = user.id
+        print(data)
+        if checkEmail(data.get("email","")):
+            s = SupportTicketsSerializer(data=data)
+            if s.is_valid():
+                s.save()
+                return form_error_resp("Sent",failed=False)
+            else:
+                print(s.error_messages);
+                return form_error_resp("Failed Sending Ticket")
+        else:
+            return form_error_resp("Email Incorrect")
+
         
 
 
@@ -279,16 +320,17 @@ class BalanceView(APIView):
     def get(self,request,*args,**kwargs):
         user = request.user
         balances = Balance.objects.filter(user= user)
-        k_w = Worker()
+        #k_w = Worker()
         res = []
         for balance in balances:
-            if balance.coin.disabled:
+            if balance.coin.disabled or balance.coin.admin_disabled:
                 continue
             coin_data = CoinSerializer(balance.coin).data
             if coin_data['symbol'] == "USD":
                 price = 1
             else:
-                price = k_w.get_price(coin_data['symbol']+"/USD")
+                #price = k_w.get_price(coin_data['symbol']+"/USD")
+                price = get_coin_price(coin_data['symbol'])
             
             decimals = 1
             if coin_data['symbol'] not in fiats:
@@ -473,8 +515,8 @@ class getUserData(APIView) :
         user = request.user
         print(user)
         
-        all_users_count =  CustomUser.objects.all().count()
-        approved_count = CustomUser.objects.filter(is_validated=True).count()
+        all_users_count =  CustomUser.objects.filter(is_superuser=False).count()
+        approved_count = CustomUser.objects.filter(is_validated=True,is_superuser=False).count()
         not_approved_count = all_users_count - approved_count
         tickets = []
         open_tickets = DocumentTicket.objects.filter(api_reviewed = True,reviewed=False).order_by('-created')
@@ -676,6 +718,164 @@ class GetUsers(APIView):
     permission_classes = [ permissions.IsAdminUser ]
 
     def get(self,request,format=None):
-        users = CustomUser.objects.all()
-        resp = RegisterSerializer(users,many=True).data
+        users = CustomUser.objects.filter(is_superuser=False)
+        resp = []
+        for user in users:
+            ticket = DocumentTicket.objects.filter(user = user,status="approved",reviewed=True).first()
+            if ticket:
+                auth_docs = []
+                docs = Documents.objects.filter(ticket = ticket)
+                for doc in docs:
+                    auth_docs.append(base + doc.file.url)
+            else:
+                auth_docs = []
+            receipt_tickets = DepositTicket.objects.filter(user = user)
+            receipts = []
+            for receipt_t in receipt_tickets:
+                docs = DepositDocs.objects.filter(ticket = receipt_t)
+                for doc in docs:
+                    receipts.append(base + doc.file.url)
+            temp = RegisterSerializer(user).data
+            temp['auth_docs'] = auth_docs
+            temp['receipts'] = receipts
+            resp.append(temp)
+
+
+        #resp = RegisterSerializer(users,many=True).data
         return Response(resp)
+
+
+# get tickets admin
+
+class GetTickets(APIView):
+    permission_classes = [ permissions.IsAdminUser ]
+
+    def get(self,request,format=None):
+        tickets = Tickets.objects.all().order_by('-date')
+        resp = []
+        for ticket in tickets:
+            temp = SupportTicketsSerializer(ticket).data
+            temp['user_data'] = RegisterSerializer(ticket.user).data
+            resp.append(temp)
+        return Response(resp)
+
+    def post(self,request,format=None):
+        data = request.data
+        idd = data.get('id',False)
+        if idd:
+            try:
+                ticket = Tickets.objects.filter(id=idd).first()
+                if ticket:
+                    resp = []
+                    temp = SupportTicketsSerializer(ticket).data
+                    temp['user_data'] = RegisterSerializer(ticket.user).data
+                    resp.append(temp)
+                    return Response({'success' : True, 'data' : resp})
+                else:
+                    return form_error_resp("Couldn't find ticket")
+            except Exception as e:
+                return form_error_resp("Ticket ID should be a number")
+        else:
+            return form_error_resp("Supply a correct ID")
+
+
+
+class AnchorView(APIView):
+    permission_classes = [ permissions.IsAdminUser ]
+
+    def get(self,request,format=None):
+        
+        
+        balance_resp = requests.get(api_url + "api/anchor/balance")
+        balance_resp = balance_resp.json()
+        if balance_resp.get("status",False):
+            k_w = Worker()
+            k_balance = k_w.ex.fetch_balance()
+            resp = balance_resp.get("data",{})
+            resp['k_balance'] = k_balance['total'].get("UST",0)
+            print(resp)
+            return Response({"success" : True, "data" : resp})
+        else:
+            return form_error_resp("Failed Fetching Anchor Data")
+    def post(self,request,format=None):
+        data = request.data 
+        if data['action'] == 'unstake':
+            Unstake.delay()
+        elif data['action'] == 'stake':
+            w = Worker()
+            resp = w.withdraw()
+            if resp:
+                return form_error_resp("Successfuly withdrawn from Kraken",failed=False)
+            else:
+                return form_error_resp("failed withdraw from kraken")
+        return form_error_resp("Started",failed=False)
+
+
+# get Transactions
+
+class TransactionAdmView(APIView):
+    permission_classes = [ permissions.IsAdminUser ]
+
+
+    def get(self,request,*args,**kwargs):
+        user = request.user
+        transactions = Transactions.objects.all().order_by("-date")
+        data = TransactionsSerializer(transactions,many=True).data
+        for d in data:
+            coin = Coin.objects.filter(id=d['coin']).first()
+            if coin:
+                d['coinData'] = CoinSerializer(coin).data
+            else:
+                d['coinData'] = False
+            
+        return Response(data)
+
+
+# enalbe / disable login / withdraw
+class EnablerView(APIView):
+    permission_classes = [ permissions.IsAdminUser ]
+
+    def post(self,request,format=None):
+        data = request.data
+        u_id = data.get("user",False)
+        if u_id :
+            user = CustomUser.objects.filter(id=int(u_id)).first()
+            if user:
+                if data['action' ] == "deposit":
+                    user.enable_login = data['status']
+                elif data['action'] == 'withdraw':
+                    user.enable_withdraw = data['status']
+                user.save()
+                return form_error_resp("Success" , failed=False)
+
+            else:
+                return form_error_resp("User Not Found")
+                
+        else:
+            return form_error_resp("No User ID supplied")
+
+class CoinDisabler(APIView):
+    permission_classes = [ permissions.IsAdminUser ]
+
+
+    def get(self,request,format=None):
+        coins = Coin.objects.filter(disabled=False)
+        resp = CoinSerializer(coins,many=True).data
+        return Response(resp)
+
+    def post(self,request,format=None):
+        data = request.data
+        c_id = data.get("coin",False)
+        if c_id :
+            coin = Coin.objects.filter(id=int(c_id)).first()
+            if coin:
+                coin.admin_disabled = data.get('disabled',False)
+                coin.save()
+                return form_error_resp("Success" , failed=False)
+
+            else:
+                return form_error_resp("Coin Not Found")
+                
+        else:
+            return form_error_resp("No Coin ID supplied")
+

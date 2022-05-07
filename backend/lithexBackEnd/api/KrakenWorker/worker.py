@@ -107,7 +107,10 @@ class Worker:
             trade_id = w.get("id",False)
             if trade_id:
                 print("success Withdraw")
+                return True
             else:
                 print("failed Withdraw")
+                return False
         else:
             print("No UST balance avaialbe")
+            return False

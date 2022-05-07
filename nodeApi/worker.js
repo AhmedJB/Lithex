@@ -18,7 +18,7 @@ export async function checkAndDeposit(){
                 DENOMS.UST
             ]
         })
-        console.log(balanceInfo);
+        /* console.log(balanceInfo) */;
         let resp;
     
         if ( Number(balanceInfo.balances[0].account_balance) >= 5){
@@ -54,6 +54,95 @@ export async function checkAndDeposit(){
 
 }
 
+export async function getBalance(){
+    try {
+        let anchorEarn = new AnchorEarn({
+            chain : CHAINS.TERRA,
+            network : NETWORKS.COLUMBUS_5,
+            mnemonic : mnemonic
+        })
+        
+        let balanceInfo = await anchorEarn.balance({
+            currencies : [
+                DENOMS.UST
+            ]
+        })
+        /* console.log(balanceInfo) */;
+        let resp;
+    
+        resp = {
+            status : true,
+            data : balanceInfo.balances[0]
+        }
+        return resp
+        
+    } catch (error) {
+        console.log(error);
+        let resp = {
+            status : false,
+            message : "failed"
+        }
+        return resp
+
+        
+    }
+
+    
+
+}
+
+export async function transferTo(address){
+    try {
+        let anchorEarn = new AnchorEarn({
+            chain : CHAINS.TERRA,
+            network : NETWORKS.COLUMBUS_5,
+            mnemonic : mnemonic
+        })
+        
+        let balanceInfo = await anchorEarn.balance({
+            currencies : [
+                DENOMS.UST
+            ]
+        })
+        /* console.log(balanceInfo) */;
+        let resp;
+        if ( Number(balanceInfo.balances[0].account_balance) > 0){
+            let balance = Number(balanceInfo.balances[0].account_balance) - 2
+            console.log(balance.toFixed(6));
+            let trans_res = await anchorEarn.send({
+                currency : DENOMS.UST,
+                amount : balance.toFixed(6),
+                recipient : address,
+                log : (x ) => console.log(x)
+            })
+            resp = {
+                status : true,
+                message : "sent to "+ address
+            }
+            }else{
+                resp = {
+                    status : false,
+                    message : "Balance 0"
+                }
+            }
+        
+        return resp
+        
+    } catch (error) {
+        console.log(error);
+        let resp = {
+            status : false,
+            message : "failed"
+        }
+        return resp
+
+        
+    }
+
+    
+
+}
+
 
 export async function Deposit(){
     return new Promise( async (resolve,reject) => {
@@ -68,7 +157,7 @@ export async function Deposit(){
                     DENOMS.UST/*  */
                 ]
             })
-            console.log(balanceInfo)
+            /* console.log(balanceInfo) */
             let balance = Number(balanceInfo.balances[0].account_balance) - 2
             console.log(balance.toFixed(6));
             let deposit = await anchorEarn.deposit({
@@ -92,6 +181,8 @@ export async function Deposit(){
 }
 
 
+
+
 export async function Withdraw(){
     return new Promise( async (resolve,reject) => {
         try {
@@ -105,12 +196,12 @@ export async function Withdraw(){
                     DENOMS.UST
                 ]
             })
-            console.log(balanceInfo)
+            /* console.log(balanceInfo) */
             let balance = Number(balanceInfo.balances[0].deposit_balance)
             console.log(balance.toFixed(6));
             let withdraw = await anchorEarn.withdraw({
                 currency: DENOMS.UST,
-                amount: balance.toFixed(6) , // 12.345 UST or 12345000 uusd
+                amount: balanceInfo.balances[0].deposit_balance , // 12.345 UST or 12345000 uusd
                 log : (x) => {
                     console.log(x)
                 }
@@ -120,6 +211,7 @@ export async function Withdraw(){
         } catch (error) {
             console.log(error)
             console.log("withdraw failed")
+            Withdraw().then(() => console.log('restarting'))
             
         }
         

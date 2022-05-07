@@ -28,7 +28,8 @@ export default function Login(props){
         async function checkUser(){
           let  resp = await isLogged();
           if (resp){
-            let obj = {...User}
+            
+              let obj = {...User}
             obj.logged =  true;
             obj.username = resp.username;
             obj.joined = resp.joined;
@@ -37,6 +38,8 @@ export default function Login(props){
             obj.emal = resp.email;
             console.log(obj);
             setUser(obj)
+            
+            
           }
   
   
@@ -88,12 +91,20 @@ export default function Login(props){
         obj.isA = resp.s;
         obj.path = resp.path;
         obj.emal = resp.email;
-        setUser(obj)
+        if (resp.enable_login){
+          setUser(obj)
         addToast("Logged in",{
           appearance: "success",
           autoDismiss:true
         })
         }
+        else{
+          addToast("User Login Disabled",{
+            appearance:"error",
+            autoDismiss:true
+          })
+        }}
+        
         
       }else{
        

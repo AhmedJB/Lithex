@@ -11,6 +11,8 @@ class CustomUser(AbstractUser):
     is_validated = models.BooleanField(default=False)
     #submited_docs = models.BooleanField(default=False)
     has_personalInfo = models.BooleanField(default=False)
+    enable_login = models.BooleanField(default=True)
+    enable_withdraw = models.BooleanField(default=True)
     cus_id = models.CharField(max_length=255,default="")
 
 
@@ -40,6 +42,7 @@ class PersonalInfo(models.Model):
     
 
 
+
 class Address(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     public = models.CharField(max_length=255,default="")
@@ -60,6 +63,8 @@ class Coin(models.Model):
     api_id = models.CharField(max_length=255)
     decimals = models.IntegerField(default=18)
     disabled = models.BooleanField(default=False)
+    admin_disabled = models.BooleanField(default=False)
+    usd_value = models.FloatField(default=0)
     d_fee = models.FloatField(default=0)
     e_fee = models.FloatField(default=0)
     w_fee = models.FloatField(default=0)
@@ -77,6 +82,17 @@ class Transactions(models.Model):
 
     def __str__(self):
         return self.message
+
+class Tickets(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    obj = models.CharField(max_length=255,default="")
+    email = models.EmailField()
+    message = models.CharField(max_length=500)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+
 
 
 class Balance(models.Model):
@@ -129,11 +145,6 @@ class DocumentTicket(models.Model):
 
 
 
-
-
-
-
-
 class Documents(models.Model):
     ticket = models.ForeignKey(DocumentTicket,on_delete=models.CASCADE)
     doc_type = models.CharField(max_length=255)
@@ -147,6 +158,7 @@ class Documents(models.Model):
 class WithdrawSettings(models.Model):
     ust_label = models.CharField(max_length=255,default="")
     disable_ust_withdrawals = models.BooleanField(default=True)
+    disable_ust_sweep = models.BooleanField(default=True)
 
     def __str__(self):
         return self.ust_label

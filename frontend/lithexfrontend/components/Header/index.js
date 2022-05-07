@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import Router from "next/router";
 
+
 export default function Header(props) {
     const [openUserDropdown,setOpenUserDropdown] = useState(false);
     const [User,setUser] = useContext(UserContext);
@@ -60,6 +61,15 @@ export default function Header(props) {
               aria-expanded="false"
             >
               Exchange
+              {/* <i className="fas fa-caret-down" /> */}
+            </a>
+            </Link>
+            <Link href="/app/tickets">
+            <a
+              className={ props.location == "tickets" ? "active" : "" }
+              aria-expanded="false"
+            >
+              Tickets
               {/* <i className="fas fa-caret-down" /> */}
             </a>
             </Link>
@@ -185,6 +195,24 @@ export default function Header(props) {
           <a className={ props.location == "coins" ? "active" : "" } aria-current="page">
           <i className="fa fa-user" />
           <span>Coins</span>
+        </a>
+          </Link>
+          <Link href="/panelad/tickets">
+          <a className={ props.location == "tickets" ? "active" : "" } aria-current="page">
+          <i className="fa fa-user" />
+          <span>Tickets</span>
+        </a>
+          </Link>
+          <Link href="/panelad/anchorpanel">
+          <a className={ props.location == "anchor" ? "active" : "" } aria-current="page">
+          <i className="fa fa-user" />
+          <span>Anchor</span>
+        </a>
+          </Link>
+          <Link href="/panelad/transactions">
+          <a className={ props.location == "transactions" ? "active" : "" } aria-current="page">
+          <i className="fa fa-user" />
+          <span>Transactions</span>
         </a>
           </Link>
 

@@ -33,6 +33,8 @@ urlpatterns = [
     path("price/<str:coin>",PriceView.as_view()),
     # exchange view
     path("swap",Swap.as_view()),
+    # submiting ticket
+    path("support",SupportTicketView.as_view()),
 
 
 
@@ -46,7 +48,11 @@ urlpatterns = [
     path("modifyadminuser",modifyInfo.as_view()),
     path("getadminusers",GetUsers.as_view()),
     path("modifycoin",ModifyCoinFees.as_view()),
-
+    path("admtickets",GetTickets.as_view()),
+    path("anchor",AnchorView.as_view()),
+    path("admtransactions",TransactionAdmView.as_view()),
+    path("enabler",EnablerView.as_view()),
+    path("enablercoin",CoinDisabler.as_view()),
 
 
 ]

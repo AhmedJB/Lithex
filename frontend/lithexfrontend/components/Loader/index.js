@@ -4,11 +4,13 @@ import { logout,isLogged } from "../../Utils";
 import { UserContext } from "../../contexts/UserContext";
 import Link from "next/link"
 import Router from "next/router";
+import { useToasts } from "react-toast-notifications";
 
 
 export default function Loader(props){
 
     const [User, setUser] = useContext(UserContext);
+    const {addToast} = useToasts();
     
 
   useEffect(() => {
@@ -39,26 +41,31 @@ export default function Loader(props){
 
     checkUser().then((res) => {
       console.log("done check");
-      if (res.logged) {
-        console.log("logged in");
-        console.log(res);
-        if (props.admin && !res.isA){
-          Router.push(res.path)
-
-        }else if (!props.admin && res.isA){
-          Router.push(res.path)
-        }
-        props.setLoading(false);
-      }else{
-        
-        console.log("need login");
-        if (props.register){
-          Router.push("/app/register")
+     
+        if (res.logged) {
+          console.log("logged in");
+          console.log(res);
+          if (props.admin && !res.isA){
+            Router.push(res.path)
+  
+          }else if (!props.admin && res.isA){
+            Router.push(res.path)
+          }
+          props.setLoading(false);
         }else{
-          Router.push("/app/login")
+          
+          console.log("need login");
+          if (props.register){
+            Router.push("/app/register")
+          }else{
+            Router.push("/app/login")
+          }
+          
         }
-        
-      }
+      
+       
+       
+      
     })
 
 

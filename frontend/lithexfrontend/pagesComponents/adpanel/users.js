@@ -5,7 +5,7 @@ import Loader from '../../components/Loader';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import ImageViewer from 'react-simple-image-viewer';
-import { postReq, req } from '../../Utils';
+import { handleResp, postReq, req } from '../../Utils';
 import {useToasts} from "react-toast-notifications"
 import Footer from '../../components/Footer';
 
@@ -14,6 +14,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Router from "next/router"
+
+import Switch from '@mui/material/Switch';
 
 
 
@@ -25,6 +27,7 @@ export default function Users(props){
 	const [openModal,setOpenModal ] = useState(false);
 	const {addToast} = useToasts();
 	const [selectedTicket,setSelectedTicket] = useState(null);
+	const [selectedUser,setSelectedUser] = useState(null);
 
 	const [data,setData] = useState([
     
@@ -72,8 +75,9 @@ export default function Users(props){
 	
 	
 	function viewDocs(i){
+		setOpenModal(false);
 		console.log(i)
-		setImages([filtered[i].receipt]);
+		setImages([selectedUser[i]]);
 		setIsOpen(true);
 	  }
 	
@@ -91,8 +95,8 @@ export default function Users(props){
 		p: 4,
 	  };
 
-	function handleApprovalModal(i){
-		setSelectedTicket(i);
+	function handleModal(i){
+		setSelectedUser(filtered[i]);
 		setOpenModal(true);
 	}
 
@@ -132,6 +136,17 @@ export default function Users(props){
     function showDetails(id){
         Router.push("/panelad/userdetails/"+id);
       }
+
+	async function updateStatus(user,action,status){
+		let body = {
+			user,
+			action,
+			status
+		}
+
+		let resp = await postReq("enabler",body);
+		handleResp(resp,addToast);
+	}
     
 
 	const html = <Fragment>
@@ -188,6 +203,10 @@ export default function Users(props){
                 <th align="left" width={200}>Email</th>
                 <th align="left" width={200}>Personal Information Status</th>
                 <th align="left" width={200}>Identity Status</th>
+				<th align="left" width={100}>Enable Login</th>
+				<th align="left" width={100}>Enable Withdraw</th>
+				
+				<th colSpan={3} align="left" />
                 
                 
                 <th colSpan={3} align="left" />
@@ -217,6 +236,18 @@ export default function Users(props){
                     </span>
                   </td>
                   
+				  <td>
+				  <Switch onChange={(v,newv) =>  updateStatus(e.id,"deposit",newv) }  defaultChecked={e.enable_login} />
+				  </td>
+				  <td>
+				  <Switch onChange={(v,newv) =>  updateStatus(e.id,"withdraw",newv)}  defaultChecked={e.enable_withdraw} />
+				  </td>
+
+				  <td align="left" width={110}>
+                    <a>
+                      <button type="button" onClick={() => handleModal(i)} className="Button primary block"> View Submitted Docs </button>
+                    </a>
+                  </td>
 
                   <td align="left" width={110}>
                     <a>
@@ -255,9 +286,20 @@ export default function Users(props){
       >
         <Box sx={modalStyle}>
 
-		<label className="mt-l" style={{margin:10}}>Amount</label>
-          <div className="TextBox m-4" style={{margin:10}}><input type="decimal" id="balance" placeholder="add Amount" /></div>
-          <button type="button" onClick={() => approve(true,selectedTicket)} className="Button primary block"> Add Balance </button>
+		<h2 className="text-center">Documents Manager</h2>
+		<div className="f-col my-5">
+			{
+				selectedUser && <Fragment>
+					{
+						selectedUser.auth_docs.length > 0 ? <button className="Button primary block" onClick={() => viewDocs("auth_docs") }>View Identification Docs</button> : <h4 className="my-5" >No Identity Documents Submitted</h4>
+					}
+					{
+						selectedUser.receipts.length > 0 ? <button className="Button primary block" onClick={() => viewDocs("receipts") }>View Deposit Receipts</button> : <h4 className="my-5" >No Receipt Documents Submitted</h4>
+					}
+				</Fragment>
+			}
+
+		</div>
         </Box>
       </Modal>
 </Fragment>

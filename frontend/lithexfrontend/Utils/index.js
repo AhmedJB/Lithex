@@ -35,6 +35,27 @@ function set_header(token = null,file=false){
    
 }
 
+export const handleResp = (resp,addToast) => {
+    if (resp){
+        if (resp.failed){
+            addToast(resp.message,{
+              autoDismiss:true,
+              appearance:"error"
+            })
+          }else{
+            addToast(resp.message,{
+              autoDismiss:true,
+              appearance:"success"
+            })
+          }
+    }else{
+        addToast("Failed",{
+            autoDismiss:true,
+            appearance:"error"
+          })
+    }
+}
+
 
 
 export const handleFileSubmit = async (files) => {

@@ -42,7 +42,7 @@ export default function Swap(props) {
       setCoins(resp);
       setSelectedTopSide(resp[0]);
       setselectedBottomSide(resp[1]);
-      calculateOutRate(resp[1]);
+      calculateOutRate(resp[0],resp[1]);
       
     }else{
       console.log("failed getting tokens");
@@ -75,7 +75,7 @@ export default function Swap(props) {
       case 1:
         if (coins[i] != selectedTopSide){
           setselectedBottomSide(coins[i]);
-          calculateOutRate(coins[i]);
+          calculateOutRate(selectedTopSide,coins[i]);
         }
         break;
       default:
@@ -94,11 +94,11 @@ export default function Swap(props) {
   }
 
 
-  async function calculateOutRate(bottom){
+  async function calculateOutRate(top=null,bottom=null){
     
-    if (selectedTopSide && bottom){
+    if (top && bottom){
       setLoadingRates(true);
-      let price1 = await fetchPrice(selectedTopSide.symbol);
+      let price1 = await fetchPrice(top.symbol);
       let price2 = await fetchPrice(bottom.symbol);
       let rate = price1 / price2;
       console.log(rate)

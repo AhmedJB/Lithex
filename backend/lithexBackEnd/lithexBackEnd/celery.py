@@ -39,6 +39,11 @@ app.conf.beat_schedule = {
         'task' : 'api.tasks.DepositWatcher',
         'schedule' : 90.0,
         'args' : (),
+    },
+    'priceWatcher' : {
+        'task' : 'api.tasks.PriceWatcher',
+        'schedule' : 60.0,
+        'args' : (),
     }
 }
 

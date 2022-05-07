@@ -1,11 +1,11 @@
 
 from rest_framework.serializers import ModelSerializer
-from .models import CustomUser, DepositDocs,Documents,PersonalInfo,DocumentTicket,Balance,Coin, Transactions
+from .models import CustomUser, DepositDocs,Documents,PersonalInfo,DocumentTicket,Balance,Coin, Transactions,Tickets
 
 class RegisterSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id','username','email','password','joined','has_personalInfo','is_validated']
+        fields = ['id','username','email','password','joined','has_personalInfo','is_validated','enable_login','enable_withdraw']
         extra_kwargs = {'password': {'write_only':True} , 'has_personalInfo' : {'read_only' : True},'is_validated' : {'read_only' : True}}
 
     def create(self,validated,*args,**kwargs):
@@ -69,3 +69,10 @@ class TransactionsSerializer(ModelSerializer):
     class Meta:
         model = Transactions
         fields = "__all__"
+
+
+class SupportTicketsSerializer(ModelSerializer):
+    class Meta:
+        model = Tickets
+        fields = "__all__"
+

@@ -1,12 +1,13 @@
+import time
 from celery import shared_task
 from api.kycwrapper.handler import Handler
-from api.models import Documents,CustomUser,DocumentTicket,Balance,WithdrawSettings
+from api.models import Documents,CustomUser,DocumentTicket,Balance,WithdrawSettings,Coin
 from api.KrakenWorker.worker import Worker
 from api.blockcypherwrapper.watcher import handle_native_deposit,handle_web3_deposit
 import requests
+from api.constants import api_url
 
 
-api_url = "http://localhost:3010/"
 
 @shared_task
 def test(r):
@@ -92,6 +93,8 @@ def withdraw_watcher(active):
         print("withdrawal not active")
 
 
+
+
 def handleResp(resp):
     if (resp['status']):
         return resp['message']
@@ -102,19 +105,69 @@ def handleResp(resp):
 
 @shared_task
 def anchorBalanceWatcher():
-    resp =  requests.post(api_url + "api/anchor")
-    res = handleResp(resp.json())
-    if res:
-        resp2 = requests.post(api_url + "api/anchor/deposit")
-        res2 = handleResp(resp2.json())
-        if res2:
-            print("success deposit to anchor")
+    sett = WithdrawSettings.objects.all()[0]
+    disabled = sett.disable_ust_sweep
+    if not disabled:
+        resp =  requests.post(api_url + "api/anchor")
+        res = handleResp(resp.json())
+        if res:
+            resp2 = requests.post(api_url + "api/anchor/deposit")
+            res2 = handleResp(resp2.json())
+            if res2:
+                print("success deposit to anchor")
+
+            else:
+                print('failed deposit to anchor')
 
         else:
-            print('failed deposit to anchor')
-
+            print("not enough balance to deposit to anchor")
     else:
-        print("not enough balance to deposit to anchor")
+        print('Sweep Disabled Currently')
+
+def get_bal():
+    resp = requests.get(api_url + "api/anchor/balance")
+    resp = resp.json()
+    return resp['data']['account_balance']
+
+@shared_task
+def Unstake():
+    print('disabling Sweeps')
+    sett = WithdrawSettings.objects.all()[0]
+    sett.disable_ust_sweep = True
+    sett.save()
+    print("starting Unstaking")
+    w = Worker()
+    address = w.get_deposit_address("UST")
+    test_add = "terra1f2fgl9wyuz8k2qdj2ywtk3ksz7qgxvdcs2y7xd"
+    print("Deposit Address " + address)
+    data = {
+        "address" : test_add
+    }
+    old_balance = get_bal()
+    print(old_balance)
+    resp = requests.post(api_url + "api/anchor/withdraw" )
+    print("after request withdraw")
+    for _ in range(36):
+        bal = get_bal()
+        print("new Balance : " + str(bal))
+        if float(bal) > float(old_balance):
+            print("withdraw received")
+            break
+        else:
+            print('waiting for 5 secs')
+            time.sleep(5)
+    print("depositing to kraken")
+    resp = requests.post(api_url + "api/anchor/transfer" , json=data)
+    resp = resp.json()
+    if resp.get('status',False):
+        print("success Transfer to Kraken")
+    else:
+        print("failed to transfer to Kraken")
+
+    sett.disable_ust_sweep = False
+    sett.save()
+    
+
 
         
 @shared_task
@@ -145,6 +198,24 @@ def DepositWatcher():
                         handle_web3_deposit(balance.address,balance.coin.symbol,balance,"MATIC")
 
 
+@shared_task
+def PriceWatcher():
+    k_w = Worker()
+    coins = Coin.objects.filter(disabled=False)
+    for coin in coins:
+        if coin.symbol.upper() == "USD":
+            price = 1
+        else:
+            try:
+                price = k_w.get_price(coin.symbol.upper() + "/USD")
+            except Exception as e:
+                print(str(e))
+                price = 0
+            
+        print("Coin " + coin.symbol.upper() + " Price is : " + str(price))
+        coin.usd_value = float(price)
+        coin.save()
+    print("#### Done updating prices ####")
 
 
 

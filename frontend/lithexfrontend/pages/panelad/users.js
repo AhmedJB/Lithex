@@ -1,5 +1,5 @@
 import React , {Fragment, useEffect, useState} from 'react'
-import Users from '../../pagesComponents/adpanel/users'
+import Users from '../../pagesComponents/adpanel/Users'
 
 
 

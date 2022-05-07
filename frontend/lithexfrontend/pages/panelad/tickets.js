@@ -17,22 +17,47 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-import Switch from '@mui/material/Switch';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-export default function Coins(props){
+export default function Tickets(props){
     const [loading,setLoading] = useState(true);
     const [openModal,setOpenModal ] = useState(false);
 	const {addToast} = useToasts();
-    const [data,setData] = useState([
-    
-	])
-    const [selectedCoin,setSelectedCoin] = useState(null);
+    const [data,setData] = useState([])
+    const [selectedTicket,setselectedTicket] = useState(null);
+
+    const [openSearch,setOpenSearch] = useState(false);
   
 	const [filtered,setFiltered] = useState(data)
+    const [fromDate,setFromDate] = useState(new Date());
+    const [toDate,setToDate] = useState(new Date(fromDate.getTime() + 3600*24*1000));
+
+
+    async function searchById(){
+        let id = document.getElementById("tickId").value;
+        setOpenSearch(false);
+        let body = {
+            id
+        }
+        let resp = await postReq("admtickets",body);
+        if (resp.success){
+            addToast("Found Ticket",{
+                appearance:"success",
+                autoDismiss:true
+            });
+            setFiltered(resp.data)
+        }else{
+            handleResp(resp,addToast);
+        }
+        
+    }
 
 
     async function refreshData(){
-		let resp = await req("enablercoin");
+		let resp = await req("admtickets");
 		if (resp){
 		  console.log(resp);
 		  setData(resp);
@@ -42,6 +67,43 @@ export default function Coins(props){
 		}
 	  }
 
+      function filterByDate(fromD=null,toD=null){
+        let from = fromDate;
+        let to = toDate;
+        if (fromD){
+          from = fromD;
+        }
+        if (toD) {
+          to = toD;
+        }
+        console.log(to);
+        let temp = data.filter((e) =>{
+          let date = new Date(e.date);
+          date.setHours(0,0,0,0);
+          from.setHours(0,0,0,0);
+          to.setHours(0,0,0,0);
+          return (date >= from && date < to)
+        } )
+        console.log(temp);
+        setFiltered(temp);
+      }
+  
+  
+      function handleDateChange(t,side){
+        console.log(t);
+        switch (side) {
+          case 'from':
+            setFromDate(t)
+            filterByDate(t,null);
+            break;
+          case 'to':
+            setToDate(t)
+            filterByDate(null,t);
+            break;
+        }
+        
+      }
+
 	useEffect(() => {
 
 		refreshData().then(() => {
@@ -50,15 +112,15 @@ export default function Coins(props){
 	
 	  },[])
 
-    function handleFees(i){
-        setSelectedCoin(filtered[i]);
+    function handleTicket(i){
+        setselectedTicket(filtered[i]);
         console.log(filtered[i]);
         setOpenModal(true);
 
     }
     function handleClose(){
 		setOpenModal(false);
-        setSelectedCoin(null);
+        setselectedTicket(null);
 	}
 
     function handleFilter(option,newValue){
@@ -73,7 +135,7 @@ export default function Coins(props){
 
     const defaultProps = {
 		options: data,
-		getOptionLabel: (option) => option.symbol,
+		getOptionLabel: (option) => option.user_data.username,
 	  };
 	
 	  const style = {
@@ -94,40 +156,8 @@ export default function Coins(props){
 	  };
 
 
-    async function updateFee(){
-        let deposit_fee = Number(document.getElementById("d_fee").value)
-        let withdraw_fee = Number(document.getElementById("w_fee").value)
-        let exchange_fee = Number(document.getElementById("e_fee").value)
-        let body = selectedCoin;
-        body['d_fee'] = deposit_fee/100;
-        body['w_fee'] = withdraw_fee/100;
-        body['e_fee'] = exchange_fee/100;
-        console.log(body);
-        setOpenModal(false);
-        let resp = await postReq("modifycoin",body);
-        if (resp){
-            addToast("Modified",{
-                autoDismiss:true,
-                appearance:"success"
-            })
-        }else{
-            addToast("Failed",{
-                autoDismiss:true,
-                appearance:"error"
-            })
-        }
-
-    }
-
-    async function updateStatus(coin,disabled){
-      let body = {
-        coin,
-        disabled
-      }
-  
-      let resp = await postReq("enablercoin",body);
-      handleResp(resp,addToast);
-    }
+   
+    
 
 
 const html = <Fragment>
@@ -151,13 +181,13 @@ const html = <Fragment>
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/meta/favicon-96x96.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/meta/favicon-16x16.png" />
 
-<title>Admin | Coins</title>
+<title>Admin | Tickets</title>
 </Head>
 
-
+<LocalizationProvider dateAdapter={AdapterDateFns}>
 
 <div id="nexo-platform" className="application">
-	<Header admin={true} location="coins" />
+	<Header admin={true} location="tickets" />
 	
 	<main>
     <section className="DashboardPage">
@@ -165,8 +195,10 @@ const html = <Fragment>
         
         <div className="card">
           <div className="w-full flex items-center justify-between">
-            <h3>Coins</h3>
-          <Autocomplete
+            <h3>Tickets</h3>
+          
+                <div className='flex items-center'>
+                <Autocomplete
                   {...defaultProps}
                   sx={style}
                   id="clear-on-escape"
@@ -176,17 +208,49 @@ const html = <Fragment>
                     <TextField {...params} label="Filter By Username" variant="standard" />
                   )}
                 />
+                <div className="DateRangeBox mx-2">
+                        
+                          
+                            <div className="flex items-center">
+                            <MobileDatePicker
+                              label="From Date"
+                              inputFormat="dd/MM/yyyy"
+                              value={fromDate}
+                              onChange={(v) => handleDateChange(v,'from')}
+                              renderInput={(params) => <TextField {...params} />}
+                            />
+                              <div
+                                className="DateRangePickerInput_arrow DateRangePickerInput_arrow_1"
+                                aria-hidden="true"
+                                role="presentation"
+                              >
+                                -
+                              </div>
+                              <MobileDatePicker
+                              label="To Date"
+                              inputFormat="dd/MM/yyyy"
+                              value={toDate}
+                              onChange={(v) => handleDateChange(v,'to')}
+                              renderInput={(params) => <TextField {...params} />}
+                            />
+                              
+                            </div>
+                         
+                        
+                </div>
+                <div className=" mx-2 ">
+               <button className="Button primary block" onClick={() => setOpenSearch(true)}>Search By ID</button>
+                </div>
+                      
+                </div>
           </div>
           <table className="AssetList" id="AssetList" cellSpacing={0} cellPadding={0} border={0}>
             <thead>
               <tr>
-                <th  width={200}></th>
-                <th align="left" width={200}>Coin</th>
-                <th align="left" width={200}>Deposit Fees</th>
-                <th align="left" width={200}>Withdraw Fees</th>
-                <th align="left" width={200}>Exchange Fees</th>
-                <th align="left" width={200}>Disabled</th>
                 
+                <th align="left" width={200}>Ticket ID</th>
+                <th align="left" width={200}>Username</th>
+                <th align="left" width={200}> Email</th>
 
                 
                 
@@ -196,42 +260,29 @@ const html = <Fragment>
             <tbody>
               { filtered.map((e,i) => {
                 return <tr key={i}>
+                  
                   <td align="left">
-                    <span className="AssetVisual">
-                    <Image src={e.image} height={32} width={32} />
+                    <span className="AssetBalance right semi-bold">
+                      {e.id}
                     </span>
                   </td>
                   <td align="left">
                     <span className="AssetBalance right semi-bold">
-                      {e.symbol}
+                      {e.user_data.username}
                     </span>
                   </td>
                   <td align="left">
                     <span className="AssetBalance right semi-bold">
-                      {e.d_fee*100}%
+                      {e.email}
                     </span>
                   </td>
-                  <td align="left">
-                    <span className="AssetBalance right semi-bold">
-                      {e.w_fee*100}%
-                    </span>
-                  </td>
-                  <td align="left">
-                    <span className="AssetBalance right semi-bold">
-                      {e.e_fee*100}%
-                    </span>
-                  </td>
-                  <td align="left">
-                    <span className="AssetBalance right semi-bold">
-                    <Switch onChange={(v,newv) =>  updateStatus(e.id,newv)}  defaultChecked={e.admin_disabled} />
-                    </span>
-                  </td>
+                  
                   
                   
 
                   <td align="left" width={110}>
                     <a>
-                      <button type="button" onClick={() => handleFees(i)} className="Button primary block"> Details </button>
+                      <button type="button" onClick={() => handleTicket(i)} className="Button primary block"> See Message </button>
                     </a>
                   </td>
                 </tr>
@@ -246,6 +297,7 @@ const html = <Fragment>
     <Footer />
   </main>
 </div>
+</LocalizationProvider>
 
 
 
@@ -257,19 +309,30 @@ const html = <Fragment>
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-            <h2 className="text-center">Modify Fees</h2>
+            <h2 className="text-center">Ticket Message</h2>
                 {
-                    selectedCoin && <Fragment>
-                            <label className="mt-l" style={{margin:10}}>Deposit Fee</label>
-          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="d_fee" defaultValue={ selectedCoin.d_fee*100 } placeholder="Value" /></div>
-          <label className="mt-l" style={{margin:10}}>Withdraw Fee</label>
-          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="w_fee" defaultValue={ selectedCoin.w_fee*100 } placeholder="Value" /></div>
-          <label className="mt-l" style={{margin:10}}>Exchange Fee</label>
-          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="e_fee" defaultValue={ selectedCoin.e_fee*100 } placeholder="Value" /></div>
-          <button type="button" onClick={() => updateFee()} className="Button primary block"> Modify </button>
+                    selectedTicket && <Fragment>
+                            <p className="w-full p-3 text-justify">
+                                {selectedTicket.message}
+                            </p>
+          
                     </Fragment>
                 }
 		
+        </Box>
+      </Modal>
+
+      <Modal
+        open={ openSearch }
+        onClose={() => setOpenSearch(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+            <h2 className="text-center">Search For Ticket By ID</h2>
+            <input type="text" className="outline-none p-[10px] rounded-[5px] border-2 my-5 w-full" id="tickId" placeholder="Ticket ID" />
+
+                <button className="Button primary block" onClick={searchById}>Search</button>
         </Box>
       </Modal>
 </Fragment>

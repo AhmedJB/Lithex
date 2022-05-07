@@ -12,7 +12,7 @@ export const UserProvider = props => {
 		joined : null,
         isA : false,
         path : null,
-        email : null
+        email : null,
     }
     
     const [user,setUser] = useState(obj);

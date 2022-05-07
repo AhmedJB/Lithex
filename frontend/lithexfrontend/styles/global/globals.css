@@ -13,6 +13,11 @@ body {
     background: #f9f9fb;
 }
 
+.f-col {
+    display:flex !important;
+    flex-direction: column !important;
+}
+
 .neum{
     box-shadow:  5px 5px 10px #d1d1d1,
              -5px -5px 10px #ffffff;
@@ -2175,7 +2180,13 @@ a.Button.block {
     grid-template-columns: repeat(4, 1fr);
 }
 
-.AccountFinancialOverview>* {
+.AccountFinancialOverviewCol {
+    display: grid;
+    grid-column-gap: 1.42857rem;
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.AccountFinancialOverview>* , .AccountFinancialOverviewCol>* {
     background: #ffffff;
     padding: 1.71429rem;
     margin-top: 2.85714rem;
@@ -2192,6 +2203,73 @@ a.Button.block {
     -webkit-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
 }
+
+.AccountFinancialOverviewCol>*>h6 {
+    color: #83888c;
+    font-size: 1.14286rem;
+    line-height: 1.35;
+    font-weight: 500;
+    margin-bottom: 0.57143rem;
+    line-height: normal;
+}
+
+.AccountFinancialOverviewCol>*>div {
+    flex: 1;
+}
+
+.AccountFinancialOverviewCol>*>span {
+    font-size: 2rem;
+    line-height: 1.2;
+    font-weight: 500;
+}
+
+.AccountFinancialOverviewCol>*>a {
+    min-height: 3rem;
+    font-size: 1rem;
+    line-height: 1.35;
+    font-weight: 500;
+    color: #83888c;
+    background: #f6f8fb;
+    margin: 1.14286rem -1.71429rem -1.71429rem;
+    padding: 0.85714rem 1.71429rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom-left-radius: 0.28571rem;
+    border-bottom-right-radius: 0.28571rem;
+}
+
+.AccountFinancialOverviewCol>*>a .fa-long-arrow-right {
+    margin-left: 0.57143rem;
+    transform: translateY(1px);
+    transition: all 0.2s, transform 0.4s;
+}
+
+.AccountFinancialOverviewCol>*>a:hover .fa-long-arrow-right {
+    transform: translateX(8px) translateY(1px);
+}
+
+.AccountFinancialOverviewCol>*>i {
+    color: #83888c;
+    top: 1.71429rem;
+    right: 1.71429rem;
+    font-size: 1.15rem;
+    position: absolute;
+}
+
+.AccountFinancialOverviewCol>*:hover {
+    z-index: 9001;
+    transform: translateY(-4px);
+    box-shadow: 0px 4px 24px rgba(4, 25, 39, 0.1);
+}
+
+.AccountFinancialOverviewCol>*:hover>a {
+    color: #1e4dd8;
+}
+
+
+
 
 .AccountFinancialOverview>*>h6 {
     color: #83888c;

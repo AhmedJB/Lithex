@@ -5,16 +5,18 @@ import Head from "next/head";
 import Image from "next/image";
 import Loader from "../../components/Loader";
 import { UserContext } from "../../contexts/UserContext";
-import { req,formatDate } from "../../Utils";
+import { req,formatDate, postReq, handleResp } from "../../Utils";
 import IdentityVerification from '../../components/IdentityVerification';
 import Swap from "../../components/Swap";
+import { useToasts } from "react-toast-notifications";
 
 
 
-export default function Exchange(props){
+export default function Tickets(props){
 
     const [User,setUser] = useContext(UserContext);
     const [loading,setLoading] = useState(true);
+    const {addToast} = useToasts();
 
     const [verificationStatus , setVerificationStatus] = useState({
         status : null,
@@ -43,6 +45,22 @@ export default function Exchange(props){
         }
         , []
     )
+
+
+    async function submitTicket(e){
+        e.preventDefault();
+        let obj = document.getElementById("object").value;
+        let email = document.getElementById("email").value;
+        let message = document.getElementById("message").value;
+        let body = {
+            obj,
+            email,
+            message 
+        }
+        let resp = await postReq("support",body);
+        handleResp(resp,addToast);
+
+    }
 
     const html = (
         <Fragment>
@@ -125,23 +143,37 @@ export default function Exchange(props){
               href="/assets/meta/favicon-16x16.png"
             />
   
-            <title>Exchange</title>
+            <title>Support</title>
           </Head>
           
   
           <div id="nexo-platform" className="application">
-            <Header location="exchange" setLoading={setLoading} />
+            <Header location="tickets" setLoading={setLoading} />
 
             <main>
             <section className="DashboardPage">
                 
-            {  false && <div className="w-full h-[300px]">
-                <IdentityVerification customText={"Complete Identity Verification to unlock the Exchange"}  />
-                </div> }
+            <section>
+          <div className="row">
+            <div className="col-md-6 mx-auto">
+              <div className="card">
+                <h1 className="text-center"> Submit a support ticket</h1>
+                <p className="text-center">Tickets will be responded via email</p>
+                <form  className="f-col md:w-4/5 w-full mx-auto mt-4 " >
+                    <input className="outline-none p-[10px] rounded-[5px] border-2 my-5"  type="text" placeholder="Object" id="object" />
+                    <input className="outline-none p-[10px] rounded-[5px] border-2 my-5" type="email" placeholder="Email" id="email" />
+                    <textarea className="outline-none p-[10px] rounded-[5px] border-2 my-5 min-h-[300px]" placeholder="Message" id="message" />
+                    <button className="Button primary block" onClick={submitTicket}> Send </button>
+                </form>
 
-            {
-              true && <Swap />
-            }
+
+
+              </div>
+              </div>
+              </div>
+              </section>
+
+    
 
             </section>
 
