@@ -1,6 +1,7 @@
 
+from ast import Add
 from rest_framework.serializers import ModelSerializer
-from .models import CustomUser, DepositDocs,Documents,PersonalInfo,DocumentTicket,Balance,Coin, Transactions,Tickets
+from .models import CustomUser, DepositDocs,Documents,PersonalInfo,DocumentTicket,Balance,Coin, Transactions,Tickets,Address
 
 class RegisterSerializer(ModelSerializer):
     class Meta:
@@ -76,3 +77,7 @@ class SupportTicketsSerializer(ModelSerializer):
         model = Tickets
         fields = "__all__"
 
+class AddressSerializer(ModelSerializer):
+    class Meta:
+        model = Address
+        fields = "__all__"

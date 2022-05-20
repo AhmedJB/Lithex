@@ -41,7 +41,16 @@ export default function Tickets(props){
         () => {
           fetchVerificationStatus().then( () => {
             console.log("done fetching data")
-          })
+          });
+          (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/628367acb0d10b6f3e7293c0/1g38kpusk';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+            })();
+
         }
         , []
     )

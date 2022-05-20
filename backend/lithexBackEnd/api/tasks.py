@@ -3,7 +3,7 @@ from celery import shared_task
 from api.kycwrapper.handler import Handler
 from api.models import Documents,CustomUser,DocumentTicket,Balance,WithdrawSettings,Coin
 from api.KrakenWorker.worker import Worker
-from api.blockcypherwrapper.watcher import handle_native_deposit,handle_web3_deposit
+from api.blockcypherwrapper.watcher import handle_native_deposit,handle_web3_deposit,handle_token_deposit
 import requests
 from api.constants import api_url
 
@@ -196,6 +196,8 @@ def DepositWatcher():
                         handle_web3_deposit(balance.address,balance.coin.symbol,balance,"BNB")
                     elif balance.coin.symbol == "MATIC":
                         handle_web3_deposit(balance.address,balance.coin.symbol,balance,"MATIC")
+                    elif balance.coin.token:
+                        handle_token_deposit(balance.address,balance.coin,balance,balance.coin.network)
 
 
 @shared_task

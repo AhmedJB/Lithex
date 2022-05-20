@@ -101,7 +101,17 @@ class Register(APIView):
                     elif coin.symbol == 'BTC':
                         network = "BTC"
                         chosen = btc_address
+                    elif coin.network.symbol == "ETH" and coin.token:
+                        e_add = get_address("eth")
+                        network = "ETH"
+                        chosen = e_add
+                    elif coin.network.symbol == "ETH" and coin.token:
+                        e_add = generateAddr("MATIC")
+                        network = "MATIC"
+                        chosen = e_add
                     addr = Address.objects.filter(user = user,network = network).first()
+                    
+
                     if not addr:
                         addr = Address.objects.create(user = user,public=chosen['public'],private=chosen['private'],address=chosen['address'],network=network)
                         addr.save()
@@ -340,11 +350,18 @@ class BalanceView(APIView):
             else:
                 coin_data['decimals']
                 bal = float(balance.balance)
-            
+            tok_fee = 0
+            sym = ""
+            if balance.coin.token:
+                tok_fee = balance.coin.network.token_fee
+                sym = balance.coin.network.symbol
+
             coin_data['usd_price'] = round(price * bal,2)
             coin_data['address'] = balance.address.address
             coin_data['balance'] = balance.balance
             coin_data['credit'] = balance.credit
+            coin_data['token_fee'] = tok_fee
+            coin_data['network_symbol'] = sym
             res.append(coin_data)
         
         return Response(res)

@@ -20,7 +20,7 @@ export default function CoinList(props){
     const [openModal,setOpenModal] = useState(false);
     const [openDeposit,setOpenDeposit] = useState(false)
     const [selectedCoin,setSelectedCoin] = useState(null)
-    const [selectedAddress,setSelectedAddress] = useState("");
+    const [selectedCoinData,setSelectedCoinData] = useState("");
     const {addToast} = useToasts();
     const [total,setTotal] = useState(0);
 
@@ -34,6 +34,8 @@ export default function CoinList(props){
       bgcolor: 'background.paper',
       borderRadius:8,
       boxShadow: 24,
+      display:"flex",
+      flexDirection : "column"
     };
 
     
@@ -153,7 +155,7 @@ export default function CoinList(props){
           </span>
         </td>
         <td style={{ paddingRight: 0 }}>
-          <a onClick= { fiats.includes(data.symbol) ?   () => openDepositModal(data.id)  : () => {setSelectedAddress(data.address); setOpenModal(true);}  }>
+          <a onClick= { fiats.includes(data.symbol) ?   () => openDepositModal(data.id)  : () => {setSelectedCoinData(data); setOpenModal(true);}  }>
             <button type="button" className="Button primary block">
               Top Up
             </button>
@@ -233,14 +235,18 @@ export default function CoinList(props){
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} className="flex items-center justify-center">
+        <Box sx={style}  className=" items-center justify-center">
           <div className=" flex items-center justify-center h-full w-full bg-[#f6f8fb]">
             <div className="text-center w-full p-6">
             <h1 className="text-center">Your Deposit Address</h1>
-            <p>{selectedAddress}</p>
+            <p>{selectedCoinData.address}</p>
+
             </div>
             
           </div>
+          <dvi className="w-full text-center my-5">
+          { selectedCoinData.token ? <p>You need to send a fee payment of {selectedCoinData.token_fee } {selectedCoinData.network_symbol} </p> : "" }
+          </dvi>
           
 
         </Box>

@@ -9,8 +9,11 @@ from api.models import WithdrawSettings
 class Worker:
 
     def __init__(self):
-        api_key = "BEvXskqd7KKy+cT4LYoxePoD1oEyHolI0U4gH1l4U/UTwd0GsakSdQO8"
-        api_secret = "BxDwwiHKBj5zR+czwgsr1N/QBxGsaym6jECj3WyVbazPkpnQuM1/epsU7d6EJPMIvAou51ug0t3Cgsw5Qon7nA=="
+        #api_key = "BEvXskqd7KKy+cT4LYoxePoD1oEyHolI0U4gH1l4U/UTwd0GsakSdQO8"
+        #api_secret = "BxDwwiHKBj5zR+czwgsr1N/QBxGsaym6jECj3WyVbazPkpnQuM1/epsU7d6EJPMIvAou51ug0t3Cgsw5Qon7nA=="
+        api_key = "Yk/nzRK2PoGCSU8NWmW/P7c98Gi28o9kL1j85XrSSJ5GnO72HgE9JPoU"
+        api_secret  = "3+VyriNBodBaEBik8hzsy3Dxd8W+wuDZcnkOcG1rtijjxt0bAi8jx0xngxbPHYhW/wudUmMSFF5JyUUH9drbFg=="
+       
         self.add = "terra1f2fgl9wyuz8k2qdj2ywtk3ksz7qgxvdcs2y7xd"
         self.settings = WithdrawSettings.objects.all()[0]
         self.ust_label = self.settings.ust_label

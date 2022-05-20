@@ -54,8 +54,19 @@ class Address(models.Model):
     def __str__(self):
         return self.address
 
+class Networks(models.Model):
+    network_name = models.CharField(max_length=255)
+    symbol = models.CharField(max_length=255)
+    chainId = models.IntegerField(default=0)
+    token_fee = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.network_name
+
+
 
 class Coin(models.Model):
+    network = models.ForeignKey(Networks,on_delete=models.CASCADE,null=True)
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=100)
     interest = models.FloatField(default=0)
@@ -68,6 +79,10 @@ class Coin(models.Model):
     d_fee = models.FloatField(default=0)
     e_fee = models.FloatField(default=0)
     w_fee = models.FloatField(default=0)
+    token = models.BooleanField(default=False)
+    address = models.CharField(max_length=255,default="")
+
+
 
     def __str__(self):
         return self.name + " (" + self.symbol + ")"
@@ -87,11 +102,26 @@ class Tickets(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     obj = models.CharField(max_length=255,default="")
     email = models.EmailField()
+    active = models.BooleanField(default=True)
     message = models.CharField(max_length=500)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
+
+
+""" class Messages(models.Model):
+    ticket = models.ForeignKey(Tickets,on_delete=models.CASCADE)
+    sender = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    message = models.CharField(max_length = 500)
+    date = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.sender.username """
+    
+
+
 
 
 
