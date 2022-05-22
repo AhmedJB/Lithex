@@ -1,0 +1,4 @@
+A withdraw request with id : ${id}
+for user : ${user}
+coin : ${coin}
+amount : ${amount}

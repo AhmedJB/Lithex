@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser,Documents,PersonalInfo,DocumentTicket,Balance,DepositTicket,DepositDocs,Coin,Transactions,WithdrawSettings,Tickets,Networks
+from .models import CustomUser,Documents,PersonalInfo,UserRequests,DocumentTicket,Balance,DepositTicket,DepositDocs,Coin,Transactions,WithdrawSettings,Tickets,Networks
 
 # Register your models here.
 
@@ -27,3 +27,5 @@ admin.site.register(WithdrawSettings)
 admin.site.register(Tickets)
 
 admin.site.register(Networks)
+
+admin.site.register(UserRequests)

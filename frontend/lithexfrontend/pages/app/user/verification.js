@@ -1,5 +1,5 @@
 import { Fragment , useContext , useState, useEffect } from "react";
-import Header from "../../../components/header";
+import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import Head from "next/head";
 import Image from "next/image";
@@ -31,6 +31,7 @@ export default function Verification(props){
       "back"  : null,
       "selfie" : null
     })
+    const [openDoc,setOpenDoc] = useState(false);
     const {addToast } = useToasts();
     const [step,setStep] = useState("front");
     const [verificationStatus , setVerificationStatus] = useState({
@@ -88,11 +89,13 @@ export default function Verification(props){
           break;
 
         case "upload":
-          handleVerificationModal();
+          //handleVerificationModal();
+          setOpenDoc(true);
           break;
         
         case "refused":
-          handleVerificationModal();
+          //handleVerificationModal();
+          setOpenDoc(true);
           break;
 
         
@@ -162,7 +165,7 @@ export default function Verification(props){
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      width: 400,
+      width:"min(100%,1000px)",
       bgcolor: 'background.paper',
       border: '2px solid #000',
       boxShadow: 24,
@@ -253,7 +256,7 @@ export default function Verification(props){
             href="/assets/meta/favicon-16x16.png"
           />
 
-          <title>Transactions</title>
+          <title>Verification</title>
         </Head>
         <div id="nexo-platform" className="application">
           <Header location="verification" setLoading={setLoading} />
@@ -372,7 +375,16 @@ export default function Verification(props){
                     
                     }
 
-                    {(verificationStatus.status != "pending" && verificationStatus.status != "refused" ) && <div>
+                    {
+                      (verificationStatus.hasInfo && verificationStatus.status != "pending" && verificationStatus.status != "refused" && verificationStatus.status != "verified"   ) && <div>
+                      <h3>Upload Your Indentity Documents</h3>
+                      <p>
+                        Upload a screenshot of the front/back side of your identity card and a selfie photo
+                      </p>
+                    </div>
+                    }
+
+                    {(verificationStatus.status != "pending" && verificationStatus.status != "refused" && !verificationStatus.hasInfo ) && <div>
                       <h3>Start Verification</h3>
                       <p>
                         Verify your identity and get access to all features of
@@ -691,6 +703,23 @@ export default function Verification(props){
         </Box>
 
         </Modal> */}
+
+<Modal
+        open={openDoc}
+        onClose={() =>  setOpenDoc(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}  className=" items-center justify-center">
+          <div className="w-full h-full items-center" style={{display:"flex",flexDirection:"column"}} >
+          <h1 className="text-center"> Upload Your Documents</h1>
+          <p>Upload a screenshot of the front/back side of your identity card and a selfie photo
+          </p>
+          <button  type="button" onClick={() => { setOpenDoc(false); handleVerificationModal()}} className="Button primary my-5  w-1/5"> Upload </button>
+          </div>
+          </Box>
+
+          </Modal>
 
               <DropzoneDialog
                     

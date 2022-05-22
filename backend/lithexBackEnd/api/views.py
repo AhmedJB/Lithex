@@ -1,7 +1,8 @@
+from venv import create
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,permissions
-from .serializer import DepositDocsSerializer, SupportTicketsSerializer , RegisterSerializer, TransactionsSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer,BalanceSerializer,CoinSerializer
+from .serializer import DepositDocsSerializer,BankDetailsSerializer, SupportTicketsSerializer, UserRequestsSerializer , RegisterSerializer, TransactionsSerializer,DocumentSerializer,PersonalInfoSerializer,TicketSerializer,BalanceSerializer,CoinSerializer
 from .tasks import test,createCustomer,verify,Unstake
 from .blockcypherwrapper.watcher import get_address
 # Create your views here.
@@ -17,7 +18,9 @@ import math
 from api.utils import checkEmail
 from api.constants import api_url
 import requests
-
+from web3 import Web3
+import uuid
+from api.utils import create_transaction_log
 
 
 
@@ -81,7 +84,8 @@ class Register(APIView):
                 ltc_address = get_address("ltc")
                 bsc_address = generateAddr("BNB")
                 matic_address = generateAddr("MATIC")
-                
+                eth_address['address'] = Web3.toChecksumAddress(eth_address['address'])
+                print(eth_address)
                 for coin in coins:
                     if coin.symbol in skip:
                         network = "FIAT"
@@ -103,18 +107,18 @@ class Register(APIView):
                         chosen = btc_address
                     elif coin.network.symbol == "ETH" and coin.token:
                         e_add = get_address("eth")
+                        print(e_add)
+                        e_add['address'] = Web3.toChecksumAddress(e_add['address'])
                         network = "ETH"
                         chosen = e_add
-                    elif coin.network.symbol == "ETH" and coin.token:
+                    elif coin.network.symbol == "MATIC" and coin.token:
                         e_add = generateAddr("MATIC")
+                        
                         network = "MATIC"
                         chosen = e_add
-                    addr = Address.objects.filter(user = user,network = network).first()
                     
-
-                    if not addr:
-                        addr = Address.objects.create(user = user,public=chosen['public'],private=chosen['private'],address=chosen['address'],network=network)
-                        addr.save()
+                    addr = Address.objects.create(user = user,public=chosen['public'],private=chosen['private'],address=chosen['address'],network=network)
+                    addr.save()
                     balance = Balance.objects.create(user= user,coin=coin,address = addr)
                     balance.save()
                 print(resp)
@@ -202,7 +206,16 @@ class CoinView(APIView):
 
     def get(self,request,*args,**kwargs):
         coins = Coin.objects.filter(disabled=False,admin_disabled=False)
-        resp = CoinSerializer(coins,many=True).data
+        resp = []
+        for coin in coins:
+            temp = CoinSerializer(coin).data
+            network_fee = 0
+            if coin.token:
+                network_fee = coin.network.token_fee
+            temp['network_fee'] = network_fee
+            resp.append(temp)
+
+        #resp = CoinSerializer(coins,many=True).data
         return Response(resp)
 
 # get Transactions
@@ -276,15 +289,17 @@ class Swap(APIView):
             if balance1.balance >= amount:
                 #price1 = k_w.get_price(coin1.symbol+"/USD") if coin1.symbol != "USD" else 1
                 #price2 = k_w.get_price(coin2.symbol+"/USD") if coin2.symbol != "USD" else 1
-                price1 = get_coin_price(coin1)
-                price2 = get_coin_price(coin2)
-                rate = price1 / price2
+                price1 = get_coin_price(coin1.symbol)
+                price2 = get_coin_price(coin2.symbol)
+                rate = price1 / (price2 * ( 1 + coin2.spread))
                 fees = amount * rate * coin2.e_fee
                 new_bal = self.round_down((rate * amount ) - fees , 18)
                 balance1.balance -= amount * 10 ** balance1.coin.decimals
                 balance2.balance += new_bal * 10 ** balance2.coin.decimals
                 balance1.save()
                 balance2.save()
+                msg = "Exchanged {0} {1} for {2} {3}".format(str(amount),coin1.symbol,str(new_bal),coin2.symbol)
+                create_transaction_log(user,coin2,msg,"exchange")
                 return Response(self.form_error("Successfuly exchanged",failed=False))
             else:
                 return Response(self.form_error("You don't have enough balance"))
@@ -293,6 +308,100 @@ class Swap(APIView):
 
         else:
             return Response(self.form_error("Coin Not Available"))
+
+
+# subscribe request
+class SubscribeRequest(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self,request,*args,**kwargs):
+        user = request.user
+        data = request.data
+        amount = data['amount']
+        coin_id = data['id']
+        r_type  = data['type']
+        coin = Coin.objects.filter(id=coin_id,disabled= False , admin_disabled= False).first()
+        if coin:
+            balance = Balance.objects.filter(user = user, coin = coin).first()
+            if balance:
+                if r_type in ['stake','unstake']:
+                    print(balance.balance)
+                    normalized_amount = float(amount) * 10**coin.decimals
+                    if r_type == 'stake':
+                        condition  = balance.balance >= normalized_amount
+                        message = "Staking {0} of {1}".format(str(amount),coin.symbol)
+                    else:
+                        condition  = balance.earn >= normalized_amount
+                        message = "Unstaking {0} of {1}".format(str(amount),coin.symbol)
+
+                    if condition:
+                        
+                        tr = create_transaction_log(user,coin,message,r_type,"pending")
+                        r = UserRequests.objects.create(transaction = tr,coin= coin,r_type=r_type,amount = float(amount))
+                        r.save()
+                        return form_error_resp("Request Submitted waiting for admin approval",failed=False)
+                    else:
+                        return form_error_resp("Your Requested amount exceed your available balance")
+                else:
+                    return form_error_resp("Action not recognized")
+            else:
+                return form_error_resp("Error Submitting Request")
+            
+        else:
+            return form_error_resp("Coin not found")
+
+
+
+# withdraw request 
+class WithdrawRequest(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self,request,*args,**kwargs):
+        user = request.user
+        data = request.data
+        amount = data['amount']
+        coin_id = data['id']
+        coin = Coin.objects.filter(id=coin_id,disabled= False , admin_disabled= False).first()
+        if coin:
+            balance = Balance.objects.filter(user = user, coin = coin).first()
+            if balance:
+                normalized_amount = float(amount) * 10**coin.decimals
+                message = "Withdrawing {0} of {1}".format(str(amount),coin.symbol)
+                tr = create_transaction_log(user,coin,message,"withdraw","pending")
+                print(balance.balance)
+                if coin.symbol in fiats :
+                    
+                    
+                    
+
+                    if balance.balance >= normalized_amount:
+                        acc_name = data['account_name']
+                        bank_name = data['bank_name']
+                        bank_code = data['bank_code']
+                        transit_number = data['transit_number']
+                        account_number = data['account_number']
+                        bd = BankDetails.objects.create(account_name = acc_name,bank_name = bank_name , bank_code = bank_code , transit_number = transit_number, account_number = account_number)
+                        bd.save()
+                        
+                        
+                        r = UserRequests.objects.create(transaction = tr,coin= coin,r_type="withdraw",amount = float(amount),bank_details = bd)
+                        
+                    else:
+                        return form_error_resp("Your Requested amount exceed your available balance")
+                else:
+                    if balance.balance >= normalized_amount:
+                        address = data['address']
+                        
+                        r = UserRequests.objects.create(transaction = tr,coin= coin,r_type="withdraw",amount = float(amount),address = address)
+                        
+                    else:
+                        return form_error_resp("Your Requested amount exceed your available balance")
+                    
+                r.save()
+                return form_error_resp("Request Submitted waiting for admin approval",failed=False)
+            else:
+                return form_error_resp("Error Submitting Request")
+            
+        else:
+            return form_error_resp("Coin not found")
 
 
 # submit support ticket
@@ -359,6 +468,7 @@ class BalanceView(APIView):
             coin_data['usd_price'] = round(price * bal,2)
             coin_data['address'] = balance.address.address
             coin_data['balance'] = balance.balance
+            coin_data['earn'] = balance.earn
             coin_data['credit'] = balance.credit
             coin_data['token_fee'] = tok_fee
             coin_data['network_symbol'] = sym
@@ -505,6 +615,7 @@ class CheckVerifStatus(APIView):
             "status" :  status,
             "path"  : path,
             "verified" : verified,
+            "hasInfo" : user.has_personalInfo,
             "reason" : reason
         }
 
@@ -612,6 +723,8 @@ class GetDepositDocs(APIView):
 
 # approve balance 
 
+
+
 class ApproveBalanceView(APIView):
 
     permission_classes = [ permissions.IsAdminUser ]
@@ -631,11 +744,10 @@ class ApproveBalanceView(APIView):
                 balance=  Balance.objects.filter(user = ticket.user , coin = coin).first()
                 if balance:
                     balance.balance += amount
-                    tr = Transactions.objects.create(user = ticket.user, coin = coin,
-                    message = "Received Deposit of " + str(round( (amount) / 10 ** coin.decimals , coin.decimals )) + " " + coin.symbol,
-                    t_type = "deposit"
-                    )
-                    tr.save()
+                    
+
+                    create_transaction_log(ticket.user,coin,"Received Deposit of " + str(round( (amount) / 10 ** coin.decimals , coin.decimals )) + " " + coin.symbol,"deposit")
+                  
                     balance.save()
                     ticket.delete()
                     return Response({"failed": False,"reason" : "Balance Modified"})
@@ -667,7 +779,7 @@ class getUserDetails(APIView):
             if info:
                 resp = {}
                 # getting documents
-                ticket = DocumentTicket.objects.filter(user = user,status="approved",reviewed=True).first()
+                ticket = DocumentTicket.objects.filter(user = user,reviewed=True).first()
                 if ticket:
                     auth_docs = []
                     docs = Documents.objects.filter(ticket = ticket)
@@ -716,6 +828,10 @@ class ModifyCoinFees(APIView):
         data = request.data
         coin = Coin.objects.filter(id=data['id']).first()
         if coin:
+            if coin.token:
+                n = coin.network
+                n.token_fee = data.get("n_fee",n.token_fee)
+                n.save()
             s = CoinSerializer(coin,data=data)
             if s.is_valid():
                 print('valid')
@@ -738,7 +854,7 @@ class GetUsers(APIView):
         users = CustomUser.objects.filter(is_superuser=False)
         resp = []
         for user in users:
-            ticket = DocumentTicket.objects.filter(user = user,status="approved",reviewed=True).first()
+            ticket = DocumentTicket.objects.filter(user = user,reviewed=True).first()
             if ticket:
                 auth_docs = []
                 docs = Documents.objects.filter(ticket = ticket)
@@ -753,8 +869,19 @@ class GetUsers(APIView):
                 for doc in docs:
                     receipts.append(base + doc.file.url)
             temp = RegisterSerializer(user).data
+            bals = []
+            balances = Balance.objects.filter(user= user)
+            for bal in balances:
+                if bal.coin.disabled or bal.coin.admin_disabled:
+                    continue
+                temps = BalanceSerializer(bal).data
+                temps['image'] = bal.coin.image
+                temps['symbol'] = bal.coin.symbol
+                temps['decimals'] = bal.coin.decimals 
+                bals.append(temps)
             temp['auth_docs'] = auth_docs
             temp['receipts'] = receipts
+            temp['balances'] = bals
             resp.append(temp)
 
 
@@ -877,7 +1004,16 @@ class CoinDisabler(APIView):
 
     def get(self,request,format=None):
         coins = Coin.objects.filter(disabled=False)
-        resp = CoinSerializer(coins,many=True).data
+        resp = []
+        for coin in coins:
+            temp = CoinSerializer(coin).data
+            network_fee = 0
+            if coin.token:
+                network_fee = coin.network.token_fee
+            temp['network_fee'] = network_fee
+            resp.append(temp)
+
+        #resp = CoinSerializer(coins,many=True).data
         return Response(resp)
 
     def post(self,request,format=None):
@@ -896,3 +1032,155 @@ class CoinDisabler(APIView):
         else:
             return form_error_resp("No Coin ID supplied")
 
+class EarnAdmin(APIView):
+    permission_classes = [ permissions.IsAdminUser ]
+
+    def get(self,request,format=None):
+        reqs = UserRequests.objects.filter(r_type__in=["stake","unstake"],closed=False).order_by('-date')
+        resp = []
+        for req in reqs:
+            temp = UserRequestsSerializer(req).data
+            temp['user'] = RegisterSerializer(req.transaction.user).data
+            temp['coin'] = CoinSerializer(req.coin).data
+            temp['t_id'] = req.transaction.idd
+            resp.append(temp)
+
+        return Response(resp)
+
+    def post(self,request,format=None):
+        data = request.data
+        idd = data['id']
+        status = data['status']
+        reason = data['reason']
+        r_type = data['action']
+        if r_type in ['stake','unstake']:
+            u_r = UserRequests.objects.filter(r_type=r_type,id=idd,closed=False).first()
+            if u_r:
+                tr = u_r.transaction
+                if status:
+                    r_bal = u_r.amount * (10**u_r.coin.decimals)
+                    bal = Balance.objects.filter(user = u_r.transaction.user,coin=u_r.coin).first()
+                    print(bal.balance)
+                    print(r_bal)
+                    if bal:
+                        if r_type == 'stake':
+                            if bal.balance >= r_bal:
+                                bal.balance -= r_bal
+                                bal.earn += r_bal
+                                bal.save()
+                                u_r.closed = True
+                                u_r.save()
+                                tr.status = "completed"
+                                tr.save()
+                                return form_error_resp("Approved Stake request",failed=False)
+                            else:
+                                return form_error_resp("User doesn't have enough balance")
+                        else:
+                            if bal.earn >= r_bal:
+                                bal.earn -= r_bal
+                                bal.balance += r_bal
+                                bal.save()
+                                u_r.closed = True
+                                u_r.save()
+                                tr.status = "completed"
+                                tr.save()
+                                return form_error_resp("Approved Unstake request",failed=False)
+                            else:
+                                return form_error_resp("User doesn't have enough staked balance")
+
+                    else:
+                        return form_error_resp("Could not retrieve user balance")
+                else:
+                    tr.status = "rejected"
+                    tr.reason = reason
+                    tr.save()
+                    u_r.closed = True
+                    u_r.save()
+                    return form_error_resp("Request Rejected with reason : {0}".format(reason),failed=False)
+            else:
+                return form_error_resp("Request Not found or already closed")
+        else:
+            return form_error_resp("Action not recognized")
+
+
+
+class WithdrawAdmin(APIView):
+    permission_classes = [ permissions.IsAdminUser ]
+
+    def get(self,request,format=None):
+        reqs = UserRequests.objects.filter(r_type="withdraw",closed=False).order_by('-date')
+        resp = []
+        for req in reqs:
+            temp = UserRequestsSerializer(req).data
+            if req.bank_details:
+                temp['bank_details'] = BankDetailsSerializer(req.bank_details).data
+            else:
+                temp['address'] = req.address
+            
+            temp['user'] = RegisterSerializer(req.transaction.user).data
+            temp['coin'] = CoinSerializer(req.coin).data
+            temp['t_id'] = req.transaction.idd
+            resp.append(temp)
+
+        return Response(resp)
+
+    def post(self,request,format=None):
+        data = request.data
+        idd = data['id']
+        status = data['status']
+        reason = data['reason']
+        
+        tag = data['tag']
+        if True:
+            u_r = UserRequests.objects.filter(r_type="withdraw",id=idd,closed=False).first()
+            amount = u_r.amount + u_r.transaction.coin.kraken_fee
+            if u_r:
+                tr = u_r.transaction
+                if status:
+                    r_bal = amount * (10**u_r.coin.decimals)
+                    bal = Balance.objects.filter(user = u_r.transaction.user,coin=u_r.coin).first()
+                    print(bal.balance)
+                    print(r_bal)
+                    if bal:
+                        
+                        if bal.balance >= r_bal:
+                            try:
+                                w = Worker()
+                                params = {
+                                    'key': tag,
+                                }
+                                w = w.ex.withdraw(bal.coin.symbol.upper(),str(amount),w.add,None,params)
+                                print(w)
+                                trade_id = w.get("id",False)
+                                if trade_id:
+                                    print("success Withdraw")
+                                    bal.balance -= r_bal
+                                    bal.save()
+                                    u_r.closed = True
+                                    u_r.save()
+                                    tr.status = "completed"
+                                    tr.save()
+                                    return form_error_resp("Successful Withdraw",failed=False)
+                                else:
+                                    return form_error_resp("failed withdraw")
+                            except Exception as e:
+                                print(str(e))
+                                return form_error_resp("failed withdraw")
+                            
+                        else:
+                            return form_error_resp("User doesn't have enough balance")
+                        
+
+                    else:
+                        return form_error_resp("Could not retrieve user balance")
+                else:
+                    tr.status = "rejected"
+                    tr.reason = reason
+                    tr.save()
+                    u_r.closed = True
+                    u_r.save()
+                    return form_error_resp("Request Rejected with reason : {0}".format(reason),failed=False)
+            else:
+                return form_error_resp("Request Not found or already closed")
+        else:
+            return form_error_resp("Action not recognized")

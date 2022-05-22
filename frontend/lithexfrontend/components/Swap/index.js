@@ -100,7 +100,7 @@ export default function Swap(props) {
       setLoadingRates(true);
       let price1 = await fetchPrice(top.symbol);
       let price2 = await fetchPrice(bottom.symbol);
-      let rate = price1 / price2;
+      let rate = (price1 / (price2 * ( 1 + bottom.spread))) ;
       console.log(rate)
       setExchangeRate(rate);
       setLoadingRates(false);
@@ -145,15 +145,21 @@ export default function Swap(props) {
       }
 
       let resp = await postReq("swap",body);
-      if (resp.failed){
+      if (resp.failed == false){
+        addToast(resp.message,{
+          autoDismiss:true,
+          appearance:"success"
+        })
+        
+      }else if (resp.failed){
         addToast(resp.message,{
           autoDismiss:true,
           appearance:"error"
         })
       }else{
-        addToast(resp.message,{
+        addToast("error",{
           autoDismiss:true,
-          appearance:"success"
+          appearance:"error"
         })
       }
     }else{

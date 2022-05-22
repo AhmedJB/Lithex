@@ -1,4 +1,5 @@
 from blockcypher import *
+import uuid
 from api.KrakenWorker.worker import Worker
 from api.Web3Wrapper.worker import Web3Worker
 import time
@@ -7,6 +8,7 @@ from api.models import Transactions
 from api.serializer import AddressSerializer
 from api.abis import erc20_abi
 from web3 import Web3
+from api.utils import create_transaction_log
 
 
 token = "a42bd1d9e2364e32b47e3339d6f54329"
@@ -28,19 +30,22 @@ def handle_native_deposit(coin,deposit_addr,symbol,balance_obj):
     else:
         print("new deposit for " + symbol)
         balance_obj.balance += (balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee)
-        tr = Transactions.objects.create(user = deposit_addr.user, coin = balance_obj.coin,
-         message = "Received Deposit of " + str(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
-         t_type = "deposit"
-         )
+        
+        create_transaction_log(deposit_addr.user,balance_obj.coin,
+        "Received Deposit of " + str(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
+        "deposit"
+        )
         balance_obj.old_balance = balance
         
-        tr.save()
+        
         balance_obj.save()
         w = Worker()
         if symbol == "ETH":
             addr = w.get_deposit_address(symbol=symbol,params=deposit_method)
         elif symbol == 'BTC':
-            addr = btc_test_deposit_address
+            #addr = btc_test_deposit_address
+
+            addr = w.get_deposit_address(symbol=symbol,params=deposit_method)
         else:
             addr = w.get_deposit_address(symbol=symbol)
         try:
@@ -77,7 +82,6 @@ def calculate_method_fees(w3,contract,method,account,*args):
     return gas * w3.eth.gasPrice,transaction
     
 def buildTransaction(contract,method,params,*args):
-    print(args)
     transaction = contract.functions[method](*args).buildTransaction(params)
     return transaction
 
@@ -101,7 +105,7 @@ def call_write_method(w3,contract,method,acc,*args):
     "from" : acc['address']
     })
     params['gas'] = gas
-    transaction = buildTransaction(contract,method,acc['address'],params,*args)
+    transaction = buildTransaction(contract,method,params,*args)
     txn =  signAndSendTransaction(w3,transaction,acc['private'])
     return txn
 
@@ -115,9 +119,12 @@ def handle_token_deposit(deposit_add,coin,balance_obj,network):
     print(new_bal)
     if new_bal > balance_obj.old_balance:
         print("new deposit for " + coin.symbol)
-        fee_balance = get_confirmed_balance(w3w.w3.toChecksumAddress(deposit_add['address']))
-        fee_balance = w3w.fromWei(fee_balance,"ether")
-        if fee_balance >= network.token_fee:
+        fee_balance = w3w.get_confirmed_balance(w3w.w3.toChecksumAddress(deposit_add['address']))
+        fee_balance = w3w.w3.fromWei(fee_balance,"ether")
+        print('fees estimate')
+        print(fee_balance)
+        print(network.token_fee)
+        if float(fee_balance) >= float(network.token_fee):
             print("fee paid")
             print("transfering tokens ")
 
@@ -135,21 +142,22 @@ def handle_token_deposit(deposit_add,coin,balance_obj,network):
                 print("new deposit for " + coin.symbol)
                 deposit_amount = (new_bal - balance_obj.old_balance) * (1-balance_obj.coin.d_fee)
                 balance_obj.balance += deposit_amount
-                tr = Transactions.objects.create(user = old_deposit_add.user, coin = balance_obj.coin,
-                message = "Received Deposit of " + str(round( ((new_bal - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
-                t_type = "deposit"
-                )
+                
+
+                create_transaction_log(old_deposit_add.user,balance_obj.coin,
+                    "Received Deposit of " + str(round( ((new_bal - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + coin.symbol,
+                    "deposit"
+                    )
                 n_bal = get_contract_balance(contract,deposit_add)
                 balance_obj.old_balance = n_bal
                 
-                tr.save()
                 balance_obj.save()
                 print("transfering the fees")
                 #tx = transfer(w3,master_add,deposit_add,
-                #get_confirmed_balance(deposit_add['address']))
+                #w3w.get_confirmed_balance(deposit_add['address']))
                 tx = w3w.transferFull(master_eth_address,old_deposit_add)
                 if tx:
-                    bal = get_confirmed_balance(deposit_add['address'])
+                    bal = w3w.get_confirmed_balance(deposit_add['address'])
                     print('transfered fees')
                     
                 else:
@@ -163,6 +171,9 @@ def handle_token_deposit(deposit_add,coin,balance_obj,network):
     else:
         print("old")
 
+
+
+
         
 def handle_web3_deposit(deposit_addr,symbol,balance_obj,network):
     w3w = Web3Worker(rpc_urls[network],chain_ids[network])
@@ -172,27 +183,29 @@ def handle_web3_deposit(deposit_addr,symbol,balance_obj,network):
     else:
         print("new deposit for " + symbol)
         balance_obj.balance += (balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee)
-        tr = Transactions.objects.create(user = deposit_addr.user, coin = balance_obj.coin,
-         message = "Received Deposit of " + str(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
-         t_type = "deposit"
-         )
+        
+       
+        create_transaction_log(deposit_addr.user,balance_obj.coin,
+        "Received Deposit of " + str(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
+        "deposit"
+        )
         balance_obj.old_balance = balance
         
-        tr.save()
+        
         balance_obj.save()
         w = Worker()
         if symbol == "ETH":
             addr = w.get_deposit_address(symbol=symbol,params=deposit_method)
-            addr = eth_test_deposit_address
+            #addr = eth_test_deposit_address
         elif symbol == 'BTC':
             addr = w.get_deposit_address(symbol=symbol,params=deposit_method)
-            addr = btc_test_deposit_address
+            #addr = btc_test_deposit_address
         elif symbol == "BNB":
             addr = w.get_deposit_address(symbol=symbol,params=deposit_method)
-            addr = eth_test_deposit_address
+            #addr = eth_test_deposit_address
         elif symbol == "MATIC":
             addr = w.get_deposit_address(symbol=symbol,params=poly_deposit_method)
-            addr = eth_test_deposit_address
+            #addr = eth_test_deposit_address
         else:
             addr = w.get_deposit_address(symbol=symbol)
         

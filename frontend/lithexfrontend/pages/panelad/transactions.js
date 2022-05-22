@@ -125,6 +125,18 @@ export default function Transactions(props){
       
     }
 
+    function filterById(e){
+      let value = e.target.value;
+      console.log(value);
+      if (value.length == 0){
+        setFiltered(data);
+      }else{
+        let temp = data.filter((e) => {return e.idd.includes(value)});
+        console.log(temp);
+        setFiltered(temp);
+      }
+    }
+
 
 
     
@@ -244,6 +256,9 @@ export default function Transactions(props){
                         </span>
                       </div>
                     </fieldset>
+                    <div className="w-full mt-6">
+                      <input type="text" placeholder="Filter by Id" className="border-2 w-full p-2 rounded-[5px]" onChange={filterById} />
+                    </div>
                   </div>
                 </div>
               </aside>
@@ -279,14 +294,19 @@ export default function Transactions(props){
                   <div  style={{display:'flex', flexDirection:'column'}} className="p-4 items-center" >
                   {filtered.map((e,i) => {
                     return  <div key={i} style={{display:'flex', flexDirection:'column'}} className=" w-3/5 p-4 my-4 rounded-[5px] neum transition-transform hover:scale-105 ">
-                            <h3 className="font-bold text-[#1e4dd8]"> {e.t_type} { e.coinData ? ": "+e.coinData.symbol : ""}</h3>
-                            <p>{e.message}</p>
-                            <span className="w-fit self-end">
-                              {formatDate(new Date(e.date))}
-                            </span>
-                          
+                    <div className="w-full flex items-center justify-between p-1">
+                    <h3 className="font-bold text-[#1e4dd8]"> {e.t_type} { e.coinData ? ": "+e.coinData.symbol : ""}</h3>
+                    <span className="text-md">{e.idd} </span>
+                    </div>
+                    
+                    <p>{e.message}</p>
+                    <p><span className="font-bold">Status :</span> <span className="text-[#1e4dd8]">{e.status}</span></p>
+                    <span className="w-fit self-end">
+                      {formatDate(new Date(e.date))}
+                    </span>
+                  
 
-                        </div>
+                </div>
                   })
                   
                 }</div>

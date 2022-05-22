@@ -1,9 +1,11 @@
 from web3 import Web3
 from api.constants import rpc_urls,chain_ids
+from web3.middleware import geth_poa_middleware
 
 class Web3Worker:
     def __init__(self,rpc_url,chainId):
         self.w3 = Web3(Web3.HTTPProvider(rpc_url))
+        self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         self.chainId = chainId
 
 

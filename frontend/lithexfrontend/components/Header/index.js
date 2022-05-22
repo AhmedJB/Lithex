@@ -203,12 +203,24 @@ export default function Header(props) {
           <span>Tickets</span>
         </a>
           </Link>
-          <Link href="/panelad/anchorpanel">
+          <Link href="/panelad/earn">
+          <a className={ props.location == "earn" ? "active" : "" } aria-current="page">
+          <i className="fa fa-user" />
+          <span>Earn</span>
+        </a>
+          </Link>
+          <Link href="/panelad/withdraw">
+          <a className={ props.location == "withdraw" ? "active" : "" } aria-current="page">
+          <i className="fa fa-user" />
+          <span>Withdraw</span>
+        </a>
+          </Link>
+          {/* <Link href="/panelad/anchorpanel">
           <a className={ props.location == "anchor" ? "active" : "" } aria-current="page">
           <i className="fa fa-user" />
           <span>Anchor</span>
         </a>
-          </Link>
+          </Link> */}
           <Link href="/panelad/transactions">
           <a className={ props.location == "transactions" ? "active" : "" } aria-current="page">
           <i className="fa fa-user" />

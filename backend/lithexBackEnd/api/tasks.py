@@ -179,7 +179,7 @@ def DepositWatcher():
     for user in users:
         balances = Balance.objects.filter(user = user)
         for balance in balances:
-            if balance.coin.disabled:
+            if balance.coin.disabled or balance.coin.admin_disabled:
                 continue
             else:
                 if balance.coin.symbol in skip:
@@ -199,6 +199,29 @@ def DepositWatcher():
                     elif balance.coin.token:
                         handle_token_deposit(balance.address,balance.coin,balance,balance.coin.network)
 
+
+@shared_task
+def InterestWorker():
+    users = CustomUser.objects.filter(is_superuser = False)
+    for user in users:
+        balances = Balance.objects.filter(user = user)
+        for balance in balances:
+            if balance.coin.disabled or balance.coin.admin_disabled:
+                continue
+            else:
+                earn_bal = balance.earn
+                if earn_bal > 0:
+                    if balance.coin.interest > 0:
+                        new_bal = earn_bal * (1 + balance.coin.interest)
+                        print(new_bal)
+                        balance.earn = new_bal
+                        balance.save()
+                    else:
+                        continue
+
+                else:
+                    continue
+            
 
 @shared_task
 def PriceWatcher():

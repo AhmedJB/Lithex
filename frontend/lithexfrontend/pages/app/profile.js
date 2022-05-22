@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { Fragment , useContext, useState, useEffect } from "react";
 import Script from "next/script"
-import Header from '../../components/header';
+import Header from '../../components/Header';
 import BalancesCards from '../../components/BalancesCards';
 import IdentityVerification from '../../components/IdentityVerification';
 import ProfileNavigation from '../../components/ProfileNavigation';
@@ -97,7 +97,7 @@ export default function Profile(){
         </div>
 
         <BalancesCards />
-        { !verificationStatus.verified && <IdentityVerification /> }
+        { !verificationStatus.verified && <IdentityVerification verificationStatus={verificationStatus} customText={verificationStatus.hasInfo ? "Complete your Verification by uploading your documents" : false} customTitle={verificationStatus.hasInfo ? "Upload Documents" : false} /> }
             
         <div className="card">
           {

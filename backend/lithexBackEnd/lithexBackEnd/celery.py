@@ -44,7 +44,12 @@ app.conf.beat_schedule = {
         'task' : 'api.tasks.PriceWatcher',
         'schedule' : 60.0,
         'args' : (),
-    }
+    },
+    'Interest_worker_24h': {
+        'task': 'api.tasks.InterestWorker',
+        'schedule': 3600*24,
+        'args': (),
+    },
 }
 
 

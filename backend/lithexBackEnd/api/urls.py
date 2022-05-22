@@ -35,7 +35,10 @@ urlpatterns = [
     path("swap",Swap.as_view()),
     # submiting ticket
     path("support",SupportTicketView.as_view()),
-
+    # submit earn request
+    path("earn",SubscribeRequest.as_view()),
+    # submit withdraw request
+    path("withdraw",WithdrawRequest.as_view()),
 
 
 
@@ -53,6 +56,8 @@ urlpatterns = [
     path("admtransactions",TransactionAdmView.as_view()),
     path("enabler",EnablerView.as_view()),
     path("enablercoin",CoinDisabler.as_view()),
+    path("earnad",EarnAdmin.as_view()),
+    path("withdrawad",WithdrawAdmin.as_view()),
 
 
 ]

@@ -42,7 +42,7 @@ export default function IdentityVerification(props){
           <div style={{ display: "flex", flex: "1 1 0%" }}>
             <div className="VerificationStatusText">
               <span className="tc-grey-700 semi-bold fs-xl">
-                Verify Identity
+                { props.customTitle ?  props.customTitle  : "Verify Identity" }
               </span>
               <span className="fs-l">
                 {props.customText ? props.customText : "Complete Identity Verification to unlock all features"}
@@ -53,7 +53,7 @@ export default function IdentityVerification(props){
           <Link href="/app/user/verification">
           <a>
             <button type="button" className="Button primary">
-              Identity Verification <i className="fa fa-arrow-right m-l-5" />
+            { props.customTitle ?  props.customTitle  : "Identity Verification" } <i className="fa fa-arrow-right m-l-5" />
             </button>
           </a>
           </Link>
@@ -64,7 +64,7 @@ export default function IdentityVerification(props){
 
 
 
-    return ( !verificationStatus && html  ) ;
+    return ( !verificationStatus.verified && html  ) ;
 
 
 

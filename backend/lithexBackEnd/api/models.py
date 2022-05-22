@@ -66,7 +66,7 @@ class Networks(models.Model):
 
 
 class Coin(models.Model):
-    network = models.ForeignKey(Networks,on_delete=models.CASCADE,null=True)
+    network = models.ForeignKey(Networks,on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=100)
     interest = models.FloatField(default=0)
@@ -79,8 +79,10 @@ class Coin(models.Model):
     d_fee = models.FloatField(default=0)
     e_fee = models.FloatField(default=0)
     w_fee = models.FloatField(default=0)
+    spread = models.FloatField(default=0)
     token = models.BooleanField(default=False)
-    address = models.CharField(max_length=255,default="")
+    kraken_fee = models.FloatField(default=0)
+    address = models.CharField(max_length=255,default="",null=True,blank=True)
 
 
 
@@ -91,12 +93,42 @@ class Coin(models.Model):
 class Transactions(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     coin = models.ForeignKey(Coin,on_delete=models.CASCADE)
-    t_type = models.CharField(max_length=255) # deposit | withdraw | exchange
+    t_type = models.CharField(max_length=255) # deposit | withdraw | exchange | stake
     message = models.CharField(max_length=255)
+    reason = models.CharField(max_length =255 , default= "")
+    status = models.CharField(max_length=255,default="")
+    idd = models.CharField(max_length=255)
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.message
+
+
+class BankDetails(models.Model):
+    account_name = models.CharField(default="",max_length=255)
+    bank_name = models.CharField(default="",max_length=255)
+    bank_code = models.CharField(default="",max_length=255)
+    transit_number = models.CharField(default="",max_length=255)
+    account_number = models.CharField(default="",max_length=255)
+
+    def __str__(self):
+        return self.account_name
+
+
+class UserRequests(models.Model):
+    transaction = models.ForeignKey(Transactions,on_delete=models.CASCADE)
+    bank_details = models.ForeignKey(BankDetails,on_delete=models.CASCADE,blank=True,null=True)
+    coin = models.ForeignKey(Coin,on_delete=models.CASCADE)
+    r_type = models.CharField(max_length=255) # stake | withdraw
+    address = models.CharField(max_length=255,default="",blank=True)
+    amount = models.FloatField(default=0)
+    closed = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.transaction.user.username + " " + self.r_type
+
+
 
 class Tickets(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
@@ -130,6 +162,7 @@ class Balance(models.Model):
     coin = models.ForeignKey(Coin,on_delete=models.CASCADE)
     address = models.ForeignKey(Address,on_delete=models.CASCADE)
     balance = models.FloatField(default=0)
+    earn = models.FloatField(default=0)
     old_balance = models.FloatField(default=0)
     credit = models.FloatField(default=0)
 

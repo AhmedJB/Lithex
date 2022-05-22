@@ -1,11 +1,11 @@
 import React , {Fragment, useEffect, useState} from 'react'
 import Head from 'next/head';
-import Header from '../../components/header';
+import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import ImageViewer from 'react-simple-image-viewer';
-import { handleResp, postReq, req } from '../../Utils';
+import { handleResp, postReq, req , numberToBN } from '../../Utils';
 import {useToasts} from "react-toast-notifications"
 import Footer from '../../components/Footer';
 
@@ -16,6 +16,10 @@ import Modal from '@mui/material/Modal';
 import Router from "next/router"
 
 import Switch from '@mui/material/Switch';
+import Image from 'next/image';
+import { fiats } from '../../Utils/constants';
+import {ethers} from "ethers";
+
 
 
 
@@ -28,6 +32,8 @@ export default function Users(props){
 	const {addToast} = useToasts();
 	const [selectedTicket,setSelectedTicket] = useState(null);
 	const [selectedUser,setSelectedUser] = useState(null);
+	const [selectedBalance,setSelectedBalance] = useState(null);
+	const [openBalance,setOpenBalance] = useState(false);
 
 	const [data,setData] = useState([
     
@@ -77,7 +83,7 @@ export default function Users(props){
 	function viewDocs(i){
 		setOpenModal(false);
 		console.log(i)
-		setImages([selectedUser[i]]);
+		setImages(selectedUser[i]);
 		setIsOpen(true);
 	  }
 	
@@ -93,6 +99,20 @@ export default function Users(props){
 		boxShadow: 24,
 		borderRadius:5,
 		p: 4,
+	  };
+
+	const balanceStyle = {
+		position: 'absolute' ,
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		width: "min(100%,1000px)",
+		minHeight:"300px",
+		bgcolor: 'background.paper',
+		borderRadius:8,
+		boxShadow: 24,
+		display:"flex",
+		flexDirection : "column"
 	  };
 
 	function handleModal(i){
@@ -147,6 +167,28 @@ export default function Users(props){
 		let resp = await postReq("enabler",body);
 		handleResp(resp,addToast);
 	}
+
+	function showBalance(u){
+		setSelectedBalance(u);
+		setOpenBalance(true);
+	}
+
+	function formatAmount(amount,decimals,symbol){
+		let decimal;
+		console.log("formating ....")
+		let balance;
+		if ( fiats.includes(symbol) ) {
+			decimal = 4;
+			balance = Number(amount) * 10**decimals
+		}else{
+		  decimal = decimals
+		  balance = Number(amount)
+		}
+		console.log(data)
+		return ethers.utils.formatUnits(numberToBN(balance,decimal).toString(),decimal)
+	  }
+
+	
     
 
 	const html = <Fragment>
@@ -242,6 +284,11 @@ export default function Users(props){
 				  <td>
 				  <Switch onChange={(v,newv) =>  updateStatus(e.id,"withdraw",newv)}  defaultChecked={e.enable_withdraw} />
 				  </td>
+				  <td align="left" width={110}>
+                    <a>
+                      <button type="button" onClick={() => showBalance(e)} className="Button primary block"> View Balance </button>
+                    </a>
+                  </td>
 
 				  <td align="left" width={110}>
                     <a>
@@ -277,6 +324,72 @@ export default function Users(props){
         />
       )}
 
+<Modal
+        open={openBalance}
+        onClose={() => setOpenBalance(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={balanceStyle}>
+
+		<h2 className="text-center">Balance Details</h2>
+		<div className="f-col my-5">
+			{
+				selectedBalance && <Fragment>
+					 <table className="AssetList" id="AssetList" cellSpacing={0} cellPadding={0} border={0}>
+            <thead>
+              <tr>
+                <th  width={200}></th>
+                <th align="left" width={200}>Coin</th>
+                <th align="left" width={200}>Spend Balance</th>
+                <th align="left" width={200}>Earn Balance</th>
+                
+
+                
+                
+                <th colSpan={3} align="left" />
+              </tr>
+            </thead>
+            <tbody>
+              { selectedBalance.balances.map((e,i) => {
+                return <tr key={i}>
+                  <td align="left">
+                    <span className="AssetVisual">
+                    <Image src={e.image} height={32} width={32} />
+                    </span>
+                  </td>
+                  <td align="left">
+                    <span className="AssetBalance right semi-bold">
+                      {e.symbol}
+                    </span>
+                  </td>
+                  <td align="left">
+                    <span className="AssetBalance right semi-bold">
+                      { formatAmount(e.balance,e.decimals,e.symbol) }
+                    </span>
+                  </td>
+				  <td align="left">
+                    <span className="AssetBalance right semi-bold">
+					{ formatAmount(e.earn,e.decimals,e.symbol) }
+                    </span>
+                  </td>
+				  
+                  
+                </tr>
+
+
+              }) }
+              
+            </tbody>
+          </table>
+        
+        
+				</Fragment>
+			}
+
+		</div>
+        </Box>
+      </Modal>
 
 <Modal
         open={openModal}

@@ -1,7 +1,7 @@
 import React , {Fragment, useEffect, useState} from 'react'
 import Head from 'next/head';
 import Image from 'next/image';
-import Header from '../../components/header';
+import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -98,10 +98,16 @@ export default function Coins(props){
         let deposit_fee = Number(document.getElementById("d_fee").value)
         let withdraw_fee = Number(document.getElementById("w_fee").value)
         let exchange_fee = Number(document.getElementById("e_fee").value)
+        let spread = Number(document.getElementById("spread").value)
+        let interest = Number(document.getElementById("interest").value)
+        let n_fee = document.getElementById("n_fee") ? Number(document.getElementById("n_fee").value) : false;
         let body = selectedCoin;
         body['d_fee'] = deposit_fee/100;
         body['w_fee'] = withdraw_fee/100;
         body['e_fee'] = exchange_fee/100;
+        body['spread'] = spread / 100;
+        body['interest'] = interest / 100;
+        body['n_fee'] = n_fee;
         console.log(body);
         setOpenModal(false);
         let resp = await postReq("modifycoin",body);
@@ -185,6 +191,8 @@ const html = <Fragment>
                 <th align="left" width={200}>Deposit Fees</th>
                 <th align="left" width={200}>Withdraw Fees</th>
                 <th align="left" width={200}>Exchange Fees</th>
+                <th align="left" width={200}>Interests Rate</th>
+                <th align="left" width={200}>Spread</th>
                 <th align="left" width={200}>Disabled</th>
                 
 
@@ -219,6 +227,16 @@ const html = <Fragment>
                   <td align="left">
                     <span className="AssetBalance right semi-bold">
                       {e.e_fee*100}%
+                    </span>
+                  </td>
+                  <td align="left">
+                    <span className="AssetBalance right semi-bold">
+                      {e.interest*100}%
+                    </span>
+                  </td>
+                  <td align="left">
+                    <span className="AssetBalance right semi-bold">
+                      {e.spread*100}%
                     </span>
                   </td>
                   <td align="left">
@@ -266,6 +284,14 @@ const html = <Fragment>
           <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="w_fee" defaultValue={ selectedCoin.w_fee*100 } placeholder="Value" /></div>
           <label className="mt-l" style={{margin:10}}>Exchange Fee</label>
           <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="e_fee" defaultValue={ selectedCoin.e_fee*100 } placeholder="Value" /></div>
+          <label className="mt-l" style={{margin:10}}>Interests Rate</label>
+          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="interest" defaultValue={ selectedCoin.interest*100 } placeholder="Value" /></div>
+          <label className="mt-l" style={{margin:10}}>Spread</label>
+          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="spread" defaultValue={ selectedCoin.spread*100 } placeholder="Value" /></div>
+          
+          {selectedCoin.token &&  <><label className="mt-l" style={{margin:10}}>Network Fee</label>
+          <div className="TextBox m-4" style={{margin:10}}><input type="number" step=".01" id="n_fee" defaultValue={ selectedCoin.network_fee } placeholder="Value" /></div></>}
+         
           <button type="button" onClick={() => updateFee()} className="Button primary block"> Modify </button>
                     </Fragment>
                 }

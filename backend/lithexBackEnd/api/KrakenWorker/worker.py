@@ -47,19 +47,19 @@ class Worker:
     # script to watch usdt and convert to ust
     def convert_to_ust(self):
         balance = self.ex.fetch_balance()
-        ust_min  = self.markets['UST/USD']['limits']['amount']['min']
+        ust_min  = self.markets['USDC/USD']['limits']['amount']['min']
         total_usdt = balance['total'].get('USD',0)
-        trade_amount = self.get_perc_amount(total_usdt  / self.get_price("UST/USD") , 0.99)
-        formated = self.ex.amount_to_precision("UST/USD",trade_amount)
+        trade_amount = self.get_perc_amount(total_usdt  / self.get_price("USDC/USD") , 0.99)
+        formated = self.ex.amount_to_precision("USDC/USD",trade_amount)
         if float(trade_amount) > float(ust_min):
             print("can be traded")
-            res = self.ex.create_market_buy_order('UST/USD',formated)
+            res = self.ex.create_market_buy_order('USDC/USD',formated)
             print(res)
             trade_id = res.get("id",False)
             if trade_id:
-                print("success UST conversion")
+                print("success USDC conversion")
             else:
-                print("failed UST conversion")
+                print("failed USDC conversion")
         else:
             print("minimum not reached")
 

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import {ethers} from "ethers"
 
-const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
+//const base_url = "http://127.0.0.1:8000" //"https://be92-105-69-202-246.ngrok.io"  //
 //const base_url = "http://35eb-105-69-234-197.ngrok.io"
-//const base_url = "http://dev.liqd.fi"
+const base_url = "http://dev.liqd.fi"
 const api = base_url + '/api/'
 
 function set_header(token = null,file=false){
@@ -37,15 +37,21 @@ function set_header(token = null,file=false){
 
 export const handleResp = (resp,addToast) => {
     if (resp){
-        if (resp.failed){
+        if (resp.failed == false){
+            addToast(resp.message,{
+              autoDismiss:true,
+              appearance:"success"
+            })
+            
+          }else if (resp.failed){
             addToast(resp.message,{
               autoDismiss:true,
               appearance:"error"
             })
           }else{
-            addToast(resp.message,{
+            addToast("error",{
               autoDismiss:true,
-              appearance:"success"
+              appearance:"error"
             })
           }
     }else{
