@@ -59,10 +59,11 @@ export default function Verification(props){
 
     useEffect(
       () => {
-        fetchVerificationStatus().then( () => {
+        /* fetchVerificationStatus().then( () => {
           console.log("done fetching data")
-        })
+        }) */
           setTimeout(() => {
+            console.log("test")
             fetchVerificationStatus().then( () => {
               console.log("done fetching data")
             })
