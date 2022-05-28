@@ -1,7 +1,7 @@
 import React , {Fragment, useEffect, useState} from 'react'
 import Head from 'next/head';
 import Image from 'next/image';
-import Header from '../../components/header';
+import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
