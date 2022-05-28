@@ -1,6 +1,5 @@
 import React , {Fragment, useEffect, useState} from 'react'
 import Head from 'next/head';
-import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -8,7 +7,7 @@ import ImageViewer from 'react-simple-image-viewer';
 import { handleResp, postReq, req , numberToBN } from '../../Utils';
 import {useToasts} from "react-toast-notifications"
 import Footer from '../../components/Footer';
-
+import Header from '../../components/Header';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
