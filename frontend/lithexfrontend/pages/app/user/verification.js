@@ -62,14 +62,14 @@ export default function Verification(props){
         fetchVerificationStatus().then( () => {
           console.log("done fetching data")
         })
-          setInterval(() => {
+          
             fetchVerificationStatus().then( () => {
               console.log("done fetching data")
             })
-          },5000);
+         
           
       },
-      [User]
+      [User,verificationStatus]
 
     )
 

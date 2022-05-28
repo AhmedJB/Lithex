@@ -189,7 +189,7 @@ def DepositWatcher():
                         #handle_native_deposit('eth',balance.address,balance.coin.symbol,balance)
                         handle_web3_deposit(balance.address,balance.coin.symbol,balance,"ETH")
                     elif balance.coin.symbol == "BTC":
-                        handle_native_deposit('bcy',balance.address,balance.coin.symbol,balance)
+                        handle_native_deposit('btc',balance.address,balance.coin.symbol,balance)
                     elif balance.coin.symbol == "LTC":
                         handle_native_deposit('ltc',balance.address,balance.coin.symbol,balance)
                     elif balance.coin.symbol == "BNB":

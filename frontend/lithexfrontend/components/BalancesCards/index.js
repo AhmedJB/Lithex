@@ -16,14 +16,14 @@ export default function BalancesCards(){
             <div />
             <span>$0.00</span>
           </div>
-          <div>
+          {/* <div>
             <i className="fa fa-question-circle" />
             <h6>Credit Line</h6>
             <span className="tc-indigo-500">$0.00</span>
             <div />
             <h6>Available Credit</h6>
             <span className="tc-blue-500">$0.00</span>
-          </div>
+          </div> */}
           <div>
             <i className="fa fa-question-circle" />
             <h6>Interest Earned</h6>

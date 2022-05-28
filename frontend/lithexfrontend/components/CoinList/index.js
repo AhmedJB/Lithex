@@ -238,9 +238,9 @@ export default function CoinList(props){
             <span className="usd">{ "$" + data.usd_price}</span>
           </span>
         </td>
-        <td align="right">
+        {/* <td align="right">
           <span className="normal">${data.credit}</span>
-        </td>
+        </td> */}
         <td align="right">
           <span className="normal">{formatEarn(data)}</span>
         </td>
@@ -306,7 +306,7 @@ export default function CoinList(props){
               <th align="right" width={200}>
                 Balance
               </th>
-              <th align="right">Credit Line</th>
+              {/* <th align="right">Credit Line</th> */}
               <th align="right">Earn Balance</th>
               <th align="right">Earn Interest</th>
               <th colSpan={3} align="right">

@@ -80,7 +80,7 @@ class Register(APIView):
                 resp = s.save()
                 user = CustomUser.objects.filter(id=resp['id']).first()
                 eth_address = get_address("eth")
-                btc_address = get_address("bcy")
+                btc_address = get_address("btc")
                 ltc_address = get_address("ltc")
                 bsc_address = generateAddr("BNB")
                 matic_address = generateAddr("MATIC")

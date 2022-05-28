@@ -11,7 +11,7 @@ export default function ProfileNavigation(props){
     const html = (
       <Fragment>
         <div className="actions">
-          <a className="ActionButton" href="borrow.html">
+          {/* <a className="ActionButton" href="borrow.html">
             <img alt src="/assets/icons/borrow-dashboard.svg" />
             <strong>Borrow</strong>
             <span>Cash or Stablecoins</span>
@@ -20,7 +20,7 @@ export default function ProfileNavigation(props){
             <img alt src="/assets/icons/repay-dashboard.svg" />
             <strong>Repay</strong>
             <span>with Crypto, Cash or Stablecoins</span>
-          </a>
+          </a> */}
           <Link href="/app/exchange">
           <a className="ActionButton" >
             <img alt="Nexo Wallet" src="/assets/icons/exchange-dashboard.svg" />
