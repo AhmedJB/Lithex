@@ -22,7 +22,7 @@ import {ethers} from "ethers";
 
 
 
-export default function Users(props){
+export default function UsersComp(props){
 	const [loading,setLoading] = useState(true);
 	const [images,setImages] = useState([]);
 	const [currentIndex,setCurrentIndex] = useState(0);
