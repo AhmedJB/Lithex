@@ -16,7 +16,7 @@ import Modal from '@mui/material/Modal';
 
 
 
-export default function Deposits(props){
+export default function DepositsComp(props){
 	const [loading,setLoading] = useState(true);
 	const [images,setImages] = useState([]);
 	const [currentIndex,setCurrentIndex] = useState(0);
