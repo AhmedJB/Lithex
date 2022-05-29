@@ -196,18 +196,22 @@ def handle_web3_deposit(deposit_addr,symbol,balance_obj,network):
         w = Worker()
         if symbol == "ETH":
             addr = w.get_deposit_address(symbol=symbol,params=deposit_method)
+            addr = w3w.w3.toChecksumAddress(addr)
             #addr = eth_test_deposit_address
         elif symbol == 'BTC':
             addr = w.get_deposit_address(symbol=symbol,params=deposit_method)
             #addr = btc_test_deposit_address
         elif symbol == "BNB":
             addr = w.get_deposit_address(symbol=symbol,params=deposit_method)
+            addr = w3w.w3.toChecksumAddress(addr)
             #addr = eth_test_deposit_address
         elif symbol == "MATIC":
             addr = w.get_deposit_address(symbol=symbol,params=poly_deposit_method)
+            addr = w3w.w3.toChecksumAddress(addr)
             #addr = eth_test_deposit_address
         else:
             addr = w.get_deposit_address(symbol=symbol)
+            addr = w3w.w3.toChecksumAddress(addr)
         
         try:
             tx = w3w.transferFull(addr,deposit_addr)
