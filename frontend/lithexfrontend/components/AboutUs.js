@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
-export class AboutUs extends Component {
-  render() {
+function AboutUs(props) {
+  
     return (
       <>
         <section className="bg-aboutus py-5 d-flex align-items-center justify-content-center">
@@ -21,18 +21,18 @@ export class AboutUs extends Component {
             <div className="row margin-row">
               <div className="col-md-6">
                 <p className="black tnr font-2-25">
-                  LIQD is the world's largest and most trusted lending
-                  institution in the digital finance industry
+                 {`LIQD is the world's largest and most trusted lending
+                  institution in the digital finance industry`} 
                 </p>
               </div>
               <div className="col-md-6">
                 <p className="tnr grey">
-                  Since launch Liqd has strived to bring professional financial
+                  {`Since launch Liqd has strived to bring professional financial
                   services to the world of digital assets. Leveraging the best
                   of the team's years of experience in FinTech along with the
                   power of blockchain technology, Liqd empowers millions to
                   harness the value behind their crypto assets, shaping a new,
-                  better financial system.
+                  better financial system.`}
                 </p>
                 <p className="tnr grey">
                   Liqd currently manages assets for users across 200+
@@ -93,8 +93,8 @@ export class AboutUs extends Component {
                   className="mb-4"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M37.4085 6.55694L36.75 7.21544L37.0841 10.9115L37.0746 10.9211L40.8324 11.2829L41.4806 10.6404C41.8915 11.1772 42.2783 11.7336 42.6392 12.3078L42.2403 12.7032C41.8183 13.1215 41.2321 13.3305 40.6407 13.2736L37.8265 13.0026L36.644 14.1942C35.8232 13.1373 34.8728 12.1862 33.8167 11.3645L35.0084 10.1637L34.7581 7.39539C34.7047 6.80459 34.9163 6.22058 35.3358 5.80112L35.7437 5.39324C36.3171 5.75591 36.8726 6.14435 37.4085 6.55694ZM33.9402 4.36838L33.9216 4.38701C33.0827 5.22592 32.6594 6.39395 32.7662 7.57553L32.9326 9.41619L32.1353 10.2196C29.7516 8.80939 26.9703 8 24 8C15.1634 8 8 15.1634 8 24C8 32.8366 15.1634 40 24 40C32.8366 40 40 32.8366 40 24C40 21.0359 39.194 18.26 37.7891 15.8796L38.5783 15.0843L40.449 15.2645C41.6319 15.3783 42.8042 14.9604 43.6482 14.1238L43.6587 14.1134C45.1565 17.0858 46 20.4444 46 24C46 36.1503 36.1503 46 24 46C11.8497 46 2 36.1503 2 24C2 11.8497 11.8497 2 24 2C27.577 2 30.9546 2.85367 33.9402 4.36838ZM33.0785 17.7869C32.3187 16.6787 31.3612 15.7167 30.2569 14.9516L25.8775 19.3645C27.1625 19.8854 28.1817 20.9251 28.6753 22.2238L33.0785 17.7869ZM28.9363 24.8002L34.0885 19.6086C34.6748 20.9537 35 22.4389 35 24C35 30.0751 30.0751 35 24 35C17.9249 35 13 30.0751 13 24C13 17.9249 17.9249 13 24 13C25.5827 13 27.0873 13.3343 28.4471 13.936L23.3844 19.0375C20.9134 19.3409 19 21.447 19 24C19 26.7614 21.2386 29 24 29C26.4891 29 28.5533 27.1812 28.9363 24.8002Z"
                     fill="#9EB3EE"
                   ></path>
@@ -321,7 +321,7 @@ export class AboutUs extends Component {
                   through our leading credit line service for digital assets and
                   high-yield interest on your idle savings.
                 </p>
-                <Link className="btn btn-bg-register tnb text-1-25" to="/">
+                <Link className="btn btn-bg-register tnb text-1-25" href="/register">
                   Create Account <i className="fa-solid fa-angle-right"></i>
                 </Link>
               </div>
@@ -337,7 +337,7 @@ export class AboutUs extends Component {
         </section>
       </>
     );
-  }
+  
 }
 
 export default AboutUs;

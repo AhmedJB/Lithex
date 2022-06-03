@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-export class Exchange extends Component {
-  render() {
+function Exchange(props) {
+
     return (
       <>
         <section className="banner bg-white">
@@ -186,9 +186,9 @@ export class Exchange extends Component {
                 </span>
                 <h4 className="black mt-2">We Crunch the Numbers for You</h4>
                 <p className="tnr">
-                  You don't have to look around for the best price. Our Smart
+                  {`You don't have to look around for the best price. Our Smart
                   Routing System connects to the top 10 exchanges at once,
-                  providing you with the most cost-effective execution possible.
+                  providing you with the most cost-effective execution possible.`}
                 </p>
               </div>
               <div className="col-md-4 m-auto">
@@ -213,9 +213,9 @@ export class Exchange extends Component {
                 </span>
                 <h4 className="black mt-2">All Top Coins Are a Click Away</h4>
                 <p className="tnr">
-                  Have fun with the world's most popular coins effortlessly from
+                  {`Have fun with the world's most popular coins effortlessly from
                   any device. Market pairs are available for all currencies
-                  supported by LIQD, including BTC, ETH, LIQD, and more.
+                  supported by LIQD, including BTC, ETH, LIQD, and more.`}
                 </p>
               </div>
             </div>
@@ -253,9 +253,9 @@ export class Exchange extends Component {
                 </span>
                 <h4 className="black mt-2">Earn While You Exchange</h4>
                 <p className="tnr">
-                  All new assets are placed directly in your Savings Wallet,
+                  {`All new assets are placed directly in your Savings Wallet,
                   meaning you're always earning high-yield interest - even in
-                  between swaps.
+                  between swaps.`}
                 </p>
               </div>
             </div>
@@ -913,9 +913,9 @@ export class Exchange extends Component {
                   </li>
                   <li>
                     <h4 className="tnm black">Click Exchange</h4>
-                    Click 'Preview Exchange' to review your transaction and
+                    {`Click 'Preview Exchange' to review your transaction and
                     finalize it by selecting the 'Exchange' button. That's it,
-                    you're all set!
+                    you're all set!`}
                   </li>
                 </ul>
               </div>
@@ -967,20 +967,20 @@ export class Exchange extends Component {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M5 18C4.44772 18 4 18.4477 4 19V21C4 21.5523 4.44772 22 5 22H5.90361L5.08072 34.7493C5.03701 35.4266 5.57457 36 6.25327 36H13.7467C14.4254 36 14.963 35.4266 14.9193 34.7493L14.0964 22H15C15.5523 22 16 21.5523 16 21V19C16 18.4477 15.5523 18 15 18H5Z"
                     fill="#9EB3EE"
                   ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M19 18C18.4477 18 18 18.4477 18 19V21C18 21.5523 18.4477 22 19 22H19.9036L19.0807 34.7493C19.037 35.4266 19.5746 36 20.2533 36H27.7467C28.4254 36 28.963 35.4266 28.9193 34.7493L28.0964 22H29C29.5523 22 30 21.5523 30 21V19C30 18.4477 29.5523 18 29 18H19Z"
                     fill="#9EB3EE"
                   ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M34 18C33.4477 18 33 18.4477 33 19V21C33 21.5523 33.4477 22 34 22H34.9036L34.0807 34.7493C34.037 35.4266 34.5746 36 35.2533 36H42.7467C43.4254 36 43.963 35.4266 43.9193 34.7493L43.0964 22H44C44.5523 22 45 21.5523 45 21V19C45 18.4477 44.5523 18 44 18H34Z"
                     fill="#9EB3EE"
                   ></path>
@@ -989,8 +989,8 @@ export class Exchange extends Component {
                     fill="#1E4DD8"
                   ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M0.715419 8.91582C0.291046 9.04179 0 9.43179 0 9.87447V15C0 15.5523 0.447714 16 0.999999 16H47C47.5523 16 48 15.5523 48 15V9.87425C48 9.43168 47.7091 9.04174 47.2849 8.91568L25.7206 2.5076C24.6059 2.17634 23.4189 2.17617 22.304 2.50712L0.715419 8.91582ZM24 13C25.6569 13 27 11.6568 27 9.99998C27 8.34313 25.6569 6.99998 24 6.99998C22.3431 6.99998 21 8.34313 21 9.99998C21 11.6568 22.3431 13 24 13Z"
                     fill="#1E4DD8"
                   ></path>
@@ -1010,8 +1010,8 @@ export class Exchange extends Component {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M8.33325 3.79425C5.57183 3.79425 3.33325 6.03283 3.33325 8.79425V12.9609H6.49992V11.9609C6.49992 9.19949 8.7385 6.96092 11.4999 6.96092H28.4999C31.2613 6.96092 33.4999 9.19949 33.4999 11.9609V19.3284C34.641 19.6867 35.7065 20.2157 36.6666 20.8854V8.79425C36.6666 6.03283 34.428 3.79425 31.6666 3.79425H8.33325ZM6.49992 14.6276H3.33325V17.9609H6.49992V14.6276ZM6.49992 19.6276H3.33325V22.9609H6.49992V19.6276ZM6.49992 24.6276H3.33325V28.7942C3.33325 31.5557 5.57183 33.7942 8.33325 33.7942H18.8164C18.5171 32.7888 18.3498 31.7266 18.3344 30.6276H11.4999C8.7385 30.6276 6.49992 28.389 6.49992 25.6276V24.6276ZM29.9999 18.7943C24.1803 18.7943 19.356 23.0552 18.4765 28.6276H11.4999C9.84307 28.6276 8.49992 27.2844 8.49992 25.6276V11.9609C8.49992 10.3041 9.84306 8.96092 11.4999 8.96092H28.4999C30.1568 8.96092 31.4999 10.3041 31.4999 11.9609V18.8898C31.0088 18.8268 30.5082 18.7943 29.9999 18.7943Z"
                     fill="#9EB3EE"
                   ></path>
@@ -1020,8 +1020,8 @@ export class Exchange extends Component {
                     fill="#1E4DD8"
                   ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M40 30.4609C40 35.9838 35.5228 40.4609 30 40.4609C24.4772 40.4609 20 35.9838 20 30.4609C20 24.9381 24.4772 20.4609 30 20.4609C35.5228 20.4609 40 24.9381 40 30.4609ZM30.9983 25.8247V25.4609C30.9983 24.9087 30.5506 24.4609 29.9983 24.4609C29.446 24.4609 28.9983 24.9087 28.9983 25.4609V25.8262C27.4848 25.8752 26.2729 27.1175 26.2729 28.6429C26.2729 30.1994 27.5347 31.4611 29.0911 31.4611H30.9093C31.3612 31.4611 31.7275 31.8274 31.7275 32.2793C31.7275 32.7312 31.3612 33.0975 30.9093 33.0975H27.8184C27.2661 33.0975 26.8184 33.5452 26.8184 34.0975C26.8184 34.6498 27.2661 35.0975 27.8184 35.0975H28.9983V35.4609C28.9983 36.0132 29.446 36.4609 29.9983 36.4609C30.5506 36.4609 30.9983 36.0132 30.9983 35.4609V35.0961C32.5136 35.0491 33.7275 33.806 33.7275 32.2793C33.7275 30.7229 32.4657 29.4611 30.9093 29.4611H29.0911C28.6393 29.4611 28.2729 29.0948 28.2729 28.6429C28.2729 28.1911 28.6393 27.8247 29.0911 27.8247H32.182C32.7343 27.8247 33.182 27.377 33.182 26.8247C33.182 26.2725 32.7343 25.8247 32.182 25.8247H30.9983Z"
                     fill="#1E4DD8"
                   ></path>
@@ -1043,14 +1043,14 @@ export class Exchange extends Component {
                     fill="#9EB3EE"
                   ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M16 16C16 11.5817 19.5817 8 24 8C28.4183 8 32 11.5817 32 16V17.126C33.7252 17.5701 35 19.1362 35 21V33C35 35.2091 33.2091 37 31 37H17C14.7909 37 13 35.2091 13 33V21C13 19.1362 14.2748 17.5701 16 17.126V16ZM20 17H28V16C28 13.7909 26.2091 12 24 12C21.7909 12 20 13.7909 20 16V17Z"
                     fill="#1E4DD8"
                   ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M24.9999 21.5C24.9999 20.9477 24.5521 20.5 23.9999 20.5C23.4476 20.5 22.9999 20.9477 22.9999 21.5L22.9999 22L22.9994 22C21.3426 22 19.9995 23.3432 19.9995 25C19.9995 26.6568 21.3426 28 22.9995 27.9999L24 27.9999L24.9997 27.9999C25.5521 27.9999 25.9998 28.4477 25.9998 29.0001C25.9997 29.5524 25.552 30.0001 24.9997 30.0001L21.4996 30C20.9473 30 20.4996 30.4478 20.4996 31.0001C20.4996 31.5523 20.9473 32.0001 21.4996 32L22.9999 32L22.9999 32.5C22.9999 33.0523 23.4476 33.5 23.9999 33.5C24.5522 33.5 24.9999 33.0522 24.9999 32.5L24.9999 32.0001C26.6566 32 27.9996 30.657 27.9998 29.0003C28 27.3433 26.6567 25.9999 24.9997 25.9999L24 25.9999L24 25.9999L22.9994 25.9999C22.4472 25.9999 21.9995 25.5522 21.9995 25C21.9995 24.4477 22.4472 24 22.9994 24L26.4996 24.0001C27.0519 24.0001 27.4996 23.5523 27.4996 23.0001C27.4996 22.4478 27.0519 22.0001 26.4996 22L24.9999 22L24.9999 21.5Z"
                     fill="white"
                   ></path>
@@ -1068,8 +1068,8 @@ export class Exchange extends Component {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M13.1571 15.189C14.988 10.0073 18.1842 5.48416 22.3074 2.06421C10.948 2.9285 2 12.4193 2 24.0001C2 35.5807 10.9478 45.0715 22.3071 45.9359C18.2256 42.5504 15.0524 38.0838 13.2128 32.9676H6.4V15.474H13.1009C13.1055 15.3791 13.1238 15.2832 13.1571 15.189ZM13.6123 16.3953V16.8743C13.7549 16.7489 13.9014 16.6313 14.0514 16.5212C13.9566 16.5165 13.8609 16.4982 13.7668 16.465C13.7126 16.4458 13.661 16.4224 13.6123 16.3953ZM15.0085 15.9402C16.0306 15.4362 17.1704 15.2092 18.3637 15.2092C19.0474 15.2092 19.7566 15.2783 20.4632 15.4609C21.0604 15.6132 21.6401 15.809 22.1548 16.0737C22.5614 16.2827 22.9443 16.5149 23.2867 16.7652C23.5604 16.9652 23.8948 17.2352 24.1703 17.5651L24.8301 18.2983C24.9756 18.1365 25.128 17.9782 25.2872 17.8232C27.0882 16.0703 29.3368 15.2001 31.8711 15.2001C32.161 15.2001 32.4472 15.2115 32.7294 15.2343C30.9245 10.4854 27.8806 6.36006 24 3.26541C19.9512 6.4942 16.8132 10.845 15.0429 15.8553C15.0326 15.8844 15.0211 15.9127 15.0085 15.9402ZM34.8909 15.6582C36.209 16.083 37.4077 16.8039 38.4549 17.8232C40.2423 19.5629 41.1749 21.7354 41.1749 24.2208C41.1749 26.703 40.2447 28.8855 38.4549 30.6276C37.3953 31.6589 36.1808 32.3847 34.8443 32.8074C34.8438 32.8088 34.8433 32.8101 34.8429 32.8114C33.012 37.9929 29.8159 42.516 25.6929 45.9359C37.0522 45.0715 46 35.5807 46 24.0001C46 12.4193 37.052 2.9285 25.6926 2.06421C29.8158 5.48416 33.012 10.0073 34.8429 15.189C34.8979 15.3448 34.9121 15.5051 34.8909 15.6582ZM32.5486 33.2295C32.3251 33.2436 32.0993 33.2507 31.8711 33.2507C29.3368 33.2507 27.0882 32.3805 25.2872 30.6276C25.0675 30.4137 24.8607 30.1932 24.667 29.9663C24.3384 30.5502 23.904 31.0836 23.3643 31.5559C21.9695 32.7763 20.1779 33.2507 18.2724 33.2507C17.4929 33.2507 16.7142 33.1563 15.9604 32.9618C15.7262 32.9013 15.4942 32.8332 15.2669 32.7565C17.0715 37.5094 20.1168 41.6382 24 44.7349C27.7538 41.7414 30.7247 37.7834 32.5486 33.2295ZM30.4586 22.7181C30.0683 23.1128 29.8709 23.5687 29.8709 24.2299C29.8709 24.8936 30.0695 25.3435 30.45 25.724L30.4587 25.7327L30.4672 25.7414C30.8572 26.1402 31.2816 26.3214 31.8711 26.3214C32.4605 26.3214 32.8849 26.1402 33.2749 25.7414L33.2835 25.7327L33.2921 25.724C33.6726 25.3435 33.8713 24.8936 33.8713 24.2299C33.8713 23.5687 33.6738 23.1128 33.2835 22.7181L33.2749 22.7094C32.8762 22.3018 32.448 22.1202 31.8711 22.1202C31.2941 22.1202 30.8659 22.3017 30.4672 22.7094L30.4586 22.7181Z"
                     fill="#9EB3EE"
                   ></path>
@@ -1102,10 +1102,10 @@ export class Exchange extends Component {
                     d="M3.33341 18.7943H10.0001V12.1276H6.66675C6.20651 12.1276 5.83341 11.7545 5.83341 11.2943C5.83341 10.8341 6.20651 10.461 6.66675 10.461H33.3334C33.7936 10.461 34.1667 10.8341 34.1667 11.2943C34.1667 11.7545 33.7936 12.1276 33.3334 12.1276H30.0001V18.7943H36.6667C37.5872 18.7943 38.3334 18.0481 38.3334 17.1276V5.46098C38.3334 4.5405 37.5872 3.79431 36.6667 3.79431H3.33342C2.41294 3.79431 1.66675 4.5405 1.66675 5.46098V17.1276C1.66675 18.0481 2.41294 18.7943 3.33341 18.7943Z"
                     fill="#9EB3EE"
                   ></path>
-                  <g clip-path="url(#clip0)">
+                  <g clipPath="url(#clip0)">
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M11.6667 38.7943C10.7462 38.7943 10 38.0481 10 37.1276V7.1276C10 6.20713 10.7462 5.46094 11.6667 5.46094H28.3333C29.2538 5.46094 30 6.20713 30 7.1276V37.1276C30 38.0481 29.2538 38.7943 28.3333 38.7943H11.6667ZM14.1667 36.2943C13.2462 36.2943 12.5 35.5481 12.5 34.6276V12.1276H27.5V34.6276C27.5 35.5481 26.7538 36.2943 25.8333 36.2943H14.1667Z"
                       fill="#1E4DD8"
                     ></path>
@@ -1189,12 +1189,12 @@ export class Exchange extends Component {
                   <path
                     d="M24.1673 19.6276H15.834"
                     stroke="#1E4DD8"
-                    stroke-width="2"
-                    stroke-linecap="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                   ></path>
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M31.6676 12.1276C34.8892 12.1276 37.5009 9.51593 37.5009 6.29427C37.5009 3.07261 34.8892 0.460938 31.6676 0.460938C28.4459 0.460938 25.8342 3.07261 25.8342 6.29427C25.8342 9.51593 28.4459 12.1276 31.6676 12.1276ZM32.6676 3.81848C32.6676 3.2662 32.2198 2.81848 31.6676 2.81848C31.1153 2.81848 30.6676 3.2662 30.6676 3.81848V6.31848V7.31848H31.6676H33.3342C33.8865 7.31848 34.3342 6.87077 34.3342 6.31848C34.3342 5.7662 33.8865 5.31848 33.3342 5.31848H32.6676V3.81848Z"
                     fill="#1E4DD8"
                   ></path>
@@ -1245,11 +1245,11 @@ export class Exchange extends Component {
                       >
                         <div className="accordion-body">
                           <p>
-                            To earn instant cashback on every swap, make sure at
+                            {`To earn instant cashback on every swap, make sure at
                             least 1% of your Portfolio Balance consists of LIQD
                             Tokens. The cashback you get depends on your Loyalty
                             Tier – the higher your Loyalty tier is, the more
-                            cashback you'll earn.
+                            cashback you'll earn.`}
                             <br />
                           </p>
                           <p>
@@ -1264,10 +1264,10 @@ export class Exchange extends Component {
                           </p>
                           <p>
                             <em>
-                              Let's say you stay within LIQD's Premium Loyalty
+                              {`Let's say you stay within LIQD's Premium Loyalty
                               tier and you swap USDC for $5,000 worth of BTC via
                               the LIQD Exchange. That means you'll get $25 worth
-                              of BTC in instant cashback:
+                              of BTC in instant cashback:`}
                             </em>
                           </p>
 
@@ -1289,12 +1289,12 @@ export class Exchange extends Component {
                           </p>
                           <p>
                             <br />
-                            <strong>Note:</strong> The total cashback paid is
+                            <strong>Note:</strong> {`The total cashback paid is
                             limited up to $100,000 in exchange volume per month.
                             That means you'll be earning cashback until your
                             total monthly amount of swaps exceeds $100,000. That
                             limit resets back to $0 on the 1st day of each
-                            month.
+                            month.`}
                           </p>
                         </div>
                       </div>
@@ -1416,11 +1416,11 @@ export class Exchange extends Component {
                                 <Link to="/">LIQD platform</Link>
                               </u>
                             </li>
-                            <li>Click on the "Exchange" tab.</li>
+                            <li>{`Click on the "Exchange" tab.`}</li>
                             <li>
                               Select the currencies you would like to swap.
                             </li>
-                            <li>Click "Exchange".</li>
+                            <li>{`Click "Exchange".`}</li>
                           </ol>
                         </div>
                       </div>
@@ -1464,8 +1464,8 @@ export class Exchange extends Component {
                               transfer funds from an external wallet.
                             </li>
                             <li>
-                              Click on the Exchange tab and choose the 'Booster'
-                              option.
+                              {`Click on the Exchange tab and choose the 'Booster'
+                              option.`}
                             </li>
                             <li>
                               Select the currency you want to leverage against,
@@ -1473,9 +1473,9 @@ export class Exchange extends Component {
                               the asset you want to acquire.
                             </li>
                             <li>
-                              And that's it! The newly-acquired assets will be
+                              {`And that's it! The newly-acquired assets will be
                               added to your Credit Line Wallet as collateral for
-                              your booster transaction.
+                              your booster transaction.`}
                             </li>
                             <li>
                               Once you repay the outstanding crypto credit, you
@@ -1508,9 +1508,9 @@ export class Exchange extends Component {
                           </p>
                           <p>
                             <em>
-                              Let's say you keep $50,000 worth of BTC inside
+                              {`Let's say you keep $50,000 worth of BTC inside
                               your LIQD account and you have no outstanding
-                              credit. Here's your starting account balance:
+                              credit. Here's your starting account balance:`}
                             </em>
                           </p>
                           <ul>
@@ -1627,6 +1627,6 @@ export class Exchange extends Component {
       </>
     );
   }
-}
+
 
 export default Exchange;

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { ExternalLink } from "react-external-link";
 
-export class Security extends Component {
-  render() {
+function Security(props) {
+
     return (
       <>
         <section className="banner bg-security">
@@ -15,8 +14,8 @@ export class Security extends Component {
                   <p className="font-4 tnm black">for Your Digital Assets</p>
                 </h1>
                 <p className="font-1-5 tnr">
-                  By LIQD's leading partners in custody, overcollateralized
-                  lending model, and secure-by-design infrastructure.
+                  {`By LIQD's leading partners in custody, overcollateralized
+                  lending model, and secure-by-design infrastructure.`}
                 </p>
               </div>
               <div className="col-md-5 my-auto">
@@ -27,34 +26,34 @@ export class Security extends Component {
                   </p>
                   <div className="row">
                     <div className="col-md-4">
-                      <ExternalLink href="https://www.bakkt.com/">
+                      <a href="https://www.bakkt.com/">
                         <img
                           src="assets/img/logo-bakkt.svg"
                           alt="Bakkt"
                           target="_blank"
                           className="img-fluid w-100"
                         />
-                      </ExternalLink>
+                      </a>
                     </div>
                     <div className="col-md-4">
-                      <ExternalLink href="https://www.bitgo.com/">
+                      <a href="https://www.bitgo.com/">
                         <img
                           src="assets/img/logo-bitgo.svg"
                           alt="Bitgo"
                           target="_blank"
                           className="img-fluid w-100"
                         />
-                      </ExternalLink>
+                      </a>
                     </div>
                     <div className="col-md-4">
-                      <ExternalLink href="https://www.ledger.com/">
+                      <a href="https://www.ledger.com/">
                         <img
                           src="assets/img/logo-ledger.svg"
                           className="img-fluid w-100"
                           alt="Ledger"
                           target="_blank"
                         />
-                      </ExternalLink>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -65,7 +64,7 @@ export class Security extends Component {
                 className="align-bottom text-center mb-2"
                 to="#security-partners"
               >
-                Your assets' security is guaranteed by{" "}
+                {`Your assets' security is guaranteed by`}{" "}
                 <i className="fa-solid fa-arrow-down blue"></i>
               </Link>
             </div>
@@ -110,13 +109,13 @@ export class Security extends Component {
                         <div className="row">
                           <h4 className="black tnb">Bakkt</h4>
                           <p className="tnr">
-                            Bakkt is a trusted digital asset platform providing
+                            {`Bakkt is a trusted digital asset platform providing
                             LIQD with Bitcoin and Ethereum custody in the Bakkt
                             Warehouse, the company's regulated custodian, which
                             comprises both online (warm) and air-gapped (cold)
                             digital asset storage to minimize risks. For extra
                             protection, Bakkt's wallets are covered by an
-                            insurance policy from a leading global carrier.
+                            insurance policy from a leading global carrier.`}
                           </p>
                         </div>
                       </div>
@@ -193,12 +192,12 @@ export class Security extends Component {
                         <div className="row">
                           <h4 className="black tnb">Ledger</h4>
                           <p className="tnr">
-                            Ledger Vault provides us with institutional-grade
+                            {`Ledger Vault provides us with institutional-grade
                             self-custody that is accessible 24/7/365 and fully
                             addresses our retail and institutional clients'
                             needs for instant services. Ledger Vault carries
                             $150M third-party insurance led by the Arch UK
-                            Lloyds of London syndicate.
+                            Lloyds of London syndicate.`}
                           </p>
                         </div>
                       </div>
@@ -314,12 +313,12 @@ export class Security extends Component {
                         <div className="row">
                           <h4 className="black tnb">Jumio</h4>
                           <p className="tnr">
-                            Jumio's eKYC platform uses Informed AI that
+                            {`Jumio's eKYC platform uses Informed AI that
                             incorporates large data sets to deliver end-to-end
                             identity verification. The Jumio KYX platform
                             applies biometric-based authentication and AML
                             screening and supports more than 3,500 ID documents
-                            across 200 jurisdictions.
+                            across 200 jurisdictions.`}
                           </p>
                         </div>
                       </div>
@@ -355,12 +354,12 @@ export class Security extends Component {
                         <div className="row">
                           <h4 className="black tnb">Securitize</h4>
                           <p className="tnr">
-                            Securitize enables ownership, management, and
+                            {`Securitize enables ownership, management, and
                             trading of digital securities (security tokens). The
                             company is an SEC Registered Transfer Agent and its
                             DS protocol allows for tokenized securities to be
                             staked as collateral for LIQD's Instant Crypto
-                            Credit Lines™.
+                            Credit Lines™.`}
                           </p>
                         </div>
                       </div>
@@ -618,30 +617,30 @@ export class Security extends Component {
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M9 4.03418C6.23858 4.03418 4 6.27276 4 9.03418V35.0342C4 37.7956 6.23857 40.0342 9 40.0342H22.5798C22.2026 38.7668 22 37.4241 22 36.0342C22 28.3022 28.268 22.0342 36 22.0342C38.9745 22.0342 41.7323 22.9618 44 24.5435V9.03418C44 6.27276 41.7614 4.03418 39 4.03418H9Z"
                         fill="#C2EADB"
                       ></path>
                       <path
                         d="M23 35.0342H13C10.7909 35.0342 9 33.2433 9 31.0342V13.0342C9 10.825 10.7909 9.03418 13 9.03418H35C37.2091 9.03418 39 10.825 39 13.0342V23.0342"
                         stroke="#030405"
-                        stroke-width="2"
+                        strokeWidth="2"
                       ></path>
                       <path
                         d="M4 16.0342H9"
                         stroke="#030405"
-                        stroke-width="2"
+                        strokeWidth="2"
                       ></path>
                       <path
                         d="M4 22.0342H9"
                         stroke="#030405"
-                        stroke-width="2"
+                        strokeWidth="2"
                       ></path>
                       <path
                         d="M4 28.0342H9"
                         stroke="#030405"
-                        stroke-width="2"
+                        strokeWidth="2"
                       ></path>
                       <path
                         d="M10 42.0342H17V45.0342C17 45.5865 16.5523 46.0342 16 46.0342H11C10.4477 46.0342 10 45.5865 10 45.0342V42.0342Z"
@@ -706,8 +705,8 @@ export class Security extends Component {
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M13.1571 15.2231C14.988 10.0415 18.1842 5.51834 22.3074 2.09839C10.948 2.96268 2 12.4535 2 24.0342C2 35.6149 10.9478 45.1057 22.3071 45.9701C18.2255 42.5846 15.0524 38.1179 13.2128 33.0017H6.40039V15.5081H13.1009C13.1055 15.4132 13.1239 15.3173 13.1571 15.2231ZM13.6127 16.4297V16.9083C13.7553 16.7831 13.9017 16.6655 14.0516 16.5554C13.9567 16.5508 13.861 16.5324 13.7668 16.4992C13.7127 16.48 13.6612 16.4567 13.6127 16.4297ZM15.0084 15.9745C16.0307 15.4703 17.1706 15.2433 18.3641 15.2433C19.0478 15.2433 19.757 15.3124 20.4636 15.495C21.0608 15.6473 21.6405 15.8431 22.1552 16.1077C22.5617 16.3168 22.9447 16.549 23.2871 16.7992C23.5608 16.9993 23.8952 17.2692 24.1706 17.5992L24.8304 18.3323C24.976 18.1706 25.1284 18.0122 25.2876 17.8573C27.0886 16.1043 29.3371 15.2341 31.8715 15.2341C32.1612 15.2341 32.4473 15.2455 32.7294 15.2683C30.9244 10.5195 27.8805 6.3942 24 3.29959C19.9512 6.52838 16.8132 10.8791 15.0429 15.8895C15.0326 15.9186 15.0211 15.9469 15.0084 15.9745ZM34.8909 15.6922C36.2092 16.117 37.4079 16.8379 38.4553 17.8573C40.2427 19.597 41.1753 21.7694 41.1753 24.2549C41.1753 26.7371 40.245 28.9196 38.4553 30.6616C37.3956 31.6931 36.1809 32.4189 34.8442 32.8416C34.8438 32.8429 34.8433 32.8442 34.8429 32.8456C33.012 38.0271 29.8159 42.5502 25.6929 45.9701C37.0522 45.1057 46 35.6149 46 24.0342C46 12.4535 37.052 2.96268 25.6926 2.09839C29.8158 5.51834 33.012 10.0415 34.8429 15.2231C34.8979 15.3789 34.9121 15.5391 34.8909 15.6922ZM32.5486 33.2636C32.3253 33.2777 32.0995 33.2848 31.8715 33.2848C29.3371 33.2848 27.0886 32.4146 25.2876 30.6616C25.0679 30.4477 24.8611 30.2272 24.6674 30.0003C24.3388 30.5843 23.9044 31.1177 23.3647 31.5899C21.9699 32.8104 20.1783 33.2848 18.2728 33.2848C17.4933 33.2848 16.7146 33.1904 15.9608 32.9958C15.7264 32.9354 15.4942 32.8672 15.2668 32.7904C17.0713 37.5434 20.1168 41.6723 24 44.7691C27.7538 41.7755 30.7247 37.8175 32.5486 33.2636ZM30.459 22.7522C30.0687 23.1468 29.8713 23.6027 29.8713 24.264C29.8713 24.9276 30.0699 25.3775 30.4504 25.7581L30.4591 25.7667L30.4676 25.7755C30.8576 26.1742 31.282 26.3555 31.8715 26.3555C32.4609 26.3555 32.8853 26.1742 33.2753 25.7755L33.2838 25.7667L33.2925 25.7581C33.673 25.3775 33.8717 24.9276 33.8717 24.264C33.8717 23.6027 33.6742 23.1468 33.2839 22.7522L33.2753 22.7435C32.8766 22.3358 32.4484 22.1542 31.8715 22.1542C31.2945 22.1542 30.8663 22.3358 30.4676 22.7434L30.459 22.7522Z"
                         fill="#C2EADB"
                       ></path>
@@ -749,7 +748,7 @@ export class Security extends Component {
                         height="4"
                         rx="1"
                         stroke="#030405"
-                        stroke-width="2"
+                        strokeWidth="2"
                       ></rect>
                       <rect
                         x="27"
@@ -758,7 +757,7 @@ export class Security extends Component {
                         height="4"
                         rx="1"
                         stroke="#030405"
-                        stroke-width="2"
+                        strokeWidth="2"
                       ></rect>
                     </svg>
                     <h6 className="mt-3 grey-3">
@@ -776,14 +775,14 @@ export class Security extends Component {
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M3 10.8918C3 9.42414 4.06067 8.16913 5.49224 7.84564C7.70975 7.34455 10.9822 6.46847 13.5 5.21739C14.9878 4.47809 16.4757 3.60785 17.8702 2.79221L17.8702 2.79219C20.4122 1.30537 22.6439 0 24 0C25.3561 0 27.5878 1.30538 30.1298 2.79219C31.5243 3.60784 33.0122 4.47809 34.5 5.21739C37.0178 6.46847 40.2903 7.34455 42.5078 7.84564C43.9393 8.16913 45 9.42414 45 10.8918V20.4059C45 23.0966 44.6334 25.7433 43.9306 28.2712C43.8955 28.2261 43.8601 28.1812 43.8242 28.1364C42.2875 26.2161 41.1946 24.6663 40.3942 23.4507C40.4877 22.6027 40.5352 21.7456 40.5352 20.8832V13.9492C40.5352 12.3385 39.3772 11.001 37.8611 10.6575C36.2145 10.2844 33.8723 9.64997 32.1051 8.7719C31.0213 8.23333 29.9541 7.60908 28.9203 7.00435L28.9203 7.00432C28.4824 6.74818 28.0505 6.49554 27.6258 6.25439C26.9299 5.85918 26.2515 5.49466 25.6338 5.22772C25.0382 4.9704 24.3909 4.75439 23.7852 4.75439C23.1795 4.75439 22.5321 4.9704 21.9366 5.22772C21.3188 5.49466 20.6404 5.85918 19.9445 6.25439C19.5199 6.49547 19.0882 6.74803 18.6504 7.0041L18.65 7.00433C17.6162 7.60906 16.5491 8.23332 15.4652 8.7719C13.6981 9.64997 11.3558 10.2844 9.70918 10.6575C8.19316 11.001 7.03516 12.3385 7.03516 13.9492V20.8793C7.03516 29.2873 11.5495 37.2023 19.1632 40.9231C20.1991 41.4294 21.1453 41.8713 21.9003 42.1888C22.2768 42.347 22.6196 42.4803 22.9099 42.5757C23.1626 42.6587 23.4925 42.7544 23.7895 42.7544C24.0865 42.7544 24.4163 42.6587 24.6689 42.5757C24.7036 42.5643 24.739 42.5524 24.7752 42.5399C25.3823 44.1152 26.3219 45.5254 27.5079 46.6843C25.7722 47.4851 24.4741 48 24.0058 48C23.3484 48 21.054 46.9851 18.2089 45.589C8.6914 40.9186 3 31.0025 3 20.4008V10.8918ZM38.5352 20.4812C38.4445 20.3434 38.3561 20.2153 38.2709 20.1022C38.1412 19.9298 37.945 19.6896 37.6808 19.4821C37.4022 19.2633 36.9346 18.9934 36.3081 18.9937C35.1694 18.9942 34.6039 19.8593 34.4578 20.1061C34.2491 20.4587 34.1261 20.8466 34.0465 21.1603C33.8797 21.8172 33.7806 22.6547 33.7362 23.5645C33.7143 24.0146 33.7049 24.5002 33.7099 25.0143C33.5117 24.928 33.2818 24.8692 33.0156 24.8529C32.5063 24.8217 32.0685 24.9708 31.8239 25.0679C31.5368 25.182 31.2555 25.3328 30.9961 25.4912C30.4741 25.8099 29.9044 26.2433 29.3427 26.7402C28.2259 27.7281 26.9863 29.104 26.1165 30.6289C24.4537 33.5441 24 35.9859 24 38.3527C24 39.1268 24.0755 39.8833 24.2196 40.6152C24.1569 40.6377 24.0985 40.6579 24.0443 40.6757C23.904 40.7218 23.8239 40.741 23.7895 40.749C23.7551 40.741 23.6748 40.7218 23.5343 40.6756C23.3161 40.6039 23.0283 40.4935 22.6755 40.3451C21.9718 40.0493 21.0647 39.6264 20.0413 39.1262C13.1727 35.7695 9.03516 28.5906 9.03516 20.8793V13.9492C9.03516 13.3285 9.4909 12.7577 10.1512 12.608C11.8298 12.2276 14.3651 11.5518 16.3551 10.563C17.5033 9.99245 18.6688 9.31081 19.7255 8.69279L19.7257 8.69267C20.1479 8.44575 20.5527 8.20899 20.9321 7.99353C21.6143 7.60613 22.2156 7.28586 22.7298 7.06367C23.2663 6.83187 23.6034 6.75439 23.7852 6.75439C23.967 6.75439 24.304 6.83187 24.8405 7.06367C25.3547 7.28586 25.956 7.60613 26.6382 7.99353C27.0177 8.20902 27.4226 8.44582 27.8448 8.69278L27.8448 8.69279L27.8449 8.6928C28.9015 9.31081 30.067 9.99246 31.2152 10.563C33.2052 11.5518 35.7405 12.2277 37.4191 12.608C38.0794 12.7577 38.5352 13.3285 38.5352 13.9492V20.4812ZM33.1996 28.5318C33.2109 28.5274 33.216 28.5258 33.2156 28.5263C33.2151 28.5267 33.2083 28.5295 33.1957 28.5334L33.1996 28.5318Z"
                         fill="#C2EADB"
                       ></path>
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M25.8647 38.3527H25.8635C25.8635 43.7561 30.2438 48.1363 35.6471 48.1363C41.0504 48.1363 45.4307 43.7561 45.4307 38.3527H45.4285C45.4285 38.3228 45.4197 33.1113 42.3704 29.301C39.6932 25.9557 38.3166 23.6889 37.5055 22.3534C36.8865 21.3341 36.5969 20.8573 36.31 20.8574C35.6083 20.8577 35.1996 25.2485 36.0556 30.0676C36.6844 33.6078 34.7415 34.7203 33.4588 33.9407C32.389 33.2906 32.7045 30.7923 32.9416 28.9136C33.0959 27.692 33.217 26.7324 32.9028 26.7131C32.1054 26.6643 29.2244 28.9437 27.7364 31.5524C26.2484 34.1611 25.8647 36.2796 25.8647 38.3527Z"
                         fill="#00A76A"
                       ></path>
@@ -801,20 +800,20 @@ export class Security extends Component {
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M5.47428 23.4859C5.47428 20.4836 7.90625 18.0491 10.9071 18.0491C13.9079 18.0491 16.3399 20.4836 16.3399 23.4859C16.3399 26.4881 13.9079 28.9226 10.9071 28.9226C7.90625 28.9226 5.47428 26.4881 5.47428 23.4859ZM0.0214844 41.493C0.0214844 35.9975 4.47642 31.5426 9.97185 31.5426H11.8456C14.5923 31.5426 17.0791 32.6556 18.8796 34.4551C15.1292 35.8306 12.2462 39.0061 11.2755 42.9361H1.46456C0.667571 42.9361 0.0214844 42.29 0.0214844 41.493ZM36.7225 42.9362H46.5338C47.3308 42.9362 47.9769 42.2901 47.9769 41.4931C47.9769 35.9977 43.522 31.5427 38.0266 31.5427H36.1528C33.406 31.5427 30.9192 32.6557 29.1187 34.4552C32.869 35.8308 35.7518 39.0063 36.7225 42.9362ZM31.6552 23.486C31.6552 20.4837 34.0872 18.0492 37.088 18.0492C40.0889 18.0492 42.5208 20.4837 42.5208 23.486C42.5208 26.4882 40.0889 28.9227 37.088 28.9227C34.0872 28.9227 31.6552 26.4882 31.6552 23.486Z"
                         fill="#C2EADB"
                       ></path>
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M18.5661 27.8525C18.5661 24.8503 20.998 22.4158 23.9989 22.4158C26.9997 22.4158 29.4317 24.8503 29.4317 27.8525C29.4317 30.8548 26.9997 33.2893 23.9989 33.2893C20.998 33.2893 18.5661 30.8548 18.5661 27.8525ZM13.1133 45.8597C13.1133 40.3643 17.5682 35.9093 23.0637 35.9093H24.9374C30.4329 35.9093 34.8878 40.3643 34.8878 45.8597C34.8878 46.6567 34.2417 47.3028 33.4447 47.3028H14.5564C13.7594 47.3028 13.1133 46.6567 13.1133 45.8597Z"
                         fill="#C2EADB"
                       ></path>
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M22.4627 1.82428L22.4628 1.82428L22.4628 1.82426C22.6487 1.71545 22.8239 1.61289 22.9834 1.52227C23.2875 1.34941 23.5378 1.21688 23.7415 1.12879C23.8952 1.06235 23.9753 1.04251 24 1.03662C24.0247 1.04251 24.1048 1.06235 24.2585 1.12879C24.4622 1.21688 24.7125 1.34941 25.0166 1.52227C25.1761 1.61289 25.3513 1.71547 25.5372 1.82428C26.0194 2.10647 26.5732 2.43064 27.1094 2.69729C28.0984 3.18913 29.3425 3.51134 30.1094 3.68218V7.58108C30.1094 10.4278 28.5759 13.047 26.0756 14.3074C25.4746 14.6103 24.927 14.8759 24.5032 15.0637C24.2905 15.158 24.1227 15.2266 24.0019 15.2698C23.881 15.2266 23.713 15.1579 23.4999 15.0635C23.0758 14.8756 22.5277 14.6099 21.9262 14.3069C19.4249 13.0467 17.8906 10.427 17.8906 7.57954V3.68218C18.6575 3.51134 19.9016 3.18913 20.8906 2.69729C21.4268 2.43064 21.9806 2.10648 22.4627 1.82428Z"
                         fill="#00A76A"
                       ></path>
@@ -1091,6 +1090,6 @@ export class Security extends Component {
       </>
     );
   }
-}
+
 
 export default Security;

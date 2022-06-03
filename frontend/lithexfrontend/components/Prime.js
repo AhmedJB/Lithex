@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-export class Prime extends Component {
-  render() {
+function Prime(props) {
+ 
     return <div>Prime</div>;
   }
-}
+
 
 export default Prime;

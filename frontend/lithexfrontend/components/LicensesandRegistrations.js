@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-export class LicensesandRegistrations extends Component {
-  render() {
+function LicensesandRegistrations(props) {
+
     return (
       <>
         <section className="py-5 d-flex align-items-center justify-content-center">
@@ -58,8 +58,8 @@ export class LicensesandRegistrations extends Component {
                   className="my-5"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M44.0923 14.3628C44.0923 13.9868 43.7874 13.6819 43.4113 13.6819H8.28463C7.90853 13.6819 7.60364 13.9868 7.60364 14.3628V31.2452C7.60364 31.6214 7.90853 31.9263 8.28463 31.9263H11.4848C11.861 31.9263 12.1659 31.6214 12.1659 31.2452V19.7646C12.1659 18.0852 13.5272 16.7239 15.2066 16.7239C16.8859 16.7239 18.2472 18.0852 18.2472 19.7646V31.2452C18.2472 31.6214 18.5521 31.9263 18.9283 31.9263H22.1269C22.5029 31.9263 22.8078 31.6214 22.8078 31.2452V19.7651C22.8078 18.0857 24.1691 16.7244 25.8485 16.7244C27.5278 16.7244 28.8893 18.0857 28.8893 19.7651V31.2452C28.8893 31.6214 29.1942 31.9263 29.5702 31.9263H32.7719C33.1481 31.9263 33.453 31.6214 33.453 31.2452V19.7651C33.453 18.0857 34.8143 16.7244 36.4937 16.7244C38.173 16.7244 39.5344 18.0857 39.5344 19.7651V31.2452C39.5344 31.6214 39.8392 31.9263 40.2154 31.9263H43.4113C43.7874 31.9263 44.0923 31.6214 44.0923 31.2452V14.3628Z"
                     fill="black"
                   ></path>
@@ -80,7 +80,7 @@ export class LicensesandRegistrations extends Component {
             </div>
             <div className="row">
               <div className="col-md-10 mx-auto">
-                <table class="table table-responsive table-borderless">
+                <table className="table table-responsive table-borderless">
                   <thead className="bg-blue text-white">
                     <tr className="text-center">
                       <th scope="col">What We Need To Provide</th>
@@ -186,6 +186,6 @@ export class LicensesandRegistrations extends Component {
       </>
     );
   }
-}
+
 
 export default LicensesandRegistrations;

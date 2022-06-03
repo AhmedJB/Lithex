@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
-export class Earn extends Component {
-  render() {
+function Earn(props) {
+
     return (
       <>
         <section className="banner bg-earn">
@@ -48,8 +48,8 @@ export class Earn extends Component {
                 </div>
                 <div className="row margin-row">
                   <div className="col-md-12">
-                    <Link to="/" className="btn btn-bg-register tnb text-1-25">
-                      Start Earning <i className="fa-solid fa-angle-right"></i>
+                    <Link href="/register" className="btn btn-bg-register tnb text-1-25">
+                    <>Start Earning <i className="fa-solid fa-angle-right"></i></>  
                     </Link>
                   </div>
                 </div>
@@ -111,7 +111,7 @@ export class Earn extends Component {
                 </p>
                 <p className="tnr">
                   Just top up and{" "}
-                  <Link to="/" className="blue">
+                  <Link href="/" className="blue">
                     start earning
                   </Link>{" "}
                   up to 20% annual interest immediately - no further action is
@@ -558,20 +558,23 @@ export class Earn extends Component {
                         <div>
                           <h3 className="tnb">Compounding Daily Payouts</h3>
                           <p className="tnr mb-5">
-                            With LIQD's unique daily payouts*, you get instant
+                            {`With LIQD's unique daily payouts*, you get instant
                             access to the interest you've earned. Your yield is
                             automatically paid to your LIQD account, so the next
                             day, you begin earning interest on top of it, too.
                             That way your daily payouts only get bigger over
-                            time!
+                            time!`}
                             <br />
                             <small className="tnr small">
                               *Daily payouts apply only to our FLEX offering.
                             </small>
                           </p>
-                          <Link to="/earn">
+                          <Link href="/earn">
+                            <>
                             Start Earning{" "}
                             <i className="fa-solid fa-arrow-right blue"></i>
+                            </>
+                            
                           </Link>
                         </div>
                       </div>
@@ -598,9 +601,12 @@ export class Earn extends Component {
                             offering. Or create a Fixed Term to get an
                             additional interest on your assets.
                           </p>
-                          <Link to="/earn">
+                          <Link href="/earn">
+                            <>
                             Start Earning{" "}
                             <i className="fa-solid fa-arrow-right blue"></i>
+                            </>
+                            
                           </Link>
                         </div>
                       </div>
@@ -627,9 +633,12 @@ export class Earn extends Component {
                             custodians in the event of third-party hacks, theft,
                             or loss of private keys.
                           </p>
-                          <Link to="/earn">
+                          <Link href="/earn">
+                            <>
                             Start Earning{" "}
                             <i className="fa-solid fa-arrow-right blue"></i>
+                            </>
+                            
                           </Link>
                         </div>
                       </div>
@@ -656,9 +665,12 @@ export class Earn extends Component {
                             at any time without losing your accrued interest or
                             add funds whenever you want to earn even more.
                           </p>
-                          <Link to="/earn">
+                          <Link href="/earn">
+                            <>
                             Start Earning{" "}
                             <i className="fa-solid fa-arrow-right blue"></i>
+                            </>
+                            
                           </Link>
                         </div>
                       </div>
@@ -729,7 +741,7 @@ export class Earn extends Component {
                           aria-controls="collapseOne"
                         >
                           <Link
-                            to="/"
+                            href="/app/profile"
                             className="btn btn-primary btn-round me-3"
                           >
                             1
@@ -761,7 +773,7 @@ export class Earn extends Component {
                           aria-controls="collapseTwo"
                         >
                           <Link
-                            to="/"
+                            href="/app/profile"
                             className="btn btn-primary btn-round me-3"
                           >
                             2
@@ -776,9 +788,9 @@ export class Earn extends Component {
                         data-bs-parent="#accordionExample"
                       >
                         <div className="accordion-body">
-                          You're all set - no further action is needed! You're
+                          {`You're all set - no further action is needed! You're
                           now earning compounding interest on your crypto, paid
-                          out daily.
+                          out daily.`}
                         </div>
                       </div>
                     </div>
@@ -840,7 +852,7 @@ export class Earn extends Component {
               </div>
               <div className="col-md-8 m-auto">
                 <h2 className="black text-center">
-                  Here's What Our 3.5М+ Users Are Saying About Us
+                  {"Here's What Our 3.5М+ Users Are Saying About Us"}
                 </h2>
               </div>
               <div className="col-md-2">
@@ -951,8 +963,8 @@ export class Earn extends Component {
                   <i className="fa-solid fa-star green font-1-5"></i>
                   <h6 className="black pt-2">Martin Janicina</h6>
                   <p className="mb-0 tnr font-1">
-                    I don't know a better place to earn interest on crypto and
-                    fiat other than LIQD.
+                    {`I don't know a better place to earn interest on crypto and
+                    fiat other than LIQD.`}
                   </p>
                 </div>
               </div>
@@ -961,8 +973,8 @@ export class Earn extends Component {
                   <i className="fa-brands fa-twitter blue font-1-5"></i>
                   <h6 className="black pt-2">@PangurBan869</h6>
                   <p className="mb-0 tnr font-1">
-                    LIQD has a great platform and I love their earn program.
-                    It's the place to HODL! #LoveLIQD
+                    {`LIQD has a great platform and I love their earn program.
+                    It's the place to HODL! #LoveLIQD`}
                   </p>
                 </div>
               </div>
@@ -971,9 +983,9 @@ export class Earn extends Component {
                   <i className="fa-solid fa-star green font-1-5"></i>
                   <h6 className="black pt-2">Alex H.</h6>
                   <p className="mb-0 tnr font-1">
-                    Such an easy way to store your crypto and earn passive
+                    {`Such an easy way to store your crypto and earn passive
                     income. I've been using the platform for a while and I
-                    recommend it to friends and family. Thanks, LIQD!
+                    recommend it to friends and family. Thanks, LIQD!`}
                   </p>
                 </div>
               </div>
@@ -1063,19 +1075,19 @@ export class Earn extends Component {
                           <ol>
                             <li>
                               Open the{" "}
-                              <Link to="/" className="blue">
+                              <Link href="/app/profile" className="blue">
                                 LIQD platform
                               </Link>
                             </li>
                             <li>Complete your verification.</li>
                             <li>Buy or transfer crypto to your account.</li>
                             <li>
-                              You're all set! You're now earning daily interest
-                              on your digital assets.
+                              {`You're all set! You're now earning daily interest
+                              on your digital assets.`}
                             </li>
                           </ol>
                           <p>
-                            <strong>Note:</strong> You'll start earning interest{" "}
+                            <strong>Note:</strong> {"You'll start earning interest"}{" "}
                             <strong>the next day </strong>after your transfer.
                             Keep in mind that assets used as collateral for our
                             Instant Crypto Credit Lines™ will not earn interest.
@@ -1139,9 +1151,9 @@ export class Earn extends Component {
                               choose:
                               <ul>
                                 <li>
-                                  Earning ‘in kind' means you receive your
+                                  {`Earning 'in kind' means you receive your
                                   interest payments in the currency you're
-                                  earning on.
+                                  earning on.`}
                                 </li>
                                 <li>
                                   Earning in LIQD means you receive interest
@@ -1151,10 +1163,10 @@ export class Earn extends Component {
                               </ul>
                             </li>
                             <li>
-                              <strong>The type of saving term:</strong> FLEX or
+                              <strong>The type of saving term:</strong> {`FLEX or
                               Fixed. If you choose to create a 1-month Fixed
                               Term on your crypto, you'll earn an extra 1%
-                              interest.
+                              interest.`}
                             </li>
                           </ol>
                         </div>
@@ -1170,7 +1182,7 @@ export class Earn extends Component {
                           aria-expanded="false"
                           aria-controls="flush-collapseThree"
                         >
-                          How do I get Liqd's highest interest rate?
+                          {`How do I get Liqd's highest interest rate?`}
                         </button>
                       </h2>
                       <div
@@ -1187,7 +1199,7 @@ export class Earn extends Component {
                           <ul>
                             <li>
                               Become a{" "}
-                              <Link to="/" className="blue" target="_blank">
+                              <Link href="/" className="blue" target="_blank">
                                 Platinum Loyalty tier
                               </Link>{" "}
                               client by making sure at least 10% of your
@@ -1218,7 +1230,7 @@ export class Earn extends Component {
                           <ol>
                             <li>
                               Open the{" "}
-                              <Link to="/" className="blue" target="_blank">
+                              <Link href="/" className="blue" target="_blank">
                                 Liqd platform
                               </Link>{" "}
                               or the Liqd Wallet App.
@@ -1266,9 +1278,9 @@ export class Earn extends Component {
                             protection, and enhanced cybersecurity.
                           </p>
                           <p>
-                            We keep your digital assets safe while you're
+                            {`We keep your digital assets safe while you're
                             earning interest through our multifaceted approach
-                            to security, including:
+                            to security, including:`}
                           </p>
                           <ul>
                             <li>
@@ -1281,13 +1293,13 @@ export class Earn extends Component {
                               Vault, and others.
                             </li>
                             <li>
-                              $375M insurance from our custodial partners via
-                              Lloyd's of London and Marsh &amp; Arch.
+                              {`$375M insurance from our custodial partners via
+                              Lloyd's of London and Marsh &amp; Arch.`}
                             </li>
                             <li>
-                              ISO/IEC 27001:2013 certificate guaranteeing LIQD's
+                              {`ISO/IEC 27001:2013 certificate guaranteeing LIQD's
                               security infrastructure is of the highest
-                              standard.
+                              standard.`}
                             </li>
                             <li>
                               200-500% overcollateralized crypto credit lines.
@@ -1298,7 +1310,7 @@ export class Earn extends Component {
                           </ul>
                           <p>
                             You can learn more about our security and insurance{" "}
-                            <Link to="/security" className="blue">
+                            <Link href="/security" className="blue">
                               here
                             </Link>
                             .
@@ -1345,6 +1357,6 @@ export class Earn extends Component {
       </>
     );
   }
-}
+
 
 export default Earn;

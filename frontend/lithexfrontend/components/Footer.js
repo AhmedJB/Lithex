@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import  Link from "next/link"
 
-export class Footer extends Component {
-  render() {
+export default function Footer(props) {
+  
     return (
       <div>
         <footer className="p-5">
@@ -31,19 +31,19 @@ export class Footer extends Component {
               <div className="col-md-4 my-auto mb-3">
                 <h4 className="tnm black">Follow us</h4>
                 <div className="social">
-                  <Link to="/" className="btn btn-light" type="button">
+                  <Link href="/" className="btn btn-light" type="button">
                     <i className="fa-brands fa-facebook-f"></i>
                   </Link>
-                  <Link to="/" className="btn btn-light" type="button">
+                  <Link href="/" className="btn btn-light" type="button">
                     <i className="fa-brands fa-twitter"></i>
                   </Link>
-                  <Link to="/" className="btn btn-light" type="button">
+                  <Link href="/" className="btn btn-light" type="button">
                     <i className="fa-brands fa-reddit-alien"></i>
                   </Link>
-                  <Link to="/" className="btn btn-light" type="button">
+                  <Link href="/" className="btn btn-light" type="button">
                     <i className="fa-brands fa-medium"></i>
                   </Link>
-                  <Link to="/" className="btn btn-light" type="button">
+                  <Link href="/" className="btn btn-light" type="button">
                     <i className="fa-brands fa-telegram"></i>
                   </Link>
                 </div>
@@ -61,19 +61,19 @@ export class Footer extends Component {
                 <h5>Products</h5>
                 <ul className="tnr ls-none">
                   <li className="pb-2">
-                    <Link to="/">Buy</Link>
+                    <Link href="/">Buy</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Earn</Link>
+                    <Link href="/">Earn</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Exchange</Link>
+                    <Link href="/">Exchange</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">LIQD Prime</Link>
+                    <Link href="/">LIQD Prime</Link>
                   </li>
                   <li>
-                    <Link to="/">Referral</Link>
+                    <Link href="/">Referral</Link>
                   </li>
                 </ul>
               </div>
@@ -81,19 +81,19 @@ export class Footer extends Component {
                 <h5>Company</h5>
                 <ul className="tnr ls-none">
                   <li className="pb-2">
-                    <Link to="/">About Us</Link>
+                    <Link href="/">About Us</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Blog</Link>
+                    <Link href="/">Blog</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Careers</Link>
+                    <Link href="/">Careers</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Licences</Link>
+                    <Link href="/">Licences</Link>
                   </li>
                   <li>
-                    <Link to="/">Community</Link>
+                    <Link href="/">Community</Link>
                   </li>
                 </ul>
               </div>
@@ -101,10 +101,10 @@ export class Footer extends Component {
                 <h5>Help</h5>
                 <ul className="tnr ls-none">
                   <li className="pb-2">
-                    <Link to="/">Help Center</Link>
+                    <Link href="/">Help Center</Link>
                   </li>
                   <li>
-                    <Link to="/">Contacts</Link>
+                    <Link href="/">Contacts</Link>
                   </li>
                 </ul>
               </div>
@@ -112,22 +112,22 @@ export class Footer extends Component {
                 <h5>Legal</h5>
                 <ul className="tnr ls-none">
                   <li className="pb-2">
-                    <Link to="/">Privacy Policy</Link>
+                    <Link href="/">Privacy Policy</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Terms & Conditions</Link>
+                    <Link href="/">Terms & Conditions</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Wallet Terms</Link>
+                    <Link href="/">Wallet Terms</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Earn Terms</Link>
+                    <Link href="/">Earn Terms</Link>
                   </li>
                   <li className="pb-2">
-                    <Link to="/">Exchange Terms</Link>
+                    <Link href="/">Exchange Terms</Link>
                   </li>
                   <li>
-                    <Link to="/">Cookies Policy</Link>
+                    <Link href="/">Cookies Policy</Link>
                   </li>
                 </ul>
               </div>
@@ -174,6 +174,6 @@ export class Footer extends Component {
       </div>
     );
   }
-}
 
-export default Footer;
+
+

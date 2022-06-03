@@ -1,10 +1,15 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import Head from "next/head";
+import Header from "./Header";
+import Footer from "./Footer";
 
 export class Home extends Component {
   render() {
     return (
       <>
+      <Header />
+      
         <section className="banner bg-light">
           <div className="container-fluid">
             <div className="row margin-row">
@@ -132,7 +137,7 @@ export class Home extends Component {
                     <button
                       type="button"
                       data-bs-target="#carouselExampleIndicators"
-                      data-bs-slide-to={0}
+                      data-bs-slide-href={0}
                       className="active"
                       aria-current="true"
                       aria-label="Slide 1"
@@ -140,7 +145,7 @@ export class Home extends Component {
                     <button
                       type="button"
                       data-bs-target="#carouselExampleIndicators"
-                      data-bs-slide-to={1}
+                      data-bs-slide-href={1}
                       aria-label="Slide 2"
                     />
                   </div>
@@ -183,9 +188,12 @@ export class Home extends Component {
                     Add or withdraw funds at any time
                   </li>
                 </ul>
-                <Link to="/earn">
+                <Link href="/earn">
+                  <>
                   Earn Crypto Interest{" "}
                   <i className="fa-solid fa-arrow-right blue"></i>
+                  </>
+                  
                 </Link>
               </div>
             </div>
@@ -272,8 +280,11 @@ export class Home extends Component {
                   infrastructure designed to ensure maximum protection of assets
                   at all times.
                 </p>
-                <Link to="/security">
+                <Link href="/security">
+                  <>
                   Learn More <i className="fa-solid fa-arrow-right blue"></i>
+                  </>
+                  
                 </Link>
               </div>
             </div>
@@ -327,10 +338,10 @@ export class Home extends Component {
                 <div className="row py-4">
                   <div className="col-md-6">
                     <p className="light-blue font-1-375">
-                      Since 2018 Liqd has strived to bring professional
+                      {`Since 2018 Liqd has strived to bring professional
                       financial services to the world of digital assets.
                       Leveraging the best of the team's years of experience in
-                      FinTech along with the power of
+                      FinTech along with the power of`}
                     </p>
                   </div>
                   <div className="col-md-6">
@@ -341,8 +352,10 @@ export class Home extends Component {
                     </p>
                   </div>
                 </div>
-                <Link to="/aboutus" className="text-white">
-                  About Us <i className="fa-solid fa-arrow-right blue"></i>
+                <Link href="/aboutus" className="text-white">
+                <>
+                About Us <i className="fa-solid fa-arrow-right blue"></i>
+                </>
                 </Link>
               </div>
               <div className="col-md-5 m-auto">
@@ -360,10 +373,10 @@ export class Home extends Component {
             <div className="row">
               <div className="col-md-4">
                 <nav className="nav flex-column">
-                  <Link className="nav-link black" to="#earn">
+                  <Link className="nav-link black" href="#earn">
                     Earn
                   </Link>
-                  <Link className="nav-link grey" to="#exchange">
+                  <Link className="nav-link grey" href="#exchange">
                     Exchange
                   </Link>
                 </nav>
@@ -401,7 +414,7 @@ export class Home extends Component {
                           <ol>
                             <li>
                               Open the{" "}
-                              <Link to="/" target="_blank" className="blue">
+                              <Link href="/" target="_blank" className="blue">
                                 Liqd platform
                               </Link>{" "}
                               or the Liqd Wallet App
@@ -409,11 +422,11 @@ export class Home extends Component {
                             <li>Transfer assets into your Liqd Wallet</li>
                           </ol>
                           <p>
-                            You're all set! Now you're earning daily interest
-                            that automatically goes into your Savings Wallet.
+                            {`You're all set! Now you're earning daily interest
+                            that automatically goes into your Savings Wallet.`}
                           </p>
                           <p>
-                            <strong>Note:</strong> You'll start earning interest{" "}
+                            <strong>Note:</strong> {`You'll start earning interest`}{" "}
                             <strong>at least 24 hours after</strong> your
                             transfer. Also, assets held in your Credit Line
                             Wallet (i.e. assets being used as collateral) will
@@ -423,7 +436,7 @@ export class Home extends Component {
                             Find out which digital assets are currently
                             available for our Earn suite and what the exact
                             interest rates are in our{" "}
-                            <Link to="/" target="_blank" className="blue">
+                            <Link href="/" target="_blank" className="blue">
                               help center
                             </Link>
                             .
@@ -458,14 +471,14 @@ export class Home extends Component {
                           <ol>
                             <li>
                               Open the{" "}
-                              <Link to="" target="_blank" className="blue">
+                              <Link href="" target="_blank" className="blue">
                                 Liqd platform
                               </Link>
                               .
                             </li>
                             <li>
                               Complete your{" "}
-                              <Link to="/" target="_blank" className="blue">
+                              <Link href="/" target="_blank" className="blue">
                                 Identity Verification
                               </Link>
                               .
@@ -473,13 +486,13 @@ export class Home extends Component {
                             <li>
                               Transfer your fiat into your Liqd account.{" "}
                               <strong>
-                                Don't forget to use your unique reference code!
+                                {`Don't forget to use your unique reference code!`}
                               </strong>
                             </li>
                           </ol>
                           <p>
-                            That's it! You'll instantly start earning interest
-                            as soon as the transaction is confirmed.
+                            {`That's it! You'll instantly start earning interest
+                            as soon as the transaction is confirmed.`}
                           </p>
                           <p>
                             <strong>Note:</strong> The minimum top-up amounts
@@ -487,7 +500,7 @@ export class Home extends Component {
                           </p>
                           <p>
                             For more detailed information, visit our{" "}
-                            <Link to="/" className="blue" target="_blank">
+                            <Link href="/" className="blue" target="_blank">
                               help center
                             </Link>
                             .
@@ -505,7 +518,7 @@ export class Home extends Component {
                           aria-expanded="false"
                           aria-controls="flush-collapseThree"
                         >
-                          How do I get Liqd's highest interest rate?
+                          {`How do I get Liqd's highest interest rate?`}
                         </button>
                       </h2>
                       <div
@@ -522,7 +535,7 @@ export class Home extends Component {
                           <ul>
                             <li>
                               Become a{" "}
-                              <Link to="/" className="blue" target="_blank">
+                              <Link href="/" className="blue" target="_blank">
                                 Platinum Loyalty tier
                               </Link>{" "}
                               client by making sure at least 10% of your
@@ -553,7 +566,7 @@ export class Home extends Component {
                           <ol>
                             <li>
                               Open the{" "}
-                              <Link to="/" className="blue" target="_blank">
+                              <Link href="/" className="blue" target="_blank">
                                 Liqd platform
                               </Link>{" "}
                               or the Liqd Wallet App.
@@ -688,13 +701,13 @@ export class Home extends Component {
                       >
                         <div className="accordion-body">
                           <p>
-                            The Liqd Exchange is Liqd's swap functionality,
+                            {`The Liqd Exchange is Liqd's swap functionality,
                             which allows for immediate exchanges between 100+
                             crypto and fiat pairs directly within the Liqd
                             platform. The feature is a one-stop-shop for the
                             Liqd Token and other crypto and fiat currencies,
                             enabling users to buy, sell, store, borrow against,
-                            and earn interest on their assets.
+                            and earn interest on their assets.`}
                           </p>
                         </div>
                       </div>
@@ -802,13 +815,13 @@ export class Home extends Component {
                         <ol>
                           <li>
                             Open the{" "}
-                            <Link to="/" target="_blank">
+                            <Link href="/" target="_blank">
                               Liqd platform
                             </Link>
                           </li>
                           <li>Click on the “Exchange” tab</li>
                           <li>Select the currencies you would like to swap</li>
-                          <li>Click "Exchange"</li>
+                          <li>{`Click "Exchange"`}</li>
                         </ol>
                       </div>
                     </div>
@@ -847,6 +860,7 @@ export class Home extends Component {
             </div>
           </div>
         </section>
+        <Footer />
       </>
     );
   }

@@ -7,7 +7,7 @@ async-timeout==4.0.2
 attrs==21.4.0
 backports.zoneinfo==0.2.1
 billiard==3.6.4.0
-ccxt==1.78.51
+ccxt
 celery==5.2.3
 certifi==2021.10.8
 cffi==1.15.0
