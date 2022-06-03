@@ -1,0 +1,179 @@
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
+export class Footer extends Component {
+  render() {
+    return (
+      <div>
+        <footer className="p-5">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-2 my-auto mb-3">
+                <img
+                  src="assets/img/logo/footer-logo.png"
+                  alt="Liqd"
+                  className="img-fluid"
+                />
+              </div>
+              <div className="col-md-4 my-auto mb-3">
+                <h4 className="tnm black">Sign up for updates</h4>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter your email"
+                  />
+                  <button className="btn btn-updt">
+                    <i className="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+              <div className="col-md-4 my-auto mb-3">
+                <h4 className="tnm black">Follow us</h4>
+                <div className="social">
+                  <Link to="/" className="btn btn-light" type="button">
+                    <i className="fa-brands fa-facebook-f"></i>
+                  </Link>
+                  <Link to="/" className="btn btn-light" type="button">
+                    <i className="fa-brands fa-twitter"></i>
+                  </Link>
+                  <Link to="/" className="btn btn-light" type="button">
+                    <i className="fa-brands fa-reddit-alien"></i>
+                  </Link>
+                  <Link to="/" className="btn btn-light" type="button">
+                    <i className="fa-brands fa-medium"></i>
+                  </Link>
+                  <Link to="/" className="btn btn-light" type="button">
+                    <i className="fa-brands fa-telegram"></i>
+                  </Link>
+                </div>
+              </div>
+              <div className="col-md-2 my-auto mb-3">
+                <img
+                  src="assets/img/footer-trust-pilot.png"
+                  alt="Liqd TrustPilot"
+                  className="img-fluid"
+                />
+              </div>
+            </div>
+            <div className="row my-5">
+              <div className="col-md-3">
+                <h5>Products</h5>
+                <ul className="tnr ls-none">
+                  <li className="pb-2">
+                    <Link to="/">Buy</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Earn</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Exchange</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">LIQD Prime</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Referral</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="col-md-3">
+                <h5>Company</h5>
+                <ul className="tnr ls-none">
+                  <li className="pb-2">
+                    <Link to="/">About Us</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Blog</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Careers</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Licences</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Community</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="col-md-3">
+                <h5>Help</h5>
+                <ul className="tnr ls-none">
+                  <li className="pb-2">
+                    <Link to="/">Help Center</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Contacts</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="col-md-3">
+                <h5>Legal</h5>
+                <ul className="tnr ls-none">
+                  <li className="pb-2">
+                    <Link to="/">Privacy Policy</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Terms & Conditions</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Wallet Terms</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Earn Terms</Link>
+                  </li>
+                  <li className="pb-2">
+                    <Link to="/">Exchange Terms</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Cookies Policy</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-4 my-auto">
+                <img src="assets/img/sms.png" alt="" className="img-fluid" />
+              </div>
+              <div className="col-md-3 my-auto">
+                <img
+                  src="assets/img/licence.png"
+                  alt=""
+                  className="img-fluid"
+                />
+              </div>
+              <div className="col-md-3 my-auto">
+                <img
+                  src="assets/img/audited.png"
+                  alt=""
+                  className="img-fluid"
+                />
+              </div>
+              <div className="col-md-2 my-auto">
+                <i className="fa-solid fa-language"></i> English
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-12 mt-5">
+                <p className="small mb-1 tnr">
+                  The LIQD Earn Interest Product is not available for citizens
+                  or residents of certain jurisdictions, including where
+                  restrictions may apply, such as Bulgaria, Estonia and the USA.
+                </p>
+                <p className="small mb-1 tnr">
+                  For any inquiries please contact us at support@LIQD.io
+                </p>
+                <p className="small mb-1 tnr">
+                  Copyright © 2018-2022 LIQD. All rights reserved.
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+}
+
+export default Footer;
