@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/modular/Home.module.css'
 import Router from "next/router"
-import Home from '../components/Home'
+import Home from '../marketing/Home'
 import { Fragment, useEffect } from 'react';
 
 

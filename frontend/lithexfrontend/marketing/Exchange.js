@@ -69,7 +69,7 @@ function Exchange(props) {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                  <Link href="/register" >
+                  <Link href="/app/exchange" >
                       <a className="btn btn-bg-register tnb text-1-25">
                       <>Exchange Now <i className="fa-solid fa-angle-right"></i></>
                       </a>

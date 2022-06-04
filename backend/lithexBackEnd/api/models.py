@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
     is_validated = models.BooleanField(default=False)
     #submited_docs = models.BooleanField(default=False)
     has_personalInfo = models.BooleanField(default=False)
+    deposit_id = models.CharField(default="",max_length=255)
     enable_login = models.BooleanField(default=True)
     enable_withdraw = models.BooleanField(default=True)
     cus_id = models.CharField(max_length=255,default="")

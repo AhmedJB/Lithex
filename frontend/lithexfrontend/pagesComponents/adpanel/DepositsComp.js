@@ -179,6 +179,7 @@ export default function DepositsComp(props){
             <thead>
               <tr>
                 <th align="left" width={200}>Username</th>
+				<th align="left" width={400}>Deposit ID</th>
                 <th align="left" width={200}>Coin</th>
                 
                 
@@ -191,6 +192,11 @@ export default function DepositsComp(props){
                   <td align="left">
                     <span className="AssetVisual">
                       <strong>{e.username}</strong>
+                    </span>
+                  </td>
+				  <td align="left">
+                    <span className="AssetBalance right semi-bold">
+                      {e.depositID}
                     </span>
                   </td>
                   <td align="left">

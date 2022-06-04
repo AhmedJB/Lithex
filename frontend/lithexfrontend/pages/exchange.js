@@ -1,4 +1,4 @@
-import Exchange from "../components/Exchange";
+import Exchange from "../marketing/Exchange";
 
 export default function ExchangeComp(props){
 	return <Exchange />

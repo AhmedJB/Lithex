@@ -8,3 +8,5 @@ module.exports = {
   },
   plugins: [],
 }
+
+//"./pages/**/*.{js,ts,jsx,tsx}",

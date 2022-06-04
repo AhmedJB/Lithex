@@ -1,4 +1,4 @@
-import Security from "../components/Security"
+import Security from "../marketing/Security"
 
 
 

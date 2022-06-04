@@ -6,8 +6,8 @@ from .models import CustomUser, DepositDocs,BankDetails,Documents,PersonalInfo,D
 class RegisterSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id','username','email','password','joined','has_personalInfo','is_validated','enable_login','enable_withdraw']
-        extra_kwargs = {'password': {'write_only':True} , 'has_personalInfo' : {'read_only' : True},'is_validated' : {'read_only' : True}}
+        fields = ['id','username','email','password','joined','has_personalInfo','is_validated','enable_login','enable_withdraw','deposit_id']
+        extra_kwargs = {'password': {'write_only':True} , 'has_personalInfo' : {'read_only' : True},'is_validated' : {'read_only' : True},'deposit_id' :{'read_only' : True} }
 
     def create(self,validated,*args,**kwargs):
         u = CustomUser.objects.create(username = validated['username'],email=validated['email'])

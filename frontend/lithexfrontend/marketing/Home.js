@@ -10,7 +10,7 @@ export class Home extends Component {
       <>
       <HeaderMark />
       
-        <section className="banner bg-light">
+      <section className="banner bg-light">
           <div className="container-fluid">
             <div className="row margin-row">
               <div className="col-md-5 my-auto">
@@ -47,12 +47,15 @@ export class Home extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                  <Link href="/register" >
-                      <a className="btn btn-bg-register tnb text-1-25">
-                      <>Create Account <i className="fa-solid fa-angle-right"></i></>
-                      </a>
-                      
+                    <Link href="/app/register">
+                    <button
+                      className="btn btn-bg-register tnb text-1-25"
+                      type="submit"
+                    >
+                      Create Account <i className="fa-solid fa-angle-right"></i>
+                    </button>
                     </Link>
+                    
                   </div>
                 </div>
               </div>
@@ -137,7 +140,7 @@ export class Home extends Component {
                     <button
                       type="button"
                       data-bs-target="#carouselExampleIndicators"
-                      data-bs-slide-href={0}
+                      data-bs-slide-to={0}
                       className="active"
                       aria-current="true"
                       aria-label="Slide 1"
@@ -145,7 +148,7 @@ export class Home extends Component {
                     <button
                       type="button"
                       data-bs-target="#carouselExampleIndicators"
-                      data-bs-slide-href={1}
+                      data-bs-slide-to={1}
                       aria-label="Slide 2"
                     />
                   </div>
@@ -195,7 +198,7 @@ export class Home extends Component {
                   <i className="fa-solid fa-arrow-right blue"></i>
                   </>
                   </a>
-                 
+                  
                   
                 </Link>
               </div>
@@ -205,42 +208,42 @@ export class Home extends Component {
         <section className="client py-5">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-2 m-auto">
+              <div className="col-md-2 m-auto mb-3">
                 <img
                   src="assets/img/client/logo-ft.svg"
                   className="img-fluid opacity-50"
                   alt="ft"
                 />
               </div>
-              <div className="col-md-2 m-auto">
+              <div className="col-md-2 m-auto mb-3">
                 <img
                   src="assets/img/client/logo-independent.svg"
                   className="img-fluid opacity-50"
                   alt="independent"
                 />
               </div>
-              <div className="col-md-1 m-auto">
+              <div className="col-md-1 m-auto mb-3">
                 <img
                   src="assets/img/client/bloomberg.svg"
                   className="img-fluid opacity-50"
                   alt="bloomberg"
                 />
               </div>
-              <div className="col-md-1 m-auto">
+              <div className="col-md-1 m-auto mb-3">
                 <img
                   src="assets/img/client/forbes.svg"
                   className="img-fluid opacity-50"
                   alt="forbes"
                 />
               </div>
-              <div className="col-md-1 m-auto">
+              <div className="col-md-1 m-auto mb-3">
                 <img
                   src="assets/img/client/yahoo.png"
                   className="img-fluid opacity-50"
                   alt="yahoo"
                 />
               </div>
-              <div className="col-md-1 m-auto">
+              <div className="col-md-1 m-auto mb-3">
                 <img
                   src="assets/img/client/fox-business.svg"
                   className="img-fluid opacity-50"
@@ -254,7 +257,7 @@ export class Home extends Component {
                   alt="coindesk"
                 />
               </div>
-              <div className="col-md-2 m-auto">
+              <div className="col-md-2 m-auto mb-3">
                 <img
                   src="assets/img/client/logo-cointelegraph.svg"
                   className="img-fluid opacity-50"
@@ -344,10 +347,10 @@ export class Home extends Component {
                 <div className="row py-4">
                   <div className="col-md-6">
                     <p className="light-blue font-1-375">
-                      {`Since 2018 Liqd has strived to bring professional
+                      Since 2018 Liqd has strived to bring professional
                       financial services to the world of digital assets.
                       Leveraging the best of the team's years of experience in
-                      FinTech along with the power of`}
+                      FinTech along with the power of
                     </p>
                   </div>
                   <div className="col-md-6">
@@ -361,10 +364,11 @@ export class Home extends Component {
                 <Link href="/aboutus" >
                   <a className="text-white">
                   <>
-                About Us <i className="fa-solid fa-arrow-right blue"></i>
-                </>
+                  About Us <i className="fa-solid fa-arrow-right blue"></i>
+                  </>
                   </a>
-                
+                  
+                  
                 </Link>
               </div>
               <div className="col-md-5 m-auto">
@@ -382,13 +386,13 @@ export class Home extends Component {
             <div className="row">
               <div className="col-md-4">
                 <nav className="nav flex-column">
-                  <Link  href="/earn">
+                  <Link  href="#earn">
                     <a className="nav-link black">
                     Earn
                     </a>
                     
                   </Link>
-                  <Link  href="/exchange">
+                  <Link  href="#exchange">
                     <a className="nav-link grey">
                     Exchange
                     </a>
@@ -437,11 +441,11 @@ export class Home extends Component {
                             <li>Transfer assets into your Liqd Wallet</li>
                           </ol>
                           <p>
-                            {`You're all set! Now you're earning daily interest
-                            that automatically goes into your Savings Wallet.`}
+                            You're all set! Now you're earning daily interest
+                            that automatically goes into your Savings Wallet.
                           </p>
                           <p>
-                            <strong>Note:</strong> {`You'll start earning interest`}{" "}
+                            <strong>Note:</strong> You'll start earning interest{" "}
                             <strong>at least 24 hours after</strong> your
                             transfer. Also, assets held in your Credit Line
                             Wallet (i.e. assets being used as collateral) will
@@ -493,7 +497,7 @@ export class Home extends Component {
                             </li>
                             <li>
                               Complete your{" "}
-                              <Link href="/" target="_blank" className="blue">
+                              <Link href="/app/profile" target="_blank" className="blue">
                                 Identity Verification
                               </Link>
                               .
@@ -501,13 +505,13 @@ export class Home extends Component {
                             <li>
                               Transfer your fiat into your Liqd account.{" "}
                               <strong>
-                                {`Don't forget to use your unique reference code!`}
+                                Don't forget to use your unique reference code!
                               </strong>
                             </li>
                           </ol>
                           <p>
-                            {`That's it! You'll instantly start earning interest
-                            as soon as the transaction is confirmed.`}
+                            That's it! You'll instantly start earning interest
+                            as soon as the transaction is confirmed.
                           </p>
                           <p>
                             <strong>Note:</strong> The minimum top-up amounts
@@ -533,7 +537,7 @@ export class Home extends Component {
                           aria-expanded="false"
                           aria-controls="flush-collapseThree"
                         >
-                          {`How do I get Liqd's highest interest rate?`}
+                          How do I get Liqd's highest interest rate?
                         </button>
                       </h2>
                       <div
@@ -716,13 +720,13 @@ export class Home extends Component {
                       >
                         <div className="accordion-body">
                           <p>
-                            {`The Liqd Exchange is Liqd's swap functionality,
+                            The Liqd Exchange is Liqd's swap functionality,
                             which allows for immediate exchanges between 100+
                             crypto and fiat pairs directly within the Liqd
                             platform. The feature is a one-stop-shop for the
                             Liqd Token and other crypto and fiat currencies,
                             enabling users to buy, sell, store, borrow against,
-                            and earn interest on their assets.`}
+                            and earn interest on their assets.
                           </p>
                         </div>
                       </div>
@@ -836,7 +840,7 @@ export class Home extends Component {
                           </li>
                           <li>Click on the “Exchange” tab</li>
                           <li>Select the currencies you would like to swap</li>
-                          <li>{`Click "Exchange"`}</li>
+                          <li>Click "Exchange"</li>
                         </ol>
                       </div>
                     </div>
@@ -858,12 +862,15 @@ export class Home extends Component {
                   through our leading credit line service for digital assets and
                   high-yield interest on your idle savings.
                 </p>
+                <Link href="/app/register">
                 <button
                   className="btn btn-bg-register tnb text-1-25"
                   type="submit"
                 >
                   Create Account <i className="fa-solid fa-angle-right"></i>
                 </button>
+                </Link>
+                
               </div>
               <div className="col-md-7 m-auto">
                 <img

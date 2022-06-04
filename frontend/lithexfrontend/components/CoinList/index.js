@@ -1,4 +1,4 @@
-import { Fragment, useState , useEffect } from "react";
+import { Fragment, useState , useEffect , useContext } from "react";
 import Image from "next/image"
 import {DropzoneDialog} from 'material-ui-dropzone'
 import { handleSingleFileSubmit, postReq, req, numberToBN , handleResp } from "../../Utils";
@@ -8,12 +8,15 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import {ethers} from "ethers";
 import { fiats } from "../../Utils/constants";
+import { UserContext } from '../../contexts/UserContext';
 
 
 
 
 
 export default function CoinList(props){
+
+    const [User,setUser] = useContext(UserContext);
 
     const [coins,setCoins] = useState([
     ])
@@ -481,6 +484,9 @@ export default function CoinList(props){
         
         <div className="w-full flex  my-2">
         <h2 className="text-2xl font-bold mx-2">Swift Code : </h2><h3 className="text-2xl">5041</h3>
+        </div>
+        <div className="w-full flex  my-2">
+        <h2 className="text-2xl font-bold mx-2">Deposit Note : </h2><h3 className="text-2xl">{User.depositID ? User.depositID : ""}</h3>
         </div>
         <p>After Sending the deposit please send us a screenshot of the receipt</p>
         <button type="button" onClick={() => { setopenDep(false); openDepositModal(selectedId)}} className="Button primary my-5  w-1/5"> Send </button>

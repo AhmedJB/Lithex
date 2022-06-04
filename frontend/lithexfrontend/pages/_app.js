@@ -1,8 +1,9 @@
 //css
 import "../styles/global/per-info.css"
 import '../styles/global/fold-style.css'
-import '../styles/global/boot.css'
+
 import '../styles/global/globals.css'
+import '../styles/global/boot.css'
 
 
 import { UserProvider } from "../contexts/UserContext"
@@ -21,7 +22,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </UserProvider>
     </ToastProvider>
-    <Script src="/assets/js/bootstrap.bundle.min.js" />
+    <Script src="/assets/js/bootstrap.bundle.min.js" strategy="beforeInteractive" />
     </>
     
   );

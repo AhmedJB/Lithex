@@ -36,6 +36,7 @@ export default function Login(props){
             obj.isA = resp.s;
             obj.path = resp.path;
             obj.emal = resp.email;
+            obj.depositID = resp.deposit_id
             console.log(obj);
             setUser(obj)
             
@@ -91,6 +92,8 @@ export default function Login(props){
         obj.isA = resp.s;
         obj.path = resp.path;
         obj.emal = resp.email;
+        obj.depositID = resp.deposit_id
+
         if (resp.enable_login){
           setUser(obj)
         addToast("Logged in",{

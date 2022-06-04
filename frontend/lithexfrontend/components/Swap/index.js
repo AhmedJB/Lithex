@@ -175,7 +175,10 @@ export default function Swap(props) {
 
   const swapComp = <Fragment>
   <h4 className="text-center mb-4">Swap</h4>
-  <div className="input-group flex items-center mb-3">
+  <div style={{
+        display:"flex",
+        alignItems:"center"
+      }} className="input-group flex items-center mb-3">
     <input
       className="form-control w-4/5 border-2 p-2 h-[60px] rounded-l-[10px] form-control-lg"
       value={inRate}
@@ -183,10 +186,12 @@ export default function Swap(props) {
       onChange={(t) => setInRate(t.target.value)}
     />
     <button
-      className="btn flex items-center w-1/5 border-2 border-l-0 h-[51px] rounded-r-[10px] p-2 dropdown-toggle"
+    style={{
+      display:"flex",
+      alignItems:"center"
+    }}
+      className="btn flex items-center w-1/5 border-2 border-l-0 h-[51px] rounded-r-[10px] p-2 "
       type="button"
-      data-bs-toggle="modal"
-      data-bs-target="#selecttoken"
       onClick={() => openModal(0) }
     >
       {
@@ -204,7 +209,10 @@ export default function Swap(props) {
   <FontAwesomeIcon icon={faArrowsRotate} style={{fontSize:"1rem", width: 32 , height: 32}} className=" mb-3 text-center" />
   </div>
   
-  <div className="input-group flex items-center mb-3">
+  <div style={{
+        display:"flex",
+        alignItems:"center"
+      }} className="input-group flex items-center mb-3">
     <input
       type="number" step="any"
       className="form-control w-4/5  border-2 p-2 h-[60px] rounded-l-[10px] form-control-lg"
@@ -213,10 +221,13 @@ export default function Swap(props) {
     />
 
     <button
-      className="btn flex items-center w-1/5 border-2 border-l-0 h-[51px] rounded-r-[10px] p-2 dropdown-toggle"
+      style={{
+        display:"flex",
+        alignItems:"center"
+      }}
+      className="btn items-center w-1/5 border-2 border-l-0 h-[51px] rounded-r-[10px] p-2 "
       type="button"
-      data-bs-toggle="modal"
-      data-bs-target="#selecttoken"
+      
     
       onClick={() => openModal(1) }
     >

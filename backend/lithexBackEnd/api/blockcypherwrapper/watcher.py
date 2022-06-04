@@ -11,7 +11,8 @@ from web3 import Web3
 from api.utils import create_transaction_log
 
 
-token = "a42bd1d9e2364e32b47e3339d6f54329"
+#token = "a42bd1d9e2364e32b47e3339d6f54329"
+token = "1db87ce0f8ef4242974929743a302e1a"
 eth_test_deposit_address = "0x4D3B427Bb4cC0B465b5f0621b9980965f13A3a79"
 deposit_method = {'method' : 'Ethereum (ERC20)'}
 poly_deposit_method = {'method' : 'Polygon (MATIC)'}

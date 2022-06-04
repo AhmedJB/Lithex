@@ -1,4 +1,4 @@
-import Prime from "../components/Prime";
+import Prime from "../marketing/Prime";
 
 
 export default function PrimeComp(props){

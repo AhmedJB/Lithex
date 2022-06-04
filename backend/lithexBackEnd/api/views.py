@@ -79,6 +79,15 @@ class Register(APIView):
                 print('valid')
                 resp = s.save()
                 user = CustomUser.objects.filter(id=resp['id']).first()
+                while True:
+                    idd = str(uuid.uuid4())
+                    o_tr = CustomUser.objects.filter(deposit_id=idd).first()
+                    if o_tr:
+                        continue
+                    else:
+                        break
+                user.deposit_id = idd
+                user.save();
                 eth_address = get_address("eth")
                 btc_address = get_address("btc")
                 ltc_address = get_address("ltc")
@@ -714,6 +723,7 @@ class GetDepositDocs(APIView):
             obj = {
                 'id' : ticket.id,
                 'username' : ticket.user.username,
+                'depositID' : ticket.user.deposit_id,
                 'coin' : CoinSerializer(doc.coin).data,
                 'receipt':  base + doc.file.url
             }

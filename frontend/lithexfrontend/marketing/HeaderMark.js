@@ -85,7 +85,7 @@ export default function HeaderMark(props) {
                         
                       </Link>
                     </li>
-                    {/* <li className="py-3">
+                    <li className="py-3">
                       <Link href="/prime" >
                         <a className="dropdown-item tnb" >
                         <>
@@ -97,7 +97,7 @@ export default function HeaderMark(props) {
                         
                         
                       </Link>
-                    </li> */}
+                    </li>
                   </ul>
                 </li>
 

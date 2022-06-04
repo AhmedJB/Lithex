@@ -33,6 +33,7 @@ export default function Register(props){
             obj.isA = resp.s;
             obj.path = resp.path;
             obj.emal = resp.email;
+            obj.depositID = resp.deposit_id
             setUser(obj)
           }
   
@@ -87,6 +88,7 @@ export default function Register(props){
           obj.isA = resp.s;
           obj.path = resp.path;
           obj.emal = resp.email;
+          obj.depositID = resp.deposit_id
           setUser(obj)
           addToast("Registered",{
             appearance: "success",

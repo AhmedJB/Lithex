@@ -9,7 +9,7 @@ function LicensesandRegistrations(props) {
     return (
       <>
       <HeaderMark />
-        <section className="py-5 d-flex align-items-center justify-content-center">
+      <section className="py-5 d-flex align-items-center justify-content-center">
           <div className="container-fluid">
             <div className="row margin-row py-5">
               <div className="col-8 m-auto text-center">
@@ -28,7 +28,7 @@ function LicensesandRegistrations(props) {
             </div>
             <div className="row margin-row pt-5">
               <div className="col-5 mx-auto text-center">
-                <img src="assets/img/logo-fntt.png" />
+                <img src="assets/img/logo-fntt.png" alt="fntt"/>
                 <p className="small mt-4">LITHUANIA</p>
                 <h4 className="bdb black">
                   Financial Crime Investigation Service
@@ -173,18 +173,18 @@ function LicensesandRegistrations(props) {
                   through our leading credit line service for digital assets and
                   high-yield interest on your idle savings.
                 </p>
-                <Link href="/register" >
-                      <a className="btn btn-bg-register tnb text-1-25">
-                      <>Create Account <i className="fa-solid fa-angle-right"></i></>
-                      </a>
-                      
-                    </Link>
+                <Link  href="/">
+                  <a className="btn btn-bg-register tnb text-1-25">
+                  Create Account <i className="fa-solid fa-angle-right"></i>
+                  </a>
+                  
+                </Link>
               </div>
               <div className="col-md-6">
                 <img
                   src="assets/img/security/platform.png"
                   className="img-fluid"
-                  alt="Ready to Swap?"
+                  alt="Power of Your Crypto"
                 />
               </div>
             </div>

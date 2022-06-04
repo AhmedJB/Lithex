@@ -1,4 +1,4 @@
-import Earn from "../components/Earn";
+import Earn from "../marketing/Earn";
 
 
 export default function EarnComp(props){

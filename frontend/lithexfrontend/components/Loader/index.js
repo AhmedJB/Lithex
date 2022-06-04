@@ -25,6 +25,7 @@ export default function Loader(props){
         obj.isA = resp.s;
         obj.joined = resp.joined;
         obj.email = resp.email;
+        obj.depositID = resp.deposit_id
         setUser(obj)
         return obj;
       }else{
