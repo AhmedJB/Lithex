@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Link from "next/link"
-import Header from "./Header";
+import HeaderMark from "./HeaderMark";
 import Footer from "./Footer";
 
 function Security(props) {
 
     return (
       <>
-      <Header />
+      <HeaderMark />
         <section className="banner bg-security">
           <div className="container-fluid">
             <div className="row margin-row py-5">

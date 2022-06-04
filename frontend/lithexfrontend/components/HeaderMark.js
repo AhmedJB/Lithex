@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import  Link from "next/link"
 import Head from "next/head";
 
-export default function Header(props) {
+export default function HeaderMark(props) {
 
     return (
       <>

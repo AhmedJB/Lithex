@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Link from "next/link"
-import Header from "./Header";
+import HeaderMark from "./HeaderMark";
 import Footer from "./Footer";
 
 function Exchange(props) {
 
     return (
       <>
-      <Header />
+      <HeaderMark />
         <section className="banner bg-white">
           <div className="container-fluid">
             <div className="row margin-row">
@@ -1633,6 +1633,7 @@ function Exchange(props) {
             </div>
           </div>
         </section>
+        <Footer />
       </>
     );
   }

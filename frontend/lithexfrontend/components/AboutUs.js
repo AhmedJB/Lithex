@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Link from "next/link";
-import Header from "./Header";
+import HeaderMark from "./HeaderMark";
 import Footer from "./Footer";
 
 function AboutUs(props) {
   
     return (
       <>
-      <Header />
+      <HeaderMark />
         <section className="bg-aboutus py-5 d-flex align-items-center justify-content-center">
           <div className="container-fluid">
             <div className="row margin-row py-5 justify-content-center">

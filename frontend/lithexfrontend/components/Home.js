@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import Header from "./Header";
+import HeaderMark from "./HeaderMark";
 import Footer from "./Footer";
 
 export class Home extends Component {
   render() {
     return (
       <>
-      <Header />
+      <HeaderMark />
       
         <section className="banner bg-light">
           <div className="container-fluid">
