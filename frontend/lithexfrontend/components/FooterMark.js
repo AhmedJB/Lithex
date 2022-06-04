@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import  Link from "next/link"
 
-export default function Footer(props) {
+export default function FooterMark(props) {
   
     return (
       <div>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import HeaderMark from "./HeaderMark";
-import Footer from "./Footer";
+import FooterMark from "./FooterMark";
 
 export class Home extends Component {
   render() {
@@ -875,7 +875,7 @@ export class Home extends Component {
             </div>
           </div>
         </section>
-        <Footer />
+        <FooterMark />
       </>
     );
   }

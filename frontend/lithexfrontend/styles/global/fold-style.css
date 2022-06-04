@@ -2424,7 +2424,7 @@
             overflow: auto;
             text-align: center;
             box-sizing: border-box;
-            z-index: 9300;
+            z-index: 10;
         }
         
         .Portal.backdrop {

@@ -46,6 +46,10 @@
     color: rgba(74, 80, 86);
     font-size: 1.125rem;
   }
+
+  .dropdown-handler{
+    position: relative;
+  }
   
   #nv a {
     color: rgba(74, 80, 86);

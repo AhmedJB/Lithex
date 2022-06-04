@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Link from "next/link";
 import HeaderMark from "./HeaderMark";
-import Footer from "./Footer";
+import FooterMark from "./FooterMark";
 
 function Earn(props) {
 
@@ -1360,7 +1360,7 @@ function Earn(props) {
             </div>
           </div>
         </section>
-        <Footer />
+        <FooterMark />
       </>
     );
   }
