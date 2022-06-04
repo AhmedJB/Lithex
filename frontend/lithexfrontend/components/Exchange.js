@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link"
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Exchange(props) {
 
     return (
       <>
+      <Header />
         <section className="banner bg-white">
           <div className="container-fluid">
             <div className="row margin-row">
@@ -66,8 +69,11 @@ function Exchange(props) {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                    <Link to="/" className="btn btn-bg-register tnb text-1-25">
-                      Exchange Now <i className="fa-solid fa-angle-right"></i>
+                  <Link href="/register" >
+                      <a className="btn btn-bg-register tnb text-1-25">
+                      <>Exchange Now <i className="fa-solid fa-angle-right"></i></>
+                      </a>
+                      
                     </Link>
                   </div>
                 </div>
@@ -949,8 +955,11 @@ function Exchange(props) {
                   infrastructure designed to ensure maximum protection of assets
                   at all times.
                 </p>
-                <Link to="/security">
+                <Link href="/security">
+                  <>
                   Learn More <i className="fa-solid fa-arrow-right blue"></i>
+                  </>
+                  
                 </Link>
               </div>
             </div>
@@ -1413,7 +1422,7 @@ function Exchange(props) {
                             <li>
                               Open the{" "}
                               <u>
-                                <Link to="/">LIQD platform</Link>
+                                <Link href="/">LIQD platform</Link>
                               </u>
                             </li>
                             <li>{`Click on the "Exchange" tab.`}</li>

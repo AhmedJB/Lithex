@@ -44,20 +44,23 @@ export default function Header(props) {
                   <Link
                     href="/"
                     
-                    id="navbarDropdown"
-                    data-bs-toggle="dropdown"
+                    
                   >
-                     <a className="nav-link dropdown-toggle">Company</a> 
+                     <a className="nav-link dropdown-toggle" id="navbarDropdown"
+                    data-bs-toggle="dropdown">Company</a> 
                   </Link>
-                  <ul className="dropdown-menu">
+                  <ul className="dropdown-menu stretched">
                     <li className="py-3">
-                      <Link href="/aboutus" className="dropdown-item tnb">
+                      <Link href="/aboutus" >
+                        <a className="dropdown-item tnb">
+
+                        
                         <>
                         <i className="fa-solid fa-building me-2"></i> About Us
                         <br />
                         <span className="tnr grey-2 ">Get to know LIQD</span>
                         </>
-                        
+                        </a>
                       </Link>
                     </li>
                     <li>
@@ -65,9 +68,10 @@ export default function Header(props) {
                     </li>
                     <li className="py-3">
                       <Link
-                        href="/LicensesandRegistrations"
-                        className="dropdown-item tnb"
+                        href="/licensesandregistrations"
+                        
                       >
+                        <a className="dropdown-item tnb">
                         <>
                         <i className="fa-solid fa-building-columns me-2"></i>
                         Licenses & Registrations <br />
@@ -76,19 +80,24 @@ export default function Header(props) {
                           institution
                         </span>
                         </>
+                        </a>
+                        
                         
                       </Link>
                     </li>
-                    <li className="py-3">
-                      <Link href="/prime" className="dropdown-item tnb">
+                    {/* <li className="py-3">
+                      <Link href="/prime" >
+                        <a className="dropdown-item tnb" >
                         <>
                         <i className="fa-solid fa-certificate me-2"></i> LIQD Prime
                         <br />
                         <span className="tnr grey-2 ">Crypto Prime Brokerage</span>
                         </>
+                        </a>
+                        
                         
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
 

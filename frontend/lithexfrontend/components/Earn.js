@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import Link from "next/link";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Earn(props) {
 
     return (
       <>
+      <Header />
         <section className="banner bg-earn">
           <div className="container-fluid">
             <div className="row margin-row">
@@ -48,8 +51,11 @@ function Earn(props) {
                 </div>
                 <div className="row margin-row">
                   <div className="col-md-12">
-                    <Link href="/register" className="btn btn-bg-register tnb text-1-25">
-                    <>Start Earning <i className="fa-solid fa-angle-right"></i></>  
+                    <Link href="/register" >
+                      <a className="btn btn-bg-register tnb text-1-25">
+                      <>Start Earning <i className="fa-solid fa-angle-right"></i></>
+                      </a>
+                      
                     </Link>
                   </div>
                 </div>
@@ -1354,6 +1360,7 @@ function Earn(props) {
             </div>
           </div>
         </section>
+        <Footer />
       </>
     );
   }

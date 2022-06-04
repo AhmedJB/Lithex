@@ -31,8 +31,9 @@ def handle_native_deposit(coin,deposit_addr,symbol,balance_obj):
         print("new deposit for " + symbol)
         balance_obj.balance += (balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee)
         
+        formated_amount = ("{0:."+str(balance_obj.coin.decimals)+"f}").format(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals ))
         create_transaction_log(deposit_addr.user,balance_obj.coin,
-        "Received Deposit of " + str(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
+        "Received Deposit of " + formated_amount + " " + symbol,
         "deposit"
         )
         balance_obj.old_balance = balance
@@ -143,9 +144,9 @@ def handle_token_deposit(deposit_add,coin,balance_obj,network):
                 deposit_amount = (new_bal - balance_obj.old_balance) * (1-balance_obj.coin.d_fee)
                 balance_obj.balance += deposit_amount
                 
-
+                formated_amount = ("{0:."+str(balance_obj.coin.decimals)+"f}").format(round( ((new_bal - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals ))
                 create_transaction_log(old_deposit_add.user,balance_obj.coin,
-                    "Received Deposit of " + str(round( ((new_bal - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + coin.symbol,
+                    "Received Deposit of " + formated_amount + " " + coin.symbol,
                     "deposit"
                     )
                 n_bal = get_contract_balance(contract,deposit_add)
@@ -184,9 +185,9 @@ def handle_web3_deposit(deposit_addr,symbol,balance_obj,network):
         print("new deposit for " + symbol)
         balance_obj.balance += (balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee)
         
-       
+        formated_amount = ("{0:."+str(balance_obj.coin.decimals)+"f}").format(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals ))
         create_transaction_log(deposit_addr.user,balance_obj.coin,
-        "Received Deposit of " + str(round( ((balance - balance_obj.old_balance) * (1-balance_obj.coin.d_fee) ) / 10 ** balance_obj.coin.decimals , balance_obj.coin.decimals )) + " " + symbol,
+        "Received Deposit of " + formated_amount + " " + symbol,
         "deposit"
         )
         balance_obj.old_balance = balance

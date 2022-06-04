@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
     font-family: tt-norms-regular;
     src: url(/fonts/tt-norms-regular.ttf);
@@ -17,6 +21,8 @@
     font-family: blacker-display-bold;
     src: url(/fonts/blacker-display-bold.woff);
   }
+
+  
   
   .tnr {
     font-family: tt-norms-regular, Helvetica, Arial;

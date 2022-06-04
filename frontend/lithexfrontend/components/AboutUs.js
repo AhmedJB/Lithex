@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import Link from "next/link";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function AboutUs(props) {
   
     return (
       <>
+      <Header />
         <section className="bg-aboutus py-5 d-flex align-items-center justify-content-center">
           <div className="container-fluid">
             <div className="row margin-row py-5 justify-content-center">
@@ -321,9 +324,12 @@ function AboutUs(props) {
                   through our leading credit line service for digital assets and
                   high-yield interest on your idle savings.
                 </p>
-                <Link className="btn btn-bg-register tnb text-1-25" href="/register">
-                  Create Account <i className="fa-solid fa-angle-right"></i>
-                </Link>
+                <Link href="/register" >
+                      <a className="btn btn-bg-register tnb text-1-25">
+                      <>Create Account <i className="fa-solid fa-angle-right"></i></>
+                      </a>
+                      
+                    </Link>
               </div>
               <div className="col-md-6">
                 <img
@@ -335,6 +341,7 @@ function AboutUs(props) {
             </div>
           </div>
         </section>
+        <Footer />
       </>
     );
   

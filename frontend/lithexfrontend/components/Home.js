@@ -47,12 +47,12 @@ export class Home extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                    <button
-                      className="btn btn-bg-register tnb text-1-25"
-                      type="submit"
-                    >
-                      Create Account <i className="fa-solid fa-angle-right"></i>
-                    </button>
+                  <Link href="/register" >
+                      <a className="btn btn-bg-register tnb text-1-25">
+                      <>Create Account <i className="fa-solid fa-angle-right"></i></>
+                      </a>
+                      
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -189,10 +189,13 @@ export class Home extends Component {
                   </li>
                 </ul>
                 <Link href="/earn">
+                  <a>
                   <>
                   Earn Crypto Interest{" "}
                   <i className="fa-solid fa-arrow-right blue"></i>
                   </>
+                  </a>
+                 
                   
                 </Link>
               </div>
@@ -281,9 +284,12 @@ export class Home extends Component {
                   at all times.
                 </p>
                 <Link href="/security">
+                  <a>
                   <>
                   Learn More <i className="fa-solid fa-arrow-right blue"></i>
                   </>
+                  </a>
+                  
                   
                 </Link>
               </div>
@@ -352,10 +358,13 @@ export class Home extends Component {
                     </p>
                   </div>
                 </div>
-                <Link href="/aboutus" className="text-white">
-                <>
+                <Link href="/aboutus" >
+                  <a className="text-white">
+                  <>
                 About Us <i className="fa-solid fa-arrow-right blue"></i>
                 </>
+                  </a>
+                
                 </Link>
               </div>
               <div className="col-md-5 m-auto">
@@ -373,11 +382,17 @@ export class Home extends Component {
             <div className="row">
               <div className="col-md-4">
                 <nav className="nav flex-column">
-                  <Link className="nav-link black" href="#earn">
+                  <Link  href="/earn">
+                    <a className="nav-link black">
                     Earn
+                    </a>
+                    
                   </Link>
-                  <Link className="nav-link grey" href="#exchange">
+                  <Link  href="/exchange">
+                    <a className="nav-link grey">
                     Exchange
+                    </a>
+                    
                   </Link>
                 </nav>
               </div>

@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link"
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Security(props) {
 
     return (
       <>
+      <Header />
         <section className="banner bg-security">
           <div className="container-fluid">
             <div className="row margin-row py-5">
@@ -61,11 +64,17 @@ function Security(props) {
             </div>
             <div className="row">
               <Link
-                className="align-bottom text-center mb-2"
-                to="#security-partners"
+                
+                href="#security-partners"
               >
+                <a className="align-bottom text-center mb-2">
+                <>
                 {`Your assets' security is guaranteed by`}{" "}
                 <i className="fa-solid fa-arrow-down blue"></i>
+                </>
+                </a>
+                
+                
               </Link>
             </div>
           </div>
@@ -842,12 +851,15 @@ function Security(props) {
                 </div>
                 <div className="col-md-4 my-auto">
                   <Link
-                    to="/LicensesandRegistrations"
+                    href="/LicensesandRegistrations"
                     className="text-white float-end text-end"
                   >
+                    <>
                     What does LIQD being
                     <br />
                     licensed and regulated mean?
+                    </>
+                    
                   </Link>
                 </div>
               </div>
@@ -1073,9 +1085,12 @@ function Security(props) {
                   Open your LIQD account today and start buying, selling, and
                   exchanging crypto hassle-free.
                 </p>
-                <Link className="btn btn-bg-register tnb text-1-25" to="/">
-                  Create Account <i className="fa-solid fa-angle-right"></i>
-                </Link>
+                <Link href="/register" >
+                      <a className="btn btn-bg-register tnb text-1-25">
+                      <>Create Account <i className="fa-solid fa-angle-right"></i></>
+                      </a>
+                      
+                    </Link>
               </div>
               <div className="col-md-6">
                 <img
@@ -1087,6 +1102,7 @@ function Security(props) {
             </div>
           </div>
         </section>
+        <Footer />
       </>
     );
   }

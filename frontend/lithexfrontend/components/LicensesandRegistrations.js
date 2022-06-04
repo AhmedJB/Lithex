@@ -1,10 +1,14 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link"
+import Header from "./Header";
+import Footer from "./Footer";
+
 
 function LicensesandRegistrations(props) {
 
     return (
       <>
+      <Header />
         <section className="py-5 d-flex align-items-center justify-content-center">
           <div className="container-fluid">
             <div className="row margin-row py-5">
@@ -169,9 +173,12 @@ function LicensesandRegistrations(props) {
                   through our leading credit line service for digital assets and
                   high-yield interest on your idle savings.
                 </p>
-                <Link className="btn btn-bg-register tnb text-1-25" to="/">
-                  Create Account <i className="fa-solid fa-angle-right"></i>
-                </Link>
+                <Link href="/register" >
+                      <a className="btn btn-bg-register tnb text-1-25">
+                      <>Create Account <i className="fa-solid fa-angle-right"></i></>
+                      </a>
+                      
+                    </Link>
               </div>
               <div className="col-md-6">
                 <img
@@ -183,6 +190,7 @@ function LicensesandRegistrations(props) {
             </div>
           </div>
         </section>
+        <Footer />
       </>
     );
   }
