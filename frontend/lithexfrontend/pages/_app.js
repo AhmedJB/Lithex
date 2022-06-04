@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </UserProvider>
     </ToastProvider>
-    <Script src="/assets/js/boot.js" />
+    <Script src="/assets/js/bootstrap.bundle.min.js" />
     </>
     
   );
