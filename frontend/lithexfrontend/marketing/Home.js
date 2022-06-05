@@ -384,23 +384,7 @@ export class Home extends Component {
               <p>All your questions about Liqd answered.</p>
             </div>
             <div className="row">
-              <div className="col-md-4">
-                <nav className="nav flex-column">
-                  <Link  href="#earn">
-                    <a className="nav-link black">
-                    Earn
-                    </a>
-                    
-                  </Link>
-                  <Link  href="#exchange">
-                    <a className="nav-link grey">
-                    Exchange
-                    </a>
-                    
-                  </Link>
-                </nav>
-              </div>
-              <div className="col-md-8">
+              <div className="col-md-8 mx-auto">
                 <div id="earn">
                   <div
                     className="accordion accordion-flush"

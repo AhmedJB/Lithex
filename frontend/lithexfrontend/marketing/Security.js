@@ -7,7 +7,7 @@ function Security(props) {
 
     return (
       <>
-      <HeaderMark />
+        <HeaderMark />
         <section className="banner bg-security">
           <div className="container-fluid">
             <div className="row margin-row py-5">
@@ -63,18 +63,13 @@ function Security(props) {
               </div>
             </div>
             <div className="row">
-              <Link
-                
-                href="#security-partners"
-              >
+              <Link href="#security-partners">
                 <a className="align-bottom text-center mb-2">
-                <>
-                {`Your assets' security is guaranteed by`}{" "}
-                <i className="fa-solid fa-arrow-down blue"></i>
-                </>
+                  <>
+                    {`Your assets' security is guaranteed by`}{" "}
+                    <i className="fa-solid fa-arrow-down blue"></i>
+                  </>
                 </a>
-                
-                
               </Link>
             </div>
           </div>
@@ -201,12 +196,12 @@ function Security(props) {
                         <div className="row">
                           <h4 className="black tnb">Ledger</h4>
                           <p className="tnr">
-                            {`Ledger Vault provides us with institutional-grade
+                            Ledger Vault provides us with institutional-grade
                             self-custody that is accessible 24/7/365 and fully
                             addresses our retail and institutional clients'
                             needs for instant services. Ledger Vault carries
                             $150M third-party insurance led by the Arch UK
-                            Lloyds of London syndicate.`}
+                            Lloyds of London syndicate.
                           </p>
                         </div>
                       </div>
@@ -363,12 +358,12 @@ function Security(props) {
                         <div className="row">
                           <h4 className="black tnb">Securitize</h4>
                           <p className="tnr">
-                            {`Securitize enables ownership, management, and
+                            Securitize enables ownership, management, and
                             trading of digital securities (security tokens). The
                             company is an SEC Registered Transfer Agent and its
                             DS protocol allows for tokenized securities to be
                             staked as collateral for LIQD's Instant Crypto
-                            Credit Lines™.`}
+                            Credit Lines™.
                           </p>
                         </div>
                       </div>
@@ -850,16 +845,12 @@ function Security(props) {
                   />
                 </div>
                 <div className="col-md-4 my-auto">
-                  <Link
-                    href="/LicensesandRegistrations"
-                    className="text-white float-end text-end"
-                  >
-                    <>
-                    What does LIQD being
-                    <br />
-                    licensed and regulated mean?
-                    </>
-                    
+                  <Link href="/LicensesandRegistrations">
+                    <span className="text-white float-end text-end">
+                      What does LIQD being
+                      <br />
+                      licensed and regulated mean?
+                    </span>
                   </Link>
                 </div>
               </div>
@@ -1085,12 +1076,13 @@ function Security(props) {
                   Open your LIQD account today and start buying, selling, and
                   exchanging crypto hassle-free.
                 </p>
-                <Link href="/register" >
-                      <a className="btn btn-bg-register tnb text-1-25">
-                      <>Create Account <i className="fa-solid fa-angle-right"></i></>
-                      </a>
-                      
-                    </Link>
+                <Link href="/register">
+                  <a className="btn btn-bg-register tnb text-1-25">
+                    <>
+                      Create Account <i className="fa-solid fa-angle-right"></i>
+                    </>
+                  </a>
+                </Link>
               </div>
               <div className="col-md-6">
                 <img

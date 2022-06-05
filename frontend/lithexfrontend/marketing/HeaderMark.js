@@ -111,7 +111,7 @@ export default function HeaderMark(props) {
               </ul>
               <Link href="/app/login">
               <button className="btn btn-register" type="submit">
-                  Go To App
+                  Launch App
                 </button>
               </Link>
               

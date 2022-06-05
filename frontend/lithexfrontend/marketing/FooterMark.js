@@ -15,7 +15,7 @@ export default function FooterMark(props) {
                   className="img-fluid"
                 />
               </div>
-              <div className="col-md-4 my-auto mb-3">
+              <div className="col-md-4 mb-3">
                 <h4 className="tnm black">Sign up for updates</h4>
                 <div className="input-group">
                   <input
@@ -28,27 +28,27 @@ export default function FooterMark(props) {
                   </button>
                 </div>
               </div>
-              <div className="col-md-4 my-auto mb-3">
+              <div className="col-md-4 mb-3">
                 <h4 className="tnm black">Follow us</h4>
                 <div className="social">
-                  <Link href="/" className="btn btn-light" type="button">
-                    <i className="fa-brands fa-facebook-f"></i>
+                  <Link href="/">
+                    <i className="fa-brands fa-facebook-f btn btn-light"></i>
                   </Link>
-                  <Link href="/" className="btn btn-light" type="button">
-                    <i className="fa-brands fa-twitter"></i>
+                  <Link href="/">
+                    <i className="fa-brands fa-twitter btn btn-light"></i>
                   </Link>
-                  <Link href="/" className="btn btn-light" type="button">
-                    <i className="fa-brands fa-reddit-alien"></i>
+                  <Link href="/">
+                    <i className="fa-brands fa-reddit-alien btn btn-light"></i>
                   </Link>
-                  <Link href="/" className="btn btn-light" type="button">
-                    <i className="fa-brands fa-medium"></i>
+                  <Link href="/">
+                    <i className="fa-brands fa-medium btn btn-light"></i>
                   </Link>
-                  <Link href="/" className="btn btn-light" type="button">
-                    <i className="fa-brands fa-telegram"></i>
+                  <Link href="/">
+                    <i className="fa-brands fa-telegram btn btn-light"></i>
                   </Link>
                 </div>
               </div>
-              <div className="col-md-2 my-auto mb-3">
+              <div className="col-md-2 mb-3">
                 <img
                   src="assets/img/footer-trust-pilot.png"
                   alt="Liqd TrustPilot"

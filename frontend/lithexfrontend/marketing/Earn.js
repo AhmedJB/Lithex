@@ -7,7 +7,7 @@ function Earn(props) {
 
     return (
       <>
-      <HeaderMark />
+        <HeaderMark />
         <section className="banner bg-earn">
           <div className="container-fluid">
             <div className="row margin-row">
@@ -51,11 +51,13 @@ function Earn(props) {
                 </div>
                 <div className="row margin-row">
                   <div className="col-md-12">
-                    <Link href="/register" >
+                    <Link href="app/register">
                       <a className="btn btn-bg-register tnb text-1-25">
-                      <>Start Earning <i className="fa-solid fa-angle-right"></i></>
+                        <>
+                          Start Earning{" "}
+                          <i className="fa-solid fa-angle-right"></i>
+                        </>
                       </a>
-                      
                     </Link>
                   </div>
                 </div>
@@ -117,7 +119,7 @@ function Earn(props) {
                 </p>
                 <p className="tnr">
                   Just top up and{" "}
-                  <Link href="/" className="blue">
+                  <Link href="app/register" className="blue">
                     start earning
                   </Link>{" "}
                   up to 20% annual interest immediately - no further action is
@@ -575,12 +577,11 @@ function Earn(props) {
                               *Daily payouts apply only to our FLEX offering.
                             </small>
                           </p>
-                          <Link href="/earn">
+                          <Link href="app/register">
                             <>
-                            Start Earning{" "}
-                            <i className="fa-solid fa-arrow-right blue"></i>
+                              Start Earning{" "}
+                              <i className="fa-solid fa-arrow-right blue"></i>
                             </>
-                            
                           </Link>
                         </div>
                       </div>
@@ -607,12 +608,11 @@ function Earn(props) {
                             offering. Or create a Fixed Term to get an
                             additional interest on your assets.
                           </p>
-                          <Link href="/earn">
+                          <Link href="app/register">
                             <>
-                            Start Earning{" "}
-                            <i className="fa-solid fa-arrow-right blue"></i>
+                              Start Earning{" "}
+                              <i className="fa-solid fa-arrow-right blue"></i>
                             </>
-                            
                           </Link>
                         </div>
                       </div>
@@ -639,12 +639,11 @@ function Earn(props) {
                             custodians in the event of third-party hacks, theft,
                             or loss of private keys.
                           </p>
-                          <Link href="/earn">
+                          <Link href="app/register">
                             <>
-                            Start Earning{" "}
-                            <i className="fa-solid fa-arrow-right blue"></i>
+                              Start Earning{" "}
+                              <i className="fa-solid fa-arrow-right blue"></i>
                             </>
-                            
                           </Link>
                         </div>
                       </div>
@@ -671,12 +670,11 @@ function Earn(props) {
                             at any time without losing your accrued interest or
                             add funds whenever you want to earn even more.
                           </p>
-                          <Link href="/earn">
+                          <Link href="app/register">
                             <>
-                            Start Earning{" "}
-                            <i className="fa-solid fa-arrow-right blue"></i>
+                              Start Earning{" "}
+                              <i className="fa-solid fa-arrow-right blue"></i>
                             </>
-                            
                           </Link>
                         </div>
                       </div>
@@ -746,11 +744,10 @@ function Earn(props) {
                           aria-expanded="true"
                           aria-controls="collapseOne"
                         >
-                          <Link
-                            href="/app/profile"
-                            className="btn btn-primary btn-round me-3"
-                          >
-                            1
+                          <Link href="/app/profile">
+                            <span className="btn btn-primary btn-round me-3">
+                              1
+                            </span>
                           </Link>
                           <h5 className="black tnm">
                             Deposit Supported Assets
@@ -780,9 +777,10 @@ function Earn(props) {
                         >
                           <Link
                             href="/app/profile"
-                            className="btn btn-primary btn-round me-3"
                           >
-                            2
+                            <span className="btn btn-primary btn-round me-3">
+                              2
+                            </span>
                           </Link>
                           <h5 className="black tnm">Start Earning Instantly</h5>
                         </button>
@@ -1093,7 +1091,8 @@ function Earn(props) {
                             </li>
                           </ol>
                           <p>
-                            <strong>Note:</strong> {"You'll start earning interest"}{" "}
+                            <strong>Note:</strong>{" "}
+                            {"You'll start earning interest"}{" "}
                             <strong>the next day </strong>after your transfer.
                             Keep in mind that assets used as collateral for our
                             Instant Crypto Credit Lines™ will not earn interest.
@@ -1169,7 +1168,8 @@ function Earn(props) {
                               </ul>
                             </li>
                             <li>
-                              <strong>The type of saving term:</strong> {`FLEX or
+                              <strong>The type of saving term:</strong>{" "}
+                              {`FLEX or
                               Fixed. If you choose to create a 1-month Fixed
                               Term on your crypto, you'll earn an extra 1%
                               interest.`}
